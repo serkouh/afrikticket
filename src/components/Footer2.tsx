@@ -200,7 +200,7 @@ export default function Footer2() {
 				</div>
 				<div className="mt-16 border-t border-gray-900/10 pt-8 dark:border-gray-700 sm:mt-20 lg:mt-24">
 					<p className="text-sm/6 text-gray-600 dark:text-neutral-400">
-						&copy; 2024 Your Company, Inc. All rights reserved.
+						&copy; 2024 DevArch Digital, tous les droits sont réservés .
 					</p>
 				</div>
 			</div>

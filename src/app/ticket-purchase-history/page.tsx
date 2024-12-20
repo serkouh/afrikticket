@@ -68,7 +68,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
                         Date: 12/12/2014
                         <br />
                         <br />
-                        Price: 10,000 FGN
+                        Price: 10,000 GF
                         <br />
                         <br />
                         No.of attendes: 10
@@ -84,7 +84,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
     const DEMO_DATA: FlightCardProps["data"][] = [
 		{
 			id: "1",
-			price: "10,000 FGN",
+			price: "10,000 GF",
 			airlines: {
 				logo: "https://www.gstatic.com/flights/airline_logos/70px/KE.png",
 				name: "Nom de l'événement",
@@ -92,7 +92,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 		},
 		{
 			id: "2",
-			price: "5,000 FGN",
+			price: "5,000 GF",
 			airlines: {
 				logo: "https://www.gstatic.com/flights/airline_logos/70px/SQ.png",
 				name: "Nom de l'événement",
@@ -100,7 +100,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 		},
 		{
 			id: "3",
-			price: "15,000 FGN",
+			price: "15,000 GF",
 			airlines: {
 				logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
 				name: "Nom de l'événement",
@@ -108,7 +108,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 		},
 		{
 			id: "3",
-			price: "10,000 FGN",
+			price: "10,000 GF",
 			airlines: {
 				logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
 				name: "Nom de l'événement",
@@ -116,7 +116,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 		},
 		{
 			id: "3",
-			price: "10,000 FGN",
+			price: "10,000 GF",
 			airlines: {
 				logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
 				name: "Nom de l'événement",
@@ -124,7 +124,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 		},
 		{
 			id: "3",
-			price: "10,000 FGN",
+			price: "10,000 GF",
 			airlines: {
 				logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
 				name: "Nom de l'événement",

@@ -348,15 +348,15 @@ const ListingStayDetailPage: FC<ListingStayDetailPageProps> = ({}) => {
 					<div className="-mb-4 text-sm text-neutral-600 dark:text-neutral-300 sm:text-base">
 						<div className="flex items-center justify-between space-x-4 rounded-lg bg-neutral-100 p-4 dark:bg-neutral-800">
 							<span>Monday - Thursday</span>
-							<span>$199</span>
+							<span>GF 199</span>
 						</div>
 						<div className="flex items-center justify-between space-x-4 rounded-lg p-4">
 							<span>Monday - Thursday</span>
-							<span>$199</span>
+							<span>GF 199</span>
 						</div>
 						<div className="flex items-center justify-between space-x-4 rounded-lg bg-neutral-100 p-4 dark:bg-neutral-800">
 							<span>Friday - Sunday</span>
-							<span>$219</span>
+							<span>GF 219</span>
 						</div>
 						<div className="flex items-center justify-between space-x-4 rounded-lg p-4">
 							<span>Rent by month</span>
@@ -604,7 +604,7 @@ const ListingStayDetailPage: FC<ListingStayDetailPageProps> = ({}) => {
 				{/* PRICE */}
 				<div className="flex justify-between">
 					<span className="text-3xl font-semibold">
-						$119
+						GF 119
 						<span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
 							/night
 						</span>
@@ -622,17 +622,17 @@ const ListingStayDetailPage: FC<ListingStayDetailPageProps> = ({}) => {
 				{/* SUM */}
 				<div className="flex flex-col space-y-4">
 					<div className="flex justify-between text-neutral-600 dark:text-neutral-300">
-						<span>$119 x 3 night</span>
-						<span>$357</span>
+						<span>GF 119 x 3 night</span>
+						<span>GF 357</span>
 					</div>
 					<div className="flex justify-between text-neutral-600 dark:text-neutral-300">
 						<span>Service charge</span>
-						<span>$0</span>
+						<span>GF 0</span>
 					</div>
 					<div className="border-b border-neutral-200 dark:border-neutral-700"></div>
 					<div className="flex justify-between font-semibold">
 						<span>Total</span>
-						<span>$199</span>
+						<span>GF 199</span>
 					</div>
 				</div>
 

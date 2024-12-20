@@ -14,7 +14,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import moment from "moment";
-
+import "moment/locale/fr"; // Add this import for French locale
 
 import Events from "./data";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -25,12 +25,28 @@ import "./Calendar.css";
 import { IconCheck } from "@tabler/icons-react";
 // import BlankCard from "@/app/components/shared/BlankCard";
 
-
 moment.locale('fr');
 console.log(moment.locale()); // Should log 'fr'
 
 // Initialize localizer after setting the locale
 const localizer = momentLocalizer(moment);
+
+// Add French messages configuration
+const messages = {
+  allDay: 'Toute la journée',
+  previous: 'Précédent',
+  next: 'Suivant',
+  today: "Aujourd'hui",
+  month: 'Mois',
+  week: 'Semaine',
+  day: 'Jour',
+  agenda: 'Agenda',
+  date: 'Date',
+  time: 'Heure',
+  event: 'Événement',
+  noEventsInRange: 'Aucun événement dans cette plage.',
+  showMore: total => `+ ${total} événement(s) supplémentaire(s)`
+};
 
 type EvType = {
   title: string;
@@ -169,7 +185,7 @@ const BigCalendar = () => {
   const CustomToolbar = ({ onNavigate, label }: any) => {
     return (
       <div className="custom-toolbar" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
-        <button onClick={() => onNavigate("PREV")}>Dos</button>
+        <button onClick={() => onNavigate("PREV")}>Précédent</button>
         <span style={{ fontWeight: "bold", fontSize: "16px" }}>{label}</span>
         <button onClick={() => onNavigate("NEXT")}>Suivant</button>
       </div>
@@ -197,6 +213,7 @@ const BigCalendar = () => {
             onSelectEvent={(event: any) => editEvent(event)}
             onSelectSlot={(slotInfo: any) => addNewEventAlert(slotInfo)}
             eventPropGetter={(event: any) => eventColors(event)}
+            messages={messages}
             components={{
               toolbar: CustomToolbar,
             }}

@@ -411,17 +411,17 @@ const ListingExperiencesDetailPage: FC<
 				{/* SUM */}
 				<div className="flex flex-col space-y-4">
 					<div className="flex justify-between text-neutral-600 dark:text-neutral-300">
-						<span>$19 x 3 adults</span>
-						<span>$57</span>
+						<span>Gf 19 x 3 adults</span>
+						<span>Gf 57</span>
 					</div>
 					<div className="flex justify-between text-neutral-600 dark:text-neutral-300">
 						<span>Service charge</span>
-						<span>$0</span>
+						<span>Gf 0</span>
 					</div>
 					<div className="border-b border-neutral-200 dark:border-neutral-700"></div>
 					<div className="flex justify-between font-semibold">
 						<span>Total</span>
-						<span>$199</span>
+						<span>Gf 199</span>
 					</div>
 				</div>
 

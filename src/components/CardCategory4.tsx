@@ -31,7 +31,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
 				<h2
 					className={`truncate text-base font-medium text-neutral-900 dark:text-neutral-100 sm:text-lg`}
 				>
-					Population affamée en Guinée
+					ONG UNIE POUR AIDER
 				</h2>
 				<span
 					className={`mt-2 block text-sm text-neutral-600 dark:text-neutral-400`}
@@ -41,7 +41,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
 				<span
 					className={`mt-2 block text-sm text-neutral-600 dark:text-neutral-400`}
 				>
-					400 000 FGN
+					400 000 GF
 				</span>
 				<span
 					className={`mt-2 block text-sm text-neutral-600 dark:text-neutral-400`}

@@ -38,7 +38,9 @@ const MainNav2: FC<MainNav2Props> = ({ className = '' }) => {
 				className={`flex flex-col items-center justify-between text-neutral-500 dark:text-neutral-300/90 ${isActive ? 'text-neutral-900 dark:text-neutral-100' : ''
 					}`}
 			>
-				<item.icon className={`w-6 h-6 ${isActive ? 'text-red-600' : ''}`} />
+				{/* <item.icon className={`w-6 h-6 ${isActive ? 'text-red-600' : ''}`} /> */}
+				<item.icon className={`w-6 h-6 ${isActive ? 'text-green-600' : ''}`} />
+
 				<span
 					className={`text-[11px] leading-none mt-1 ${isActive ? 'text-red-600' : ''
 						}`}
@@ -69,8 +71,8 @@ const MainNav2: FC<MainNav2Props> = ({ className = '' }) => {
 				key={index}
 				href={item.href}
 				className={`font-medium px-4 py-2 ${isActive
-					? 'text-red-600 underline dark:text-red-400'
-					: 'text-slate-700 dark:text-slate-200'
+? 'text-green-600 underline dark:text-green-400'
+: 'text-slate-700 dark:text-slate-200'
 					}`}
 			>
 				{item.name}

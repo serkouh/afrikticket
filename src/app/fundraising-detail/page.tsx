@@ -29,7 +29,7 @@ const PageAddListing2: FC<PageAddListing2Props> = () => {
 					</span>
 					<Label>Montant du don</Label>
 					<span className="mt-1 block text-sm text-neutral-500 dark:text-neutral-400">
-					50,000 FGN
+					50,000 GF
 					</span>
 					<Label>Date</Label>
 					<span className="mt-1 block text-sm text-neutral-500 dark:text-neutral-400">
@@ -63,7 +63,7 @@ const PageAddListing2: FC<PageAddListing2Props> = () => {
 					</Select>
 				</FormItem> */}
 				<FormItem label="Montant du don">
-					<Input placeholder="10,000 FGN" />
+					<Input placeholder="10,000 GF" />
 				</FormItem>
 					<ButtonPrimary>Faites un don maintenant</ButtonPrimary>
 				{/* <FormItem label="Room number (optional)">

@@ -11,7 +11,7 @@ export interface SectionGridFilterCardProps {
 const DEMO_DATA: FlightCardProps["data"][] = [
   {
     id: "1",
-    price: "$4,100",
+    price: "GF 4,100",
     airlines: {
       logo: "https://www.gstatic.com/flights/airline_logos/70px/KE.png",
       name: "Korean Air",
@@ -19,7 +19,7 @@ const DEMO_DATA: FlightCardProps["data"][] = [
   },
   {
     id: "2",
-    price: "$3,380",
+    price: "GF 3,380",
     airlines: {
       logo: "https://www.gstatic.com/flights/airline_logos/70px/SQ.png",
       name: "Singapore Airlines",
@@ -27,7 +27,7 @@ const DEMO_DATA: FlightCardProps["data"][] = [
   },
   {
     id: "3",
-    price: "$2,380",
+    price: "GF 2,380",
     airlines: {
       logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
       name: "Philippine Airlines",
@@ -35,7 +35,7 @@ const DEMO_DATA: FlightCardProps["data"][] = [
   },
   {
     id: "1",
-    price: "$4,100",
+    price: "GF 4,100",
     airlines: {
       logo: "https://www.gstatic.com/flights/airline_logos/70px/KE.png",
       name: "Korean Air",
@@ -43,7 +43,7 @@ const DEMO_DATA: FlightCardProps["data"][] = [
   },
   {
     id: "2",
-    price: "$3,380",
+    price: "GF 3,380",
     airlines: {
       logo: "https://www.gstatic.com/flights/airline_logos/70px/SQ.png",
       name: "Singapore Airlines",
@@ -51,7 +51,7 @@ const DEMO_DATA: FlightCardProps["data"][] = [
   },
   {
     id: "1",
-    price: "$4,100",
+    price: "GF 4,100",
     airlines: {
       logo: "https://www.gstatic.com/flights/airline_logos/70px/KE.png",
       name: "Korean Air",
@@ -59,7 +59,7 @@ const DEMO_DATA: FlightCardProps["data"][] = [
   },
   {
     id: "2",
-    price: "$3,380",
+    price: "GF 3,380",
     airlines: {
       logo: "https://www.gstatic.com/flights/airline_logos/70px/SQ.png",
       name: "Singapore Airlines",

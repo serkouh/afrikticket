@@ -195,7 +195,7 @@ export default function Footer3() {
 						))}
 					</div>
 					<p className="mt-8 text-sm/6 text-gray-600 dark:text-neutral-400 md:order-1 md:mt-0">
-						&copy; 2024 Your Company, Inc. All rights reserved.
+						&copy; 2024 DevArch Digital, tous les droits sont réservés.
 					</p>
 				</div>
 			</div>

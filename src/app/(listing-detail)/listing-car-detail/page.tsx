@@ -137,7 +137,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 				{/* PRICE */}
 				<div className="flex justify-between">
 					<span className="text-3xl font-semibold">
-						10,000 FGN
+						10,000 GF
 						<span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
 							/billet
 						</span>
@@ -159,13 +159,13 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 				<div className="flex flex-col space-y-4">
 					<div className="flex justify-between text-neutral-600 dark:text-neutral-300">
 						<span>10,000 x 4 billets</span>
-						<span>40,000 FGN</span>
+						<span>40,000 GF</span>
 					</div>
 
 					<div className="border-b border-neutral-200 dark:border-neutral-700"></div>
 					<div className="flex justify-between font-semibold">
 						<span>Total</span>
-						<span>40,000 FGN</span>
+						<span>40,000 GF</span>
 					</div>
 				</div>
 

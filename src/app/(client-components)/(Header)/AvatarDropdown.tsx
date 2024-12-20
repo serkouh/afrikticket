@@ -77,13 +77,13 @@ export default function AvatarDropdown({ className = '' }: Props) {
 												</svg>
 											</div>
 											<div className="ml-4">
-												<p className="text-sm font-medium">{'My Account'}</p>
+												<p className="text-sm font-medium">{'Mon compte'}</p>
 											</div>
 										</Link>
 
 										{/* ------------------ 2 --------------------- */}
 										<Link
-											href={'/author'}
+											href={'/ticket-purchase-history'}
 											className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700"
 											onClick={() => close()}
 										>
@@ -129,12 +129,12 @@ export default function AvatarDropdown({ className = '' }: Props) {
 												</svg>
 											</div>
 											<div className="ml-4">
-												<p className="text-sm font-medium">{'My bookings'}</p>
+												<p className="text-sm font-medium">{'Historique de billets'}</p>
 											</div>
 										</Link>
 
-										{/* ------------------ 2 --------------------- */}
-										<Link
+										{/* ------------------ wishlist --------------------- */}
+										{/* <Link
 											href={'/account-savelists'}
 											className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700"
 											onClick={() => close()}
@@ -158,12 +158,12 @@ export default function AvatarDropdown({ className = '' }: Props) {
 											<div className="ml-4">
 												<p className="text-sm font-medium">{'Wishlist'}</p>
 											</div>
-										</Link>
+										</Link> */}
 
 										<div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
 
-										{/* ------------------ 2 --------------------- */}
-										<div className="-m-3 flex items-center justify-between rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700">
+										{/* ------------------ dark mode --------------------- */}
+										{/* <div className="-m-3 flex items-center justify-between rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700">
 											<div className="flex items-center">
 												<div className="flex flex-shrink-0 items-center justify-center text-neutral-500 dark:text-neutral-300">
 													<svg
@@ -201,7 +201,7 @@ export default function AvatarDropdown({ className = '' }: Props) {
 												</div>
 											</div>
 											<SwitchDarkMode2 />
-										</div>
+										</div> */}
 
 										{/* ------------------ 2 --------------------- */}
 										<Link
@@ -262,7 +262,7 @@ export default function AvatarDropdown({ className = '' }: Props) {
 												</svg>
 											</div>
 											<div className="ml-4">
-												<p className="text-sm font-medium">{'Help'}</p>
+												<p className="text-sm font-medium">{'Aide'}</p>
 											</div>
 										</Link>
 

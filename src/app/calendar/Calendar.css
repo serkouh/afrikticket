@@ -90,3 +90,35 @@
 .rbc-calendar {
   min-height: 600px;
 }
+
+/* Mobile calendar styles */
+@media (max-width: 768px) {
+  .mobile-calendar-wrapper {
+    padding: 0;
+  }
+
+  .mobile-calendar-wrapper .rbc-calendar {
+    font-size: 14px;
+  }
+
+  .mobile-calendar-wrapper .rbc-agenda-view {
+    margin: 0;
+  }
+
+  .mobile-calendar-wrapper .rbc-agenda-content {
+    font-size: 13px;
+  }
+
+  .mobile-calendar-wrapper .rbc-agenda-date-cell {
+    padding: 5px;
+    font-weight: 600;
+  }
+
+  .mobile-calendar-wrapper .rbc-agenda-time-cell {
+    padding: 5px;
+  }
+
+  .mobile-calendar-wrapper .rbc-agenda-event-cell {
+    padding: 5px;
+  }
+}

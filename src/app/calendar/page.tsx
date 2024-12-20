@@ -15,10 +15,12 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import moment from "moment";
 import "moment/locale/fr"; // Add this import for French locale
+import { useMediaQuery } from "@mui/material";
 
 import Events from "./data";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./Calendar.css";
+import MobileCalendar from "./MobileCalendar";
 
 // import PageContainer from "@/app/components/container/PageContainer";
 // import Breadcrumb from "@/app/(DashboardLayout)/layout/shared/breadcrumb/Breadcrumb";
@@ -57,6 +59,8 @@ type EvType = {
 };
 
 const BigCalendar = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
   const [calevents, setCalEvents] = React.useState<any>(Events);
   const [open, setOpen] = React.useState<boolean>(false);
   const [title, setTitle] = React.useState<string>("");
@@ -201,28 +205,32 @@ const BigCalendar = () => {
         Calendrier des événements
       </h2>
       <div className="listingSection__wrap">
-        {/* ------------------------------------------- */}
-        {/* Calendar */}
-        {/* ------------------------------------------- */}
-        <CardContent>
-          <Calendar
-            selectable
-            events={calevents}
-            defaultView="month"
-            scrollToTime={new Date(1970, 1, 1, 6)}
-            defaultDate={new Date()}
-            localizer={localizer}
-            style={{ height: "calc(100vh - 350px)" }}
-            onSelectEvent={(event: any) => editEvent(event)}
-            onSelectSlot={(slotInfo: any) => addNewEventAlert(slotInfo)}
-            eventPropGetter={(event: any) => eventColors(event)}
-            messages={messages}
-            components={{
-              toolbar: CustomToolbar,
-            }}
-          />
+        {isMobile ? (
+          <MobileCalendar />
+        ) : (
+          <CardContent>
+            {/* ------------------------------------------- */}
+            {/* Calendar */}
+            {/* ------------------------------------------- */}
+            <Calendar
+              selectable
+              events={calevents}
+              defaultView="month"
+              scrollToTime={new Date(1970, 1, 1, 6)}
+              defaultDate={new Date()}
+              localizer={localizer}
+              style={{ height: "calc(100vh - 350px)" }}
+              // onSelectEvent={(event: any) => editEvent(event)}
+              // onSelectSlot={(slotInfo: any) => addNewEventAlert(slotInfo)}
+              eventPropGetter={(event: any) => eventColors(event)}
+              messages={messages}
+              components={{
+                toolbar: CustomToolbar,
+              }}
+            />
 
-        </CardContent>
+          </CardContent>
+        )}
         {/* ------------------------------------------- */}
         {/* Add Calendar Event Dialog */}
         {/* ------------------------------------------- */}

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "npm install && npm run build && pm2 stop afrikticket && pm2 delete afrikticket && pm2 start npm --name \"afrikticket\" -- start && pm2 save"
   },
   "prettier": "@epic-web/config/prettier",
   "dependencies": {

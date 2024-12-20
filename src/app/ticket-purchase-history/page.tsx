@@ -137,8 +137,9 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 
     return (
         <div className={`nc-ListingCarDetailPage`}>
-
-
+            <h2 className="text-3xl font-semibold lg:text-4xl mb-10 text-center mt-10">
+                Historique des billets
+            </h2>
             <main className="relative z-10 mt-11 flex justify-center">
                 {/* CONTENT */}
                 {/* <div className="w-full space-y-8 lg:w-3/5 lg:space-y-10 lg:pr-10 xl:w-2/3">

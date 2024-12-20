@@ -197,6 +197,9 @@ const BigCalendar = () => {
 
   return (
     <div className={`nc-PageAddListing1 mx-auto max-w-7xl px-4 pb-24 pt-14 sm:py-24 lg:pb-32`}>
+      <h2 className="text-3xl font-semibold lg:text-4xl mb-10 text-center">
+        Calendrier des événements
+      </h2>
       <div className="listingSection__wrap">
         {/* ------------------------------------------- */}
         {/* Calendar */}

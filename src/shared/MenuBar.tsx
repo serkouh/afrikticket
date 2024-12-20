@@ -8,6 +8,8 @@ import {
 import NavMobile from './Navigation/NavMobile'
 import { usePathname } from 'next/navigation'
 import { Bars3BottomRightIcon } from '@heroicons/react/24/solid'
+import Link from 'next/link'
+import { HomeIcon, CalendarIcon } from '@heroicons/react/24/solid'
 
 export interface MenuBarProps {
 	className?: string

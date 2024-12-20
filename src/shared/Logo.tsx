@@ -14,7 +14,7 @@ const Logo: React.FC<LogoProps> = ({ className = 'w-24' }) => {
 			className={`ttnc-logo text-primary-600 inline-block focus:outline-none focus:ring-0 ${className}`}
 			style={{ width: '150px', height: '25px' }}
 		>
-			<Image src={logoImage} alt="Logo" />
+			<Image  priority={true} src={logoImage} alt="Logo" />
 		</Link>
 	)
 }

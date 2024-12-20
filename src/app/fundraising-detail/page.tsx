@@ -23,7 +23,7 @@ const PageAddListing2: FC<PageAddListing2Props> = () => {
 			{/* FORM */}
 			<div className="space-y-8">
 			<div>
-					<Label>Détails de l'événement</Label>
+					<Label>Détails de l&apos;événement</Label>
 					<span className="mt-1 block text-sm text-neutral-500 dark:text-neutral-400">
 					Rejoignez-nous pour un événement spécial de collecte de fonds en soutien à [cause/organisation] le samedi 20 janvier 2024 à 18h00, à la Salle des Fêtes, 12 Rue de la Paix, Paris. Cette soirée comprendra un dîner, des performances musicales, une tombola, et une vente aux enchères pour une bonne cause. Les billets sont disponibles à partir de 50 €, et tous les fonds récoltés seront reversés à [cause/organisation]. Venez nombreux pour passer un moment convivial et solidaire !
 					</span>

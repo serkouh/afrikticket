@@ -22,7 +22,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ }) => {
 		<div className={`nc-PageSignUp`}>
 			<div className="container mb-24 lg:mb-32">
 				<h2 className="my-20 flex items-center justify-center text-3xl font-semibold leading-[115%] text-neutral-900 dark:text-neutral-100 md:text-5xl md:leading-[115%]">
-					S'inscrire
+					S&apos;inscrire
 				</h2>
 				<div className="mx-auto max-w-md space-y-6">
 					<div className="grid gap-3">

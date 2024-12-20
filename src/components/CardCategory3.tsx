@@ -31,12 +31,12 @@ const CardCategory3: FC<CardCategory3Props> = ({
 				<h2
 					className={`truncate text-base font-medium text-neutral-900 dark:text-neutral-100 sm:text-lg`}
 				>
-					Nom de l'événement
+					Nom de l&apos;événement
 				</h2>
 				<span
 					className={`mt-1.5 block text-sm text-neutral-600 dark:text-neutral-400`}
 				>
-					Description de l'événement
+					Description de l&apos;événement
 				</span>
 			</div></>
 	)

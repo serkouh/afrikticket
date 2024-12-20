@@ -35,7 +35,7 @@ const AccountPage = () => {
 								/>
 							</svg>
 
-							<span className="mt-1 text-xs">Changer l'image</span>
+							<span className="mt-1 text-xs">Changer l&apos;image</span>
 						</div>
 						<input
 							type="file"

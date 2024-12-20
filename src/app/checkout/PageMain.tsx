@@ -210,7 +210,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 									</div>
 									<div className="flex space-x-5">
 										<div className="flex-1 space-y-1">
-											<Label>Date d'expiration </Label>
+											<Label>Date d&apos;expiration </Label>
 											<Input type="date" defaultValue="MM/YY" />
 										</div>
 										<div className="flex-1 space-y-1">

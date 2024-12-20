@@ -45,7 +45,7 @@ const messages = {
   time: 'Heure',
   event: 'Événement',
   noEventsInRange: 'Aucun événement dans cette plage.',
-  showMore: total => `+ ${total} événement(s) supplémentaire(s)`
+  showMore: (total: number) => `+ ${total} événement(s) supplémentaire(s)`
 };
 
 type EvType = {

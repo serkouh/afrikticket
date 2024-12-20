@@ -87,11 +87,11 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 	const renderSection2 = () => {
 		return (
 			<div className="listingSection__wrap">
-				<h2 className="text-2xl font-semibold">Nom de l'événement</h2>
+				<h2 className="text-2xl font-semibold">Nom de l&apos;événement</h2>
 				<div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
 				<div className="text-neutral-600 dark:text-neutral-300">
 					<p>
-						Afri Ticket est une plateforme 100% guinéenne dédiée à l'entraide et à la solidarité. Notre mission est de soutenir ceux qui en ont besoin en accompagnant les associations à but non lucratif dans la collecte de fonds pour des causes nobles. Nous facilitons également l'organisation d'événements et la vente de billets, contribuant ainsi au développement culturel et social de notre communauté.
+						Afri Ticket est une plateforme 100% guinéenne dédiée à l&apos;entraide et à la solidarité. Notre mission est de soutenir ceux qui en ont besoin en accompagnant les associations à but non lucratif dans la collecte de fonds pour des causes nobles. Nous facilitons également l&apos;organisation d&apos;événements et la vente de billets, contribuant ainsi au développement culturel et social de notre communauté.
 
 						<br />
 					</p>
@@ -117,7 +117,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
 						Date: 12/12/2014 12:00 - 18:00
 					</p>
 					<p style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-					Temps restant pour l'événement: {hours}h {minutes}m {seconds}s
+					Temps restant pour l&apos;événement: {hours}h {minutes}m {seconds}s
 						<br />
 						Nombre de billets restants: 10
 					</p>

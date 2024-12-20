@@ -46,7 +46,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
 				<span
 					className={`mt-2 block text-sm text-neutral-600 dark:text-neutral-400`}
 				>
-					<ButtonPrimary>Faire un don maintenant </ButtonPrimary>
+					<ButtonPrimary href='/fundraising-detail'>Faire un don maintenant </ButtonPrimary>
 				</span>
 			</div></>
 	)

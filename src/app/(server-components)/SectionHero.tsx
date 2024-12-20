@@ -19,7 +19,7 @@ const SectionHero: FC<SectionHeroProps> = ({ className = '' }) => {
 						Billetterie et Collecte de Dons en Ligne
 					</h2>
 					<span className="text-base text-neutral-500 dark:text-neutral-400 md:text-lg">
-						Avec AfriTicket, soutenez des causes qui vous tiennent à cœur et accédez facilement à des événements. Faites un don ou achetez vos billets en quelques clics, et contribuez au changement où que vous soyez.
+						Afrik Ticket est une plateforme innovante de billetterie en ligne, développée en Guinée, qui vise à simplifier l'achat de billets pour divers événements. En plus de faciliter l'accès aux manifestations culturelles, sportives et artistiques, Afrik Ticket s'engage activement dans des actions caritatives, en soutenant des projets sociaux grâce à un modèle de financement participatif. Ainsi, chaque achat de billet contribue à des initiatives solidaires, offrant une double opportunité : profiter d'événements tout en soutenant des causes importantes.
 					</span>
 					{/* <ButtonPrimary href="/listing-stay-map" sizeClass="px-5 py-4 sm:px-7">
 						Commencez votre recherche

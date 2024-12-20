@@ -396,6 +396,7 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
 	{ id: ncNanoId(), href: '/contact', name: 'Contactez-nous' },
 	{ id: ncNanoId(), href: '/login', name: 'Se connecter' },
 	{ id: ncNanoId(), href: '/signup', name: "S'inscrire" },
-	{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique d'achat de billets" },
-	{ id: ncNanoId(), href: '/account', name: "Mettre à jour le profil" },
+	{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique des billets" },
+	{ id: ncNanoId(), href: '/account', name: "Profil" },
+	{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
 ]

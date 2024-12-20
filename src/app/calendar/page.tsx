@@ -14,6 +14,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import moment from "moment";
+
+
 import Events from "./data";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./Calendar.css";
@@ -23,7 +25,11 @@ import "./Calendar.css";
 import { IconCheck } from "@tabler/icons-react";
 // import BlankCard from "@/app/components/shared/BlankCard";
 
-moment.locale("en-GB");
+
+moment.locale('fr');
+console.log(moment.locale()); // Should log 'fr'
+
+// Initialize localizer after setting the locale
 const localizer = momentLocalizer(moment);
 
 type EvType = {
@@ -160,9 +166,22 @@ const BigCalendar = () => {
     setEnd(newValue);
   };
 
+  const CustomToolbar = ({ onNavigate, label }: any) => {
+    return (
+      <div className="custom-toolbar" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+        <button onClick={() => onNavigate("PREV")}>Dos</button>
+        <span style={{ fontWeight: "bold", fontSize: "16px" }}>{label}</span>
+        <button onClick={() => onNavigate("NEXT")}>Suivant</button>
+      </div>
+    );
+  };
+
+  // Create the French localizer
+  // const localizer = momentLocalizer(moment.locale("fr"));
+
   return (
     <div className={`nc-PageAddListing1 mx-auto max-w-7xl px-4 pb-24 pt-14 sm:py-24 lg:pb-32`}>
-        <div className="listingSection__wrap">
+      <div className="listingSection__wrap">
         {/* ------------------------------------------- */}
         {/* Calendar */}
         {/* ------------------------------------------- */}
@@ -174,59 +193,63 @@ const BigCalendar = () => {
             scrollToTime={new Date(1970, 1, 1, 6)}
             defaultDate={new Date()}
             localizer={localizer}
-            style={{ height: "calc(100vh - 350px" }}
+            style={{ height: "calc(100vh - 350px)" }}
             onSelectEvent={(event: any) => editEvent(event)}
             onSelectSlot={(slotInfo: any) => addNewEventAlert(slotInfo)}
             eventPropGetter={(event: any) => eventColors(event)}
+            components={{
+              toolbar: CustomToolbar,
+            }}
           />
-        </CardContent>
-      {/* ------------------------------------------- */}
-      {/* Add Calendar Event Dialog */}
-      {/* ------------------------------------------- */}
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
-        <form onSubmit={update ? updateEvent : submitHandler}>
-          <DialogContent>
-            {/* ------------------------------------------- */}
-            {/* Add Edit title */}
-            {/* ------------------------------------------- */}
-            <Typography variant="h4" sx={{ mb: 2 }}>
-              {update ? "Update Event" : "Add Event"}
-            </Typography>
-            <Typography mb={3} variant="subtitle2">
-              {!update
-                ? "To add Event kindly fillup the title and choose the event color and press the add button"
-                : "To Edit/Update Event kindly change the title and choose the event color and press the update button"}
-              {slot?.title}
-            </Typography>
 
-            <TextField
-              id="Event Title"
-              placeholder="Enter Event Title"
-              variant="outlined"
-              fullWidth
-              label="Event Title"
-              value={title}
-              sx={{ mb: 3 }}
-              onChange={inputChangeHandler}
-            />
-            {/* ------------------------------------------- */}
-            {/* Selection of Start and end date */}
-            {/* ------------------------------------------- */}
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Start Date"
-                // inputFormat="MM/dd/yyyy"
-                value={start}
-                onChange={handleStartChange}
+        </CardContent>
+        {/* ------------------------------------------- */}
+        {/* Add Calendar Event Dialog */}
+        {/* ------------------------------------------- */}
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
+          <form onSubmit={update ? updateEvent : submitHandler}>
+            <DialogContent>
+              {/* ------------------------------------------- */}
+              {/* Add Edit title */}
+              {/* ------------------------------------------- */}
+              <Typography variant="h4" sx={{ mb: 2 }}>
+                {update ? "Update Event" : "Add Event"}
+              </Typography>
+              <Typography mb={3} variant="subtitle2">
+                {!update
+                  ? "To add Event kindly fillup the title and choose the event color and press the add button"
+                  : "To Edit/Update Event kindly change the title and choose the event color and press the update button"}
+                {slot?.title}
+              </Typography>
+
+              <TextField
+                id="Event Title"
+                placeholder="Enter Event Title"
+                variant="outlined"
+                fullWidth
+                label="Event Title"
+                value={title}
+                sx={{ mb: 3 }}
+                onChange={inputChangeHandler}
+              />
+              {/* ------------------------------------------- */}
+              {/* Selection of Start and end date */}
+              {/* ------------------------------------------- */}
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Start Date"
+                  // inputFormat="MM/dd/yyyy"
+                  value={start}
+                  onChange={handleStartChange}
                 // renderInput={(params: any) => (
                 //   <TextField {...params} fullWidth sx={{ mb: 3 }} />
                 // )}
-              />
-              <DatePicker
-                label="End Date"
-                // inputFormat="MM/dd/yyyy"
-                value={end}
-                onChange={handleEndChange}
+                />
+                <DatePicker
+                  label="End Date"
+                  // inputFormat="MM/dd/yyyy"
+                  value={end}
+                  onChange={handleEndChange}
                 // renderInput={(params: any) => (
                 //   <TextField
                 //     {...params}
@@ -240,65 +263,65 @@ const BigCalendar = () => {
                 //     }
                 //   />
                 // )}
-              />
-            </LocalizationProvider>
+                />
+              </LocalizationProvider>
 
+              {/* ------------------------------------------- */}
+              {/* Calendar Event Color*/}
+              {/* ------------------------------------------- */}
+              <Typography variant="h6" fontWeight={600} my={2}>
+                Select Event Color
+              </Typography>
+              {/* ------------------------------------------- */}
+              {/* colors for event */}
+              {/* ------------------------------------------- */}
+              {ColorVariation.map((mcolor) => {
+                return (
+                  <Fab
+                    color="primary"
+                    style={{ backgroundColor: mcolor.eColor }}
+                    sx={{
+                      marginRight: "3px",
+                      transition: "0.1s ease-in",
+                      scale: mcolor.value === color ? "0.9" : "0.7",
+                    }}
+                    size="small"
+                    key={mcolor.id}
+                    onClick={() => selectinputChangeHandler(mcolor.value)}
+                  >
+                    {mcolor.value === color ? <IconCheck width={16} /> : ""}
+                  </Fab>
+                );
+              })}
+            </DialogContent>
             {/* ------------------------------------------- */}
-            {/* Calendar Event Color*/}
+            {/* Action for dialog */}
             {/* ------------------------------------------- */}
-            <Typography variant="h6" fontWeight={600} my={2}>
-              Select Event Color
-            </Typography>
-            {/* ------------------------------------------- */}
-            {/* colors for event */}
-            {/* ------------------------------------------- */}
-            {ColorVariation.map((mcolor) => {
-              return (
-                <Fab
-                  color="primary"
-                  style={{ backgroundColor: mcolor.eColor }}
-                  sx={{
-                    marginRight: "3px",
-                    transition: "0.1s ease-in",
-                    scale: mcolor.value === color ? "0.9" : "0.7",
-                  }}
-                  size="small"
-                  key={mcolor.id}
-                  onClick={() => selectinputChangeHandler(mcolor.value)}
+            <DialogActions sx={{ p: 3 }}>
+              <Button onClick={handleClose}>Cancel</Button>
+
+              {update ? (
+                <Button
+                  type="submit"
+                  color="error"
+                  variant="contained"
+                  onClick={() => deleteHandler(update)}
                 >
-                  {mcolor.value === color ? <IconCheck width={16} /> : ""}
-                </Fab>
-              );
-            })}
-          </DialogContent>
-          {/* ------------------------------------------- */}
-          {/* Action for dialog */}
-          {/* ------------------------------------------- */}
-          <DialogActions sx={{ p: 3 }}>
-            <Button onClick={handleClose}>Cancel</Button>
-
-            {update ? (
-              <Button
-                type="submit"
-                color="error"
-                variant="contained"
-                onClick={() => deleteHandler(update)}
-              >
-                Delete
+                  Delete
+                </Button>
+              ) : (
+                ""
+              )}
+              <Button type="submit" disabled={!title} variant="contained">
+                {update ? "Update Event" : "Add Event"}
               </Button>
-            ) : (
-              ""
-            )}
-            <Button type="submit" disabled={!title} variant="contained">
-              {update ? "Update Event" : "Add Event"}
-            </Button>
-          </DialogActions>
-          {/* ------------------------------------------- */}
-          {/* End Calendar */}
-          {/* ------------------------------------------- */}
-        </form>
-      </Dialog>
-        </div>
+            </DialogActions>
+            {/* ------------------------------------------- */}
+            {/* End Calendar */}
+            {/* ------------------------------------------- */}
+          </form>
+        </Dialog>
+      </div>
     </div>
   );
 };

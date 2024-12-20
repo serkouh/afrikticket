@@ -67,7 +67,7 @@ function PageHome() {
 					rightImg={eventTicket}
 					heading="👋 À propos de nous."
 					btnText=""
-					subHeading="Afri Ticket est une plateforme 100% guinéenne dédiée à l'entraide et à la solidarité. Notre mission est de soutenir ceux qui en ont besoin en accompagnant les associations à but non lucratif dans la collecte de fonds pour des causes nobles. Nous facilitons également l'organisation d'événements et la vente de billets, contribuant ainsi au développement culturel et social de notre communauté."
+					subHeading="Afrik Ticket est une plateforme guinéenne de billetterie en ligne dédiée à la simplification de l'achat de billets pour tous types d'événements. Nous offrons une expérience fluide et sécurisée, permettant à nos utilisateurs d'accéder facilement à des événements culturels, sportifs, artistiques et plus encore. En plus de notre engagement à rendre l'événementiel plus accessible, nous soutenons activement des initiatives caritatives par le biais du financement participatif. Chaque billet acheté est une opportunité de contribuer à des projets solidaires et de faire une différence dans la communauté."
 				/>
 
 

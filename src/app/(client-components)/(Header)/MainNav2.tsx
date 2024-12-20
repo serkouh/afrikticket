@@ -87,7 +87,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = '' }) => {
 				</div>
 
 				{/* Center Section: Navigation Links for desktop */}
-				<div className="hidden lg:flex items-center justify-center space-x-2 desktop-links w-[2200px]">
+				<div className="hidden lg:flex items-center space-x-1 desktop-links">
 					{NAVIGATION_DEMO_2.map(renderNavItem)}
 					{/* <TemplatesDropdown/> */}
 				</div>

@@ -30,11 +30,10 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
           return (
             <li
               onClick={() => setTabActive(tab)}
-              className={`flex-shrink-0 flex items-center cursor-pointer text-sm lg:text-base font-medium ${
-                active
+              className={`flex-shrink-0 flex items-center cursor-pointer text-sm lg:text-base font-medium ${active
                   ? ""
                   : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-400"
-              } `}
+                } `}
               key={tab}
             >
               {active && (
@@ -49,26 +48,14 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
   };
 
   const renderForm = () => {
-    switch (tabActive) {
-      case "Séjours":
-        return <StaySearchForm />;
-      case "Expériences":
-        return <ExperiencesSearchForm />;
-      case "voitures":
-        return <RentalCarSearchForm />;
-      case "Vols":
-        return <FlightSearchForm />;
-
-      default:
-        return null;
-    }
+    return <StaySearchForm />;
   };
 
   return (
     <div
-      className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 ${className}`}
+      className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 flex justify-center ${className}`}
     >
-      {renderTab()}
+      {/* {renderTab()} */}
       {renderForm()}
     </div>
   );

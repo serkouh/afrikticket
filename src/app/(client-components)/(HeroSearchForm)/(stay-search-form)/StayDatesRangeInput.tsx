@@ -12,6 +12,7 @@ import DatePickerCustomHeaderTwoMonth from '@/components/DatePickerCustomHeaderT
 import DatePickerCustomDay from '@/components/DatePickerCustomDay'
 import DatePicker from 'react-datepicker'
 import ClearDataButton from '../ClearDataButton'
+import ButtonSubmit from '../ButtonSubmit'
 
 export interface StayDatesRangeInputProps {
 	className?: string
@@ -54,10 +55,13 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
 								})
 							: ''}
 					</span>
-					<span className="mt-1 block text-sm font-light leading-none text-neutral-400">
+					{/* <span className="mt-1 block text-sm font-light leading-none text-neutral-400">
 						{'Check in - Check out'}
-					</span>
+					</span> */}
 				</div>
+				<div>
+				<ButtonSubmit  href="#"/>
+			</div>
 			</>
 		)
 	}

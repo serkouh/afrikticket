@@ -1,148 +1,177 @@
-'use client'
+"use client";
 
-import React, { Fragment, useEffect, useState } from 'react'
-import {
-	Popover,
-	PopoverButton,
-	PopoverPanel,
-	Transition,
-} from '@headlessui/react'
-import NcInputNumber from '@/components/NcInputNumber'
-import { FC } from 'react'
-import ClearDataButton from './ClearDataButton'
-import ButtonSubmit from './ButtonSubmit'
-import { PathName } from '@/routers/types'
-import { UserPlusIcon } from '@heroicons/react/24/outline'
-import { GuestsObject } from '../type'
+import { ClockIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import React, { useState, useRef, useEffect, FC } from "react";
+import ClearDataButton from "./ClearDataButton";
+import ButtonSubmit from "./ButtonSubmit";
 
-export interface GuestsInputProps {
-	fieldClassName?: string
-	className?: string
-	buttonSubmitHref?: PathName
-	hasButtonSubmit?: boolean
+export interface LocationInputProps {
+	placeHolder?: string;
+	desc?: string;
+	className?: string;
+	divHideVerticalLineClass?: string;
+	autoFocus?: boolean;
 }
 
-const GuestsInput: FC<GuestsInputProps> = ({
-	fieldClassName = '[ nc-hero-field-padding ]',
-	className = '[ nc-flex-1 ]',
-	buttonSubmitHref = '/listing-stay-map',
-	hasButtonSubmit = true,
+const GuestInput: FC<LocationInputProps> = ({
+	autoFocus = false,
+	placeHolder = "Emplacement",
+	desc = "",
+	className = "nc-flex-1.5",
+	divHideVerticalLineClass = "left-10 -right-0.5",
 }) => {
-	const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(2)
-	const [guestChildrenInputValue, setGuestChildrenInputValue] = useState(1)
-	const [guestInfantsInputValue, setGuestInfantsInputValue] = useState(1)
+	const containerRef = useRef<HTMLDivElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
-	const handleChangeData = (value: number, type: keyof GuestsObject) => {
-		let newValue = {
-			guestAdults: guestAdultsInputValue,
-			guestChildren: guestChildrenInputValue,
-			guestInfants: guestInfantsInputValue,
-		}
-		if (type === 'guestAdults') {
-			setGuestAdultsInputValue(value)
-			newValue.guestAdults = value
-		}
-		if (type === 'guestChildren') {
-			setGuestChildrenInputValue(value)
-			newValue.guestChildren = value
-		}
-		if (type === 'guestInfants') {
-			setGuestInfantsInputValue(value)
-			newValue.guestInfants = value
-		}
-	}
+	const [value, setValue] = useState("");
+	const [showPopover, setShowPopover] = useState(autoFocus);
 
-	const totalGuests =
-		guestChildrenInputValue + guestAdultsInputValue + guestInfantsInputValue
+	useEffect(() => {
+		setShowPopover(autoFocus);
+	}, [autoFocus]);
+
+	useEffect(() => {
+		if (eventClickOutsideDiv) {
+			document.removeEventListener("click", eventClickOutsideDiv);
+		}
+		showPopover && document.addEventListener("click", eventClickOutsideDiv);
+		return () => {
+			document.removeEventListener("click", eventClickOutsideDiv);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showPopover]);
+
+	useEffect(() => {
+		if (showPopover && inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, [showPopover]);
+
+	const eventClickOutsideDiv = (event: MouseEvent) => {
+		if (!containerRef.current) return;
+		// CLICK IN_SIDE
+		if (!showPopover || containerRef.current.contains(event.target as Node)) {
+			return;
+		}
+		// CLICK OUT_SIDE
+		setShowPopover(false);
+	};
+
+	const handleSelectLocation = (item: string) => {
+		setValue(item);
+		setShowPopover(false);
+	};
+
+	const renderRecentSearches = () => {
+		return (
+			<>
+				<h3 className="block mt-2 sm:mt-0 px-4 sm:px-8 font-semibold text-base sm:text-lg text-neutral-800 dark:text-neutral-100">
+					Recent searches
+				</h3>
+				<div className="mt-2">
+					{[
+						"Hamptons, Suffolk County, NY",
+						"Las Vegas, NV, United States",
+						"Ueno, Taito, Tokyo",
+						"Ikebukuro, Toshima, Tokyo",
+					].map((item) => (
+						<span
+							onClick={() => handleSelectLocation(item)}
+							key={item}
+							className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
+						>
+							<span className="block text-neutral-400">
+								<ClockIcon className="h-4 sm:h-6 w-4 sm:w-6" />
+							</span>
+							<span className=" block font-medium text-neutral-700 dark:text-neutral-200">
+								{item}
+							</span>
+						</span>
+					))}
+				</div>
+			</>
+		);
+	};
+
+	const renderSearchValue = () => {
+		return (
+			<>
+				{[
+					"Ha Noi, Viet Nam",
+					"San Diego, CA",
+					"Humboldt Park, Chicago, IL",
+					"Bangor, Northern Ireland",
+				].map((item) => (
+					<span
+						onClick={() => handleSelectLocation(item)}
+						key={item}
+						className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
+					>
+						<span className="block text-neutral-400">
+							<ClockIcon className="h-4 w-4 sm:h-6 sm:w-6" />
+						</span>
+						<span className="block font-medium text-neutral-700 dark:text-neutral-200">
+							{item}
+						</span>
+					</span>
+				))}
+			</>
+		);
+	};
 
 	return (
-		<Popover className={`relative flex ${className}`}>
-			{({ open }) => (
-				<>
-					<div
-						className={`z-10 flex flex-1 items-center focus:outline-none ${
-							open ? 'nc-hero-field-focused' : ''
-						}`}
-					>
-						<PopoverButton
-							className={`relative z-10 flex flex-1 items-center text-left ${fieldClassName} space-x-3 focus:outline-none`}
-						>
-							<div className="text-neutral-300 dark:text-neutral-400">
-								<UserPlusIcon className="h-5 w-5 lg:h-7 lg:w-7" />
-							</div>
-							<div className="flex-grow">
-								<span className="block font-semibold xl:text-lg">
-									{totalGuests || ''} Guests
-								</span>
-								<span className="mt-1 block text-sm font-light leading-none text-neutral-400">
-									{totalGuests ? 'Guests' : 'Add guests'}
-								</span>
-							</div>
-
-							{!!totalGuests && open && (
-								<ClearDataButton
-									onClick={() => {
-										setGuestAdultsInputValue(0)
-										setGuestChildrenInputValue(0)
-										setGuestInfantsInputValue(0)
-									}}
-								/>
-							)}
-						</PopoverButton>
-
-						{/* BUTTON SUBMIT OF FORM */}
-						{hasButtonSubmit && (
-							<div className="pr-2 xl:pr-4">
-								<ButtonSubmit href={buttonSubmitHref} />
-							</div>
-						)}
-					</div>
-
-					{open && (
-						<div className="absolute -left-0.5 right-0.5 top-1/2 z-0 h-8 -translate-y-1/2 self-center bg-white dark:bg-neutral-800"></div>
+		<div className={`relative flex ${className}`} ref={containerRef}>
+			<div
+				// onClick={() => setShowPopover(true)}
+				className={`flex z-10 flex-1 relative [ nc-hero-field-padding ] flex-shrink-0 items-center space-x-3 cursor-pointer focus:outline-none text-left  ${showPopover ? "nc-hero-field-focused" : ""
+					}`}
+			>
+				<div className="text-neutral-300 dark:text-neutral-400">
+					<MapPinIcon className="w-5 h-5 lg:w-7 lg:h-7" />
+				</div>
+				<div className="flex-grow">
+					<input
+						className={`block w-full bg-transparent border-none focus:ring-0 p-0 focus:outline-none focus:placeholder-neutral-300 xl:text-lg font-semibold placeholder-neutral-800 dark:placeholder-neutral-200 truncate`}
+						placeholder={placeHolder}
+						value={value}
+						autoFocus={showPopover}
+						onChange={(e) => {
+							setValue(e.currentTarget.value);
+						}}
+						ref={inputRef}
+					/>
+					<span className="block mt-0.5 text-sm text-neutral-400 font-light ">
+						<span className="line-clamp-1">{!!value ? placeHolder : desc}</span>
+					</span>
+					{value && showPopover && (
+						<ClearDataButton
+							onClick={() => {
+								setValue("");
+							}}
+						/>
 					)}
-					<Transition
-						as={Fragment}
-						enter="transition ease-out duration-200"
-						enterFrom="opacity-0 translate-y-1"
-						enterTo="opacity-100 translate-y-0"
-						leave="transition ease-in duration-150"
-						leaveFrom="opacity-100 translate-y-0"
-						leaveTo="opacity-0 translate-y-1"
-					>
-						<PopoverPanel className="absolute right-0 top-full z-10 mt-3 w-full max-w-sm rounded-3xl bg-white px-4 py-5 shadow-xl dark:bg-neutral-800 sm:min-w-[340px] sm:px-8 sm:py-6">
-							<NcInputNumber
-								className="w-full"
-								defaultValue={guestAdultsInputValue}
-								onChange={(value) => handleChangeData(value, 'guestAdults')}
-								max={10}
-								min={1}
-								label="Adults"
-								desc="Ages 13 or above"
-							/>
-							<NcInputNumber
-								className="mt-6 w-full"
-								defaultValue={guestChildrenInputValue}
-								onChange={(value) => handleChangeData(value, 'guestChildren')}
-								max={4}
-								label="Children"
-								desc="Ages 2–12"
-							/>
+				</div>
+				<div>
+				<ButtonSubmit  href="#"/>
+			</div>
 
-							<NcInputNumber
-								className="mt-6 w-full"
-								defaultValue={guestInfantsInputValue}
-								onChange={(value) => handleChangeData(value, 'guestInfants')}
-								max={4}
-								label="Infants"
-								desc="Ages 0–2"
-							/>
-						</PopoverPanel>
-					</Transition>
-				</>
+			</div>
+
+			{showPopover && (
+				<div
+					className={`h-8 absolute self-center top-1/2 -translate-y-1/2 z-0 bg-white dark:bg-neutral-800 ${divHideVerticalLineClass}`}
+				></div>
 			)}
-		</Popover>
-	)
-}
 
-export default GuestsInput
+			{showPopover && (
+				<div className="absolute left-0 z-40 w-full min-w-[300px] sm:min-w-[500px] bg-white dark:bg-neutral-800 top-full mt-3 py-3 sm:py-6 rounded-3xl shadow-xl max-h-96 overflow-y-auto">
+					{value ? renderSearchValue() : renderRecentSearches()}
+				</div>
+			)}
+
+			
+		</div>
+	);
+};
+
+export default GuestInput;

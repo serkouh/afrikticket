@@ -4,40 +4,46 @@ import __experiencesListing from './jsons/__experiencesListing.json'
 import { DEMO_STAY_CATEGORIES, DEMO_EXPERIENCES_CATEGORIES } from './taxonomies'
 import { CarDataType, ExperiencesDataType, StayDataType } from './types'
 import { DEMO_AUTHORS } from './authors'
-import car1 from '@/images/cars/1.png'
-import car2 from '@/images/cars/2.png'
-import car3 from '@/images/cars/3.png'
-import car4 from '@/images/cars/4.png'
-import car5 from '@/images/cars/5.png'
-import car6 from '@/images/cars/6.png'
-import car7 from '@/images/cars/7.png'
-import car8 from '@/images/cars/8.png'
-import car9 from '@/images/cars/9.png'
-import car10 from '@/images/cars/10.png'
-import car11 from '@/images/cars/11.png'
-import car12 from '@/images/cars/12.png'
-import car13 from '@/images/cars/13.png'
-import car14 from '@/images/cars/14.png'
-import car15 from '@/images/cars/15.png'
-import car16 from '@/images/cars/16.png'
+import event1 from '@/images/1.jpg'
+import event2 from '@/images/2.jpg'
+import event3 from '@/images/3.png'
+import event4 from '@/images/4.jpg'
+import event5 from '@/images/5.jpg'
+import event6 from '@/images/6.jpg'
+import event7 from '@/images/7.jpg'
+import event8 from '@/images/8.jpg'
+import event9 from '@/images/9.jpg'
+import event10 from '@/images/10.jpg'
+import event11 from '@/images/11.jpg'
+import event12 from '@/images/12.jpg'
 import { Route } from '@/routers/types'
-const carsImgs = [
-	car1,
-	car2,
-	car3,
-	car4,
-	car5,
-	car6,
-	car7,
-	car8,
-	car9,
-	car10,
-	car11,
-	car12,
-	car13,
-	car14,
-	car15,
-	car16,
+const eventsImgs = [
+	event1,
+	event2,
+	event3,
+	event4,
+	event5,
+	event6,
+	event7,
+	event8,
+	event9,
+	event10,
+	event11,
+	event12,
+]
+const eventTitle = [
+	'Le Piège En Salle',
+	`Concert M'mah kouyaté`,
+	'Spectacle Slam & Humour',
+	'BANTIGNEL EVENTS',
+	'Tiakola au paradis',
+	'Place au soleil à Room',
+	'Questions pour un Champion',
+	'Brunch de la CAN',
+	'Magic Park',
+	'Brunch de la CAN',
+	'REINE D’AFRIQUE',
+	'Tiakola au paradis',
 ]
 
 const DEMO_STAY_LISTINGS = __stayListing.map((post, index): StayDataType => {
@@ -89,8 +95,9 @@ const DEMO_CAR_LISTINGS = __carsListing.map((post, index): CarDataType => {
 		isAds: !index ? true : post.isAds,
 		author: DEMO_AUTHORS.filter((user) => user.id === post.authorId)[0],
 		listingCategory: category,
-		featuredImage: carsImgs[index],
+		featuredImage: eventsImgs[index],
 		href: post.href as Route,
+		title: eventTitle[index],
 	}
 })
 

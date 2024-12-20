@@ -8,7 +8,7 @@ import Badge from '@/shared/Badge'
 import Image from 'next/image'
 import Link from 'next/link'
 import ButtonPrimary from '@/shared/ButtonPrimary'
-import eventTicket from '@/images/event_ticket2.jpg'
+import eventTicket from '@/images/1.jpg'
 
 export interface CarCardProps {
 	className?: string
@@ -43,7 +43,7 @@ const CarCard: FC<CarCardProps> = ({
 				<div className="aspect-h-9 aspect-w-16">
 					<Image
 						fill
-						src={eventTicket}
+						src={featuredImage}
 						alt="car"
 						sizes="(max-width: 640px) 100vw, 350px"
 					/>
@@ -67,7 +67,7 @@ const CarCard: FC<CarCardProps> = ({
 									: 'text-base font-medium'
 							}`}
 						>
-							<span className="line-clamp-1">Conakry</span>
+							<span className="line-clamp-1">{title}</span>
 						</h2>
 					</div>
 					<div className="flex items-center space-x-2 text-sm text-neutral-500 dark:text-neutral-400">

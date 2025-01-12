@@ -17,7 +17,7 @@ const FundraisingCard: FC<FundraisingCardProps> = ({
 	const { fundraising, stats } = data
 
 	return (
-		<div className={`group relative overflow-hidden rounded-3xl ${className}`}>
+		<div className={`group relative overflow-hidden rounded-3xl border border-neutral-200 ${className}`}>
 			<div className="aspect-h-3 aspect-w-4">
 				<Image
 					src={

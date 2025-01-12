@@ -56,7 +56,7 @@ const FundraisingCard: FC<FundraisingCardProps> = ({
 				</div>
 
 				<Link href={`/fundraising-detail/${fundraising.id}`} className="flex flex-col">
-					<ButtonPrimary>Acheter un billet</ButtonPrimary>
+					<ButtonPrimary>faire un don</ButtonPrimary>
 				</Link>
 			</div>
 		</div>

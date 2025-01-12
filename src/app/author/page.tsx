@@ -20,7 +20,6 @@ export interface AuthorPageProps {}
 
 const AuthorPage: FC<AuthorPageProps> = ({}) => {
 	let [categories] = useState(['Stays', 'Experiences', 'Car for rent'])
-
 	const renderSidebar = () => {
 		return (
 			<div className="flex w-full flex-col items-center space-y-6 border-neutral-200 px-0 text-center dark:border-neutral-700 sm:space-y-7 sm:rounded-2xl sm:border sm:p-6 xl:p-8">

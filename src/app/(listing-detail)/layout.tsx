@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 import { ReactNode, Suspense } from 'react'
 import MobileFooterSticky from './(components)/MobileFooterSticky'
 import { imageGallery as listingStayImageGallery } from './listing-stay-detail/constant'
-import { imageGallery as listingCarImageGallery } from './listing-car-detail/constant'
+import { imageGallery as listingCarImageGallery } from './listing-event-detail/constant'
 import { imageGallery as listingExperienceImageGallery } from './listing-experiences-detail/constant'
 
 const DetailtLayout = ({ children }: { children: ReactNode }) => {
@@ -18,7 +18,7 @@ const DetailtLayout = ({ children }: { children: ReactNode }) => {
 		if (thisPathname?.includes('/listing-stay-detail')) {
 			return listingStayImageGallery
 		}
-		if (thisPathname?.includes('/listing-car-detail')) {
+		if (thisPathname?.includes('/listing-event-detail')) {
 			return listingCarImageGallery
 		}
 		if (thisPathname?.includes('/listing-experiences-detail')) {

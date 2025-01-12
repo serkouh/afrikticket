@@ -1,3 +1,5 @@
+'use client'
+
 import React, { FC } from 'react'
 import facebookSvg from '@/images/Facebook.svg'
 import twitterSvg from '@/images/Twitter.svg'
@@ -6,8 +8,11 @@ import Input from '@/shared/Input'
 import ButtonPrimary from '@/shared/ButtonPrimary'
 import Image from 'next/image'
 import Link from 'next/link'
+import axios, { AxiosResponse } from 'axios'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-export interface PageLoginProps { }
+export interface PageLoginProps {}
 
 const loginSocials = [
 	// {
@@ -21,13 +26,50 @@ const loginSocials = [
 	// 	icon: twitterSvg,
 	// },
 	{
-		name: "Continuer avec Google",
+		name: 'Continuer avec Google',
 		href: '#',
 		icon: googleSvg,
 	},
 ]
 
-const PageLogin: FC<PageLoginProps> = ({ }) => {
+const PageLogin: FC<PageLoginProps> = ({}) => {
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const [message, setMessage] = useState('')
+	const [user, setUser] = useState(null)
+	const router = useRouter()
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		try {
+			const response: AxiosResponse = await axios.post(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`,
+				{
+					email,
+					password,
+				},
+			)
+
+			if (response.status === 200) {
+				const { user, token, message } = response.data
+				setUser(user)
+				setMessage(message)
+				localStorage.setItem('user', JSON.stringify(user))
+				localStorage.setItem('token', token)
+				router.push('/account')
+			} else {
+				setMessage('Une erreur est survenue lors de la connexion')
+			}
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				setMessage(error.response?.data?.message || 'Erreur de connexion')
+			} else {
+				setMessage('Une erreur inattendue est survenue')
+			}
+			console.error('Login error:', error)
+		}
+	}
+
 	return (
 		<div className={`nc-PageLogin`}>
 			<div className="container mb-24 lg:mb-32">
@@ -37,7 +79,7 @@ const PageLogin: FC<PageLoginProps> = ({ }) => {
 				<div className="mx-auto max-w-md space-y-6">
 					<div className="grid gap-3">
 						{/* FORM */}
-						<form className="grid grid-cols-1 gap-6" action="#" method="post">
+						<form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
 							<label className="block">
 								<span className="text-neutral-800 dark:text-neutral-200">
 									Adresse email
@@ -46,6 +88,8 @@ const PageLogin: FC<PageLoginProps> = ({ }) => {
 									type="email"
 									placeholder="example@example.com"
 									className="mt-1"
+									onChange={(e) => setEmail(e.target.value)}
+									value={email}
 								/>
 							</label>
 							<label className="block">
@@ -55,8 +99,16 @@ const PageLogin: FC<PageLoginProps> = ({ }) => {
 										Mot de passe oublié ?
 									</Link>
 								</span>
-								<Input type="password" className="mt-1" />
+								<Input
+									type="password"
+									className="mt-1"
+									onChange={(e) => setPassword(e.target.value)}
+									value={password}
+								/>
 							</label>
+							<ButtonPrimary type="submit">
+								Se connecter
+							</ButtonPrimary>
 						</form>
 
 						{/* OR */}
@@ -83,12 +135,7 @@ const PageLogin: FC<PageLoginProps> = ({ }) => {
 								</h3>
 							</a>
 						))}
-						<ButtonPrimary type="submit">Se connecter</ButtonPrimary>
-
 					</div>
-
-
-
 
 					{/* ==== */}
 					<span className="block text-center text-neutral-700 dark:text-neutral-300">

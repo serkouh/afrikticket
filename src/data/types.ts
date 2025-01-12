@@ -12,13 +12,23 @@ export interface CustomLink {
 export interface TaxonomyType {
 	id: string | number
 	name: string
-	href: Route<string>
+	href: string | { pathname: string; query?: { [key: string]: string } } | Route
 	count?: number
-	thumbnail?: string | StaticImageData
-	desc?: string
-	color?: TwMainColor | string
-	taxonomy: 'category' | 'tag'
-	listingType?: 'stay' | 'experiences' | 'car'
+	color?: string; 
+	thumbnail?: string
+	taxonomy?: string
+	current?: number
+	organization?: {
+		id: number
+		name: string
+	}
+	stats?: {
+		total_donors: number
+		total_raised: number
+		progress_percentage: number
+		remaining_amount: number
+		average_donation: number
+	}
 }
 
 export interface AuthorType {

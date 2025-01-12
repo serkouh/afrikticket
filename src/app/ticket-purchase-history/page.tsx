@@ -1,166 +1,186 @@
 'use client'
 
-import React, { FC } from 'react'
-import {
-    ArrowRightIcon,
-    CheckCircleIcon,
-    MapPinIcon,
-    Squares2X2Icon,
-} from '@heroicons/react/24/outline'
-import CommentListing from '@/components/CommentListing'
-import FiveStartIconForRate from '@/components/FiveStartIconForRate'
-import StartRating from '@/components/StartRating'
-import Avatar from '@/shared/Avatar'
-import Badge from '@/shared/Badge'
-import ButtonCircle from '@/shared/ButtonCircle'
+import React, { FC, useEffect, useState } from 'react'
 import ButtonPrimary from '@/shared/ButtonPrimary'
-import ButtonSecondary from '@/shared/ButtonSecondary'
-import Input from '@/shared/Input'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import LikeSaveBtns from '@/components/LikeSaveBtns'
-import { usePathname, useRouter } from 'next/navigation'
-import { Route } from 'next'
-import {
-    Backpack03Icon,
-    SeatSelectorIcon,
-    Settings03Icon,
-} from '@/components/Icons'
-import eventTicket from '@/images/event_ticket.jpg'
-import eventTicket2 from '@/images/event_ticket2.jpg'
-import eventDetails from '@/images/eventDetails.jpg'
-import eventDetails2 from '@/images/eventDetails2.jpg'
-import SectionSliderNewCategories from '@/components/SectionSliderNewCategories'
-import Heading2 from '@/shared/Heading2'
-import FlightCard, { FlightCardProps } from '@/components/FlightCard'
 
-export interface ListingCarDetailPageProps { }
-
-const ListingCarDetailPage: FC<ListingCarDetailPageProps> = ({ }) => {
-    // USE STATE
-
-    const thisPathname = usePathname()
-    const router = useRouter()
-
-    const handleOpenModalImageGallery = () => {
-        router.push(`${thisPathname}/?modal=PHOTO_TOUR_SCROLLABLE` as Route)
-    }
-
-
-    //
-
-    const renderSection2 = () => {
-        return (
-            <div className="listingSection__wrap">
-                <div className="relative w-full h-96">
-                    <Image
-                        fill
-                        src={eventTicket2}
-                        alt="photo 0"
-                        className="rounded-md object-cover sm:rounded-xl"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                    />
-                </div>
-                <h2 className="text-2xl font-semibold">Event Name</h2>
-                <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-
-                <div className="text-neutral-600 dark:text-neutral-300">
-                    <p>
-                        Date: 12/12/2014
-                        <br />
-                        <br />
-                        Price: 10,000 GF
-                        <br />
-                        <br />
-                        No.of attendes: 10
-                    </p>
-                </div>
-                <div className="text-neutral-600 dark:text-neutral-300">
-                    <ButtonPrimary>Download Ticket</ButtonPrimary>
-                </div>
-            </div>
-        )
-    }
-
-    const DEMO_DATA: FlightCardProps["data"][] = [
-		{
-			id: "1",
-			price: "10,000 GF",
-			airlines: {
-				logo: "https://www.gstatic.com/flights/airline_logos/70px/KE.png",
-				name: "Nom de l'événement",
-			},
-		},
-		{
-			id: "2",
-			price: "5,000 GF",
-			airlines: {
-				logo: "https://www.gstatic.com/flights/airline_logos/70px/SQ.png",
-				name: "Nom de l'événement",
-			},
-		},
-		{
-			id: "3",
-			price: "15,000 GF",
-			airlines: {
-				logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
-				name: "Nom de l'événement",
-			},
-		},
-		{
-			id: "3",
-			price: "10,000 GF",
-			airlines: {
-				logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
-				name: "Nom de l'événement",
-			},
-		},
-		{
-			id: "3",
-			price: "10,000 GF",
-			airlines: {
-				logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
-				name: "Nom de l'événement",
-			},
-		},
-		{
-			id: "3",
-			price: "10,000 GF",
-			airlines: {
-				logo: "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
-				name: "Nom de l'événement",
-			},
-		},
-	];
-
-
-
-
-    return (
-        <div className={`nc-ListingCarDetailPage`}>
-            <h2 className="text-3xl font-semibold lg:text-4xl mb-10 text-center mt-10">
-                Historique des billets
-            </h2>
-            <main className="relative z-10 mt-11 flex justify-center">
-                {/* CONTENT */}
-                {/* <div className="w-full space-y-8 lg:w-3/5 lg:space-y-10 lg:pr-10 xl:w-2/3">
-                    {renderSection2()}
-                </div> */}
-            </main>
-
-            <div className=" mt-10 container relative mb-24 space-y-24 lg:mb-28 lg:space-y-28">
-				<div className="lg:p-10 lg:bg-neutral-50 lg:dark:bg-black/20 grid grid-cols-1 gap-6  rounded-3xl">
-					{DEMO_DATA.map((item, index) => (
-						<FlightCard key={index} data={item} />
-					))}
-
-					{/* <div className="flex mt-12 justify-center items-center">
-						<ButtonPrimary loading>Show more</ButtonPrimary>
-					</div> */}
-				</div>
-            </div>
-
-        </div>
-    )
+interface Ticket {
+  id: number
+  event: {
+    id: number
+    title: string
+    date: string
+    price: string
+    images: Array<{
+      id: number
+      image_path: string
+    }>
+  }
+  status: string
+  token: string
+  price: string
+  purchase_date: string
 }
 
-export default ListingCarDetailPage
+interface TicketSummary {
+  total_tickets: number
+  total_spent: number
+  upcoming_events: number
+  past_events: number
+  today_events: number
+}
+
+const TicketPurchaseHistory: FC = () => {
+  const router = useRouter()
+  const [tickets, setTickets] = useState<{
+    past: Ticket[]
+    today: Ticket[]
+    upcoming: Ticket[]
+  }>({ past: [], today: [], upcoming: [] })
+  const [summary, setSummary] = useState<TicketSummary>({
+    total_tickets: 0,
+    total_spent: 0,
+    upcoming_events: 0,
+    past_events: 0,
+    today_events: 0
+  })
+
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/tickets`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        )
+        if (response.data.status === 'success') {
+          setTickets(response.data.data.tickets)
+          setSummary(response.data.data.summary)
+          // console.log(tickets)
+        }
+      } catch (error) {
+        console.error('Error fetching tickets:', error)
+      }
+    }
+
+    fetchTickets()
+  }, [])
+
+  const renderTicketCard = (ticket: Ticket) => {
+    return (
+      <div key={ticket.id} className="p-6 bg-white dark:bg-neutral-900 rounded-2xl shadow-lg border border-neutral-100 grey:border-neutral-500">
+        <div className="flex justify-between items-start gap-6">
+          {/* Event Image */}
+        <div className="relative w-32 h-32 rounded-xl overflow-hidden flex-shrink-0">
+          <Image
+            src={
+              ticket.event.images?.[0]?.image_path
+                ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${ticket.event.images[0].image_path}`
+                : 'eventTicket'
+            }
+            alt={ticket.event.title}
+            fill
+            className="object-cover"
+          />
+        </div>
+          <div className="flex-grow grid grid-cols-3 gap-6">
+            <div className="col-span-2">
+              <h3 className="text-xl font-semibold mb-4">{ticket.event.title}</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <p className="text-neutral-500">
+                  <span className="block text-sm">Date de l&apos;événement</span>
+                  {new Date(ticket.event.date).toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+                <p className="text-neutral-500">
+                  <span className="block text-sm">Acheté le</span>
+                  {new Date(ticket.purchase_date).toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+              </div>
+            </div>
+            
+            <div className="text-right">
+              <span className="text-2xl font-bold text-primary-6000">{ticket.price} GF</span>
+              <span className={`mt-2 block px-4 py-1 rounded-full text-sm ${
+                ticket.status === 'valid' 
+                  ? 'bg-green-100 text-green-700' 
+                  : 'bg-red-100 text-red-700'
+              }`}>
+                {ticket.status}
+              </span>
+            </div>
+          </div>
+
+          {/* <div className="flex-shrink-0">
+            <ButtonPrimary className="min-w-[140px] h-[88px]" disabled>
+              Voir le billet
+            </ButtonPrimary>
+          </div> */}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="container mx-auto py-16 space-y-16">
+      <div className="text-center">
+        <h2 className="text-3xl font-semibold">Historique des billets</h2>
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-green-50 dark:bg-green-900/30 p-6 rounded-2xl">
+            <p className="text-2xl font-bold">{summary.total_tickets}</p>
+            <p className="text-neutral-600 dark:text-neutral-400">Total des billets</p>
+          </div>
+          <div className="bg-blue-50 dark:bg-blue-900/30 p-6 rounded-2xl">
+            <p className="text-2xl font-bold">{summary.total_spent} GF</p>
+            <p className="text-neutral-600 dark:text-neutral-400">Total dépensé</p>
+          </div>
+          <div className="bg-purple-50 dark:bg-purple-900/30 p-6 rounded-2xl">
+            <p className="text-2xl font-bold">{summary.upcoming_events}</p>
+            <p className="text-neutral-600 dark:text-neutral-400">Événements à venir</p>
+          </div>
+        </div>
+      </div>
+
+      {tickets.upcoming.length > 0 && (
+        <div className="space-y-6">
+          <h3 className="text-2xl font-semibold">Événements à venir</h3>
+          <div className="space-y-4">
+            {tickets.upcoming.map(renderTicketCard)}
+          </div>
+        </div>
+      )}
+
+      {tickets.today.length > 0 && (
+        <div className="space-y-6">
+          <h3 className="text-2xl font-semibold">Aujourd&apos;hui</h3>
+          <div className="space-y-4">
+            {tickets.today.map(renderTicketCard)}
+          </div>
+        </div>
+      )}
+
+      {tickets.past.length > 0 && (
+        <div className="space-y-6">
+          <h3 className="text-2xl font-semibold">Événements passés</h3>
+          <div className="space-y-4">
+            {tickets.past.map(renderTicketCard)}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default TicketPurchaseHistory

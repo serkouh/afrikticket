@@ -30,19 +30,44 @@ const Avatar: FC<AvatarProps> = ({
 		return avatarColors[backgroundIndex]
 	}
 
+	const getSize = () => {
+		const match = sizeClass.match(/w-(\d+)/)
+		return match ? parseInt(match[1]) * 4 : 24
+	}
+
+	// Function to get complete image URL
+	const getCompleteImageUrl = (src: string) => {
+		if (!src) return ''
+		if (src.startsWith('http://') || src.startsWith('https://')) return src
+		// For Laravel storage files
+		return `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${src.replace(/^profile-images\//, '')}`
+	}
+
 	return (
 		<div
 			className={`wil-avatar relative inline-flex flex-shrink-0 items-center justify-center font-semibold uppercase text-neutral-100 shadow-inner ${radius} ${sizeClass} ${containerClassName}`}
 			style={{ backgroundColor: url ? undefined : _setBgColor(name) }}
 		>
 			{url && (
-				<Image
-					className={`absolute inset-0 h-full w-full object-cover ${radius}`}
-					src={url}
-					alt={name}
-				/>
+				typeof url === 'string' ? (
+					<Image
+						className={`absolute inset-0 h-full w-full object-cover ${radius}`}
+						src={getCompleteImageUrl(url)}
+						alt={name}
+						width={getSize()}
+						height={getSize()}
+						unoptimized
+					/>
+				) : (
+					<Image
+						className={`absolute inset-0 h-full w-full object-cover ${radius}`}
+						src={url}
+						alt={name}
+						unoptimized
+					/>
+				)
 			)}
-			<span className="wil-avatar__name">{name[0]}</span>
+			{(!url || url === '') && <span className="wil-avatar__name">{name[0]}</span>}
 
 			{hasChecked && (
 				<span

@@ -6,7 +6,7 @@ import { TaxonomyType } from "@/data/types";
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox";
 import SectionGridCategoryBox from "@/components/SectionGridCategoryBox";
 import SectionHero3 from "@/app/(server-components)/SectionHero3";
-import CardCategory6 from "@/components/CardCategory6";
+// import CardCategory6 from "@/components/CardCategory6";
 import SectionGridFeaturePlaces from "@/components/SectionGridFeaturePlaces";
 
 const DEMO_CATS_2: TaxonomyType[] = [
@@ -70,7 +70,7 @@ function PageHome3() {
 
       <div className="container relative space-y-24 mb-24 ">
         {/* SECTION 1 */}
-        <div className="grid grid-cols-12 gap-6">
+        {/* <div className="grid grid-cols-12 gap-6">
           <div className="col-span-12 sm:col-span-6 lg:col-span-4 flex">
             <CardCategory6 taxonomy={DEMO_CATS_2[0]} />
           </div>
@@ -81,7 +81,7 @@ function PageHome3() {
           <div className="col-span-12 sm:col-span-6 lg:col-span-4 flex">
             <CardCategory6 taxonomy={DEMO_CATS_2[4]} />
           </div>
-        </div>
+        </div> */}
 
         {/* SECTION */}
         <SectionGridCategoryBox />

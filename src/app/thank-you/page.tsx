@@ -1,35 +1,25 @@
 import React from "react";
-import merci from "@/images/merci.jpg";
-import Image from "next/image";
 import Heading from "@/shared/Heading";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 
 const ThankYouPage = () => {
     return (
-        <div className="thankyou-page">
-            <div className="container relative mb-20 space-y-24 lg:mb-20 lg:space-y-28">
-            </div>
-            <div className="flex items-center justify-center">
-                <Image alt="" src={merci} />
-            </div>
-            <div className="container relative mb-20 space-y-24 lg:mb-20 lg:space-y-28">
-            </div>
-
-            <Heading
-                className="flex items-center justify-center"
-                desc= ''
+        <div className="thankyou-page flex flex-col items-center justify-center min-h-screen bg-gray-100">
+            <div className="container relative mb-20 space-y-10 lg:mb-20 lg:space-y-12">
+                <Heading
+                    className="text-2xl font-bold text-center text-neutral-900"
+                    desc=''
                 >
-                Merci pour votre commande
-            </Heading>
-            <div className="container relative mb-20 space-y-24 lg:mb-20 lg:space-y-28">
-            </div>
-            <div className="flex items-center justify-center mt-30">
-                <ButtonPrimary href={'/ticket-purchase-history'}>
-                Voir les billets réservés
-                </ButtonPrimary>
-            </div>
-
-            <div className="container relative mb-24 space-y-24 lg:mb-28 lg:space-y-28">
+                    Merci pour votre donnation !
+                </Heading>
+                <p className="text-center text-lg text-neutral-600">
+                    Votre donnation a été traitée avec succès. Nous vous enverrons un e-mail de confirmation sous peu.
+                </p>
+                <div className="flex items-center justify-center mt-5">
+                    <ButtonPrimary href={'/ticket-purchase-history'}>
+                        Voir les billets réservés
+                    </ButtonPrimary>
+                </div>
             </div>
         </div>
     );

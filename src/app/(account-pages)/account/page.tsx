@@ -1,94 +1,136 @@
-import React, { FC } from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import Label from '@/components/Label'
 import Avatar from '@/shared/Avatar'
 import ButtonPrimary from '@/shared/ButtonPrimary'
 import Input from '@/shared/Input'
-import Select from '@/shared/Select'
-import Textarea from '@/shared/Textarea'
-
-export interface AccountPageProps {}
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
 const AccountPage = () => {
+	const router = useRouter()
+	const [user, setUser] = useState<any>(null)
+	const [newName, setNewName] = useState('')
+	const [newEmail, setNewEmail] = useState('')
+	const [newPhone, setNewPhone] = useState('')
+	const [newProfileImage, setNewProfileImage] = useState<File | null>(null)
+	const [message, setMessage] = useState('')
+
+	useEffect(() => {
+		const storedToken = localStorage.getItem('token')
+		const storedUser = localStorage.getItem('user')
+
+		if (!storedToken || !storedUser) {
+			router.push('/login')
+			return
+		}
+
+		const userData = JSON.parse(storedUser)
+		console.log('User Data:', userData)
+		console.log('Profile Image Path:', userData.profile_image)
+		setUser(userData)
+		setNewName(userData.name || '')
+		setNewEmail(userData.email || '')
+		setNewPhone(userData.phone?.toString() || '')
+	}, [router])
+
+	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files[0]) {
+			setNewProfileImage(e.target.files[0])
+		}
+	}
+
+	const handleUpdateUser = async () => {
+		if (!user?.id) return
+
+		const formData = new FormData()
+		formData.append('name', newName)
+		formData.append('email', newEmail)
+		formData.append('phone', newPhone)
+		if (newProfileImage) {
+			formData.append('profile_image', newProfileImage)
+		}
+
+		try {
+			const response = await axios.put(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/${user.id}`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: `Bearer ${localStorage.getItem('token')}`,
+					},
+				}
+			)
+
+			if (response.status === 200) {
+				setUser(response.data.user)
+				localStorage.setItem('user', JSON.stringify(response.data.user))
+				setMessage('Profil mis à jour avec succès')
+				setTimeout(() => setMessage(''), 3000)
+			}
+		} catch (error) {
+			setMessage('Erreur lors de la mise à jour du profil')
+			setTimeout(() => setMessage(''), 3000)
+		}
+	}
+
 	return (
 		<div className="space-y-6 sm:space-y-8">
-			{/* HEADING */}
-			<h2 className="text-3xl font-semibold">Mettre à jour les informations</h2>
+			<h2 className="text-3xl font-semibold">Information du profil</h2>
 			<div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
+			
 			<div className="flex flex-col md:flex-row">
-				<div className="flex flex-shrink-0 items-start">
-					<div className="relative flex overflow-hidden rounded-full">
-						<Avatar sizeClass="w-32 h-32" />
-						<div className="absolute inset-0 flex cursor-pointer flex-col items-center justify-center bg-black bg-opacity-60 text-neutral-50">
-							<svg
-								width="30"
-								height="30"
-								viewBox="0 0 30 30"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M17.5 5H7.5C6.83696 5 6.20107 5.26339 5.73223 5.73223C5.26339 6.20107 5 6.83696 5 7.5V20M5 20V22.5C5 23.163 5.26339 23.7989 5.73223 24.2678C6.20107 24.7366 6.83696 25 7.5 25H22.5C23.163 25 23.7989 24.7366 24.2678 24.2678C24.7366 23.7989 25 23.163 25 22.5V17.5M5 20L10.7325 14.2675C11.2013 13.7988 11.8371 13.5355 12.5 13.5355C13.1629 13.5355 13.7987 13.7988 14.2675 14.2675L17.5 17.5M25 12.5V17.5M25 17.5L23.0175 15.5175C22.5487 15.0488 21.9129 14.7855 21.25 14.7855C20.5871 14.7855 19.9513 15.0488 19.4825 15.5175L17.5 17.5M17.5 17.5L20 20M22.5 5H27.5M25 2.5V7.5M17.5 10H17.5125"
-									stroke="currentColor"
-									strokeWidth={1.5}
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-
-							<span className="mt-1 text-xs">Changer l&apos;image</span>
-						</div>
-						<input
-							type="file"
-							className="absolute inset-0 cursor-pointer opacity-0"
+				<div className="flex-shrink-0 flex items-start">
+					<div className="relative rounded-full overflow-hidden flex">
+						<Avatar
+							imgUrl={user?.profile_image || ''}
+							sizeClass="w-32 h-32"
+							userName={user?.name}
 						/>
+						<div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+							<Input
+								type="file"
+								className="absolute inset-0 opacity-0 cursor-pointer"
+								accept="image/*"
+								onChange={handleImageChange}
+							/>
+							<span className="text-white text-sm">Changer</span>
+						</div>
 					</div>
 				</div>
-				<div className="mt-10 max-w-3xl flex-grow space-y-6 md:mt-0 md:pl-16">
+				
+				<div className="flex-grow mt-10 md:mt-0 md:pl-16 space-y-6">
 					<div>
 						<Label>Nom</Label>
-						<Input className="mt-1.5" defaultValue="Eden Tuan" />
+						<Input
+							className="mt-1.5"
+							value={newName}
+							onChange={(e) => setNewName(e.target.value)}
+						/>
 					</div>
-					{/* ---- */}
-					{/* <div>
-						<Label>Gender</Label>
-						<Select className="mt-1.5">
-							<option value="Male">Male</option>
-							<option value="Female">Female</option>
-							<option value="Other">Other</option>
-						</Select>
-					</div> */}
-					{/* ---- */}
-					{/* <div>
-						<Label>Username</Label>
-						<Input className="mt-1.5" defaultValue="@eden_tuan" />
-					</div> */}
-					{/* ---- */}
 					<div>
 						<Label>E-mail</Label>
-						<Input className="mt-1.5" defaultValue="example@email.com" />
+						<Input
+							className="mt-1.5"
+							value={newEmail}
+							onChange={(e) => setNewEmail(e.target.value)}
+						/>
 					</div>
-					{/* ---- */}
-					{/* <div className="max-w-lg">
-						<Label>Date of birth</Label>
-						<Input className="mt-1.5" type="date" defaultValue="1990-07-22" />
-					</div> */}
-					{/* ---- */}
-					{/* <div>
-						<Label>Addess</Label>
-						<Input className="mt-1.5" defaultValue="New york, USA" />
-					</div> */}
-					{/* ---- */}
-					{/* <div>
-						<Label>Phone number</Label>
-						<Input className="mt-1.5" defaultValue="003 888 232" />
-					</div> */}
-					{/* ---- */}
-					{/* <div>
-						<Label>About you</Label>
-						<Textarea className="mt-1.5" defaultValue="..." />
-					</div> */}
+					<div>
+						<Label>Téléphone</Label>
+						<Input
+							className="mt-1.5"
+							value={newPhone}
+							onChange={(e) => setNewPhone(e.target.value)}
+						/>
+					</div>
+					{message && <p className="text-green-500">{message}</p>}
 					<div className="pt-2">
-						<ButtonPrimary>Mettre à jour les informations</ButtonPrimary>
+						<ButtonPrimary onClick={handleUpdateUser}>
+							Mettre à jour le profil
+						</ButtonPrimary>
 					</div>
 				</div>
 			</div>

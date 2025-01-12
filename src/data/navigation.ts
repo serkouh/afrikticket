@@ -249,7 +249,7 @@ export const NAVIGATION_DEMO: NavItemType[] = [
 	// 			children: [
 	// 				{ id: ncNanoId(), href: '/listing-car', name: 'Cars page' },
 	// 				{ id: ncNanoId(), href: '/listing-car-map', name: 'Cars page (map)' },
-	// 				{ id: ncNanoId(), href: '/listing-car-detail', name: 'Car Detail' },
+	// 				{ id: ncNanoId(), href: '/listing-event-detail', name: 'Car Detail' },
 	// 			],
 	// 		},
 
@@ -354,7 +354,7 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
 	// 	children: [
 	// 		{ id: ncNanoId(), href: '/listing-car', name: 'Cars listings' },
 	// 		{ id: ncNanoId(), href: '/listing-car-map', name: 'Cars listings (map)' },
-	// 		{ id: ncNanoId(), href: '/listing-car-detail', name: 'Car detail' },
+	// 		{ id: ncNanoId(), href: '/listing-event-detail', name: 'Car detail' },
 
 	// 		//
 	// 		{

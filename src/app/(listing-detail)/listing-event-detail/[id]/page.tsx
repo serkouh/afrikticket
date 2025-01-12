@@ -244,12 +244,15 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 								hour12: false,
 							})}
 					</p>
-					<p style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-						Temps restant pour l&apos;événement: {eventData?.timing?.time_remaining}
-						<br />
-						Nombre de billets restants: {eventData?.tickets?.remaining} sur{' '}
-						{eventData?.tickets?.total}
-					</p>
+					<p style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+	<span>Temps restant pour l&apos;événement: {eventData?.timing?.time_remaining}</span>
+	<span className={`text-lg font-semibold ${
+		eventData?.tickets?.remaining !== undefined && eventData.tickets.remaining > 0 ? 'text-green-600' : 'text-red-600'
+	}`}>
+		Nombre de billets restants: {eventData?.tickets?.remaining ?? 0} sur {eventData?.tickets?.total ?? 0}
+	</span>
+</p>
+
 				</div>
 			</div>
 		)

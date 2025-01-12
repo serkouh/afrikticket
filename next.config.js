@@ -35,6 +35,12 @@ const nextConfig = {
 			},
 			{
 				protocol: 'https',
+				hostname: 'api.afrikticket.com', 
+				port: '',
+				pathname: '/storage/**', 
+			},
+			{
+				protocol: 'https',
 				hostname: 'afrikticket.com',
 				port: '',
 				pathname: '/**',

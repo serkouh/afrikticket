@@ -3,7 +3,7 @@ import Logo from '@/shared/Logo';
 import AvatarDropdown from './AvatarDropdown';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { NAVIGATION_DEMO_2 } from '@/data/navigation';
+import { navigation } from '@/data/navigation';
 import MenuBar from '@/shared/MenuBar';
 import { PathName } from '@/routers/types';
 import TemplatesDropdown from './TemplatesDropdown';
@@ -61,7 +61,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = '' }) => {
 	};
 
 	const renderNavItem = (
-		item: typeof NAVIGATION_DEMO_2[number],
+		item: typeof navigation[number],
 		index: number
 	) => {
 		const isActive = pathname === item.href;
@@ -90,7 +90,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = '' }) => {
 
 				{/* Center Section: Navigation Links for desktop */}
 				<div className="hidden lg:flex items-center space-x-1 desktop-links">
-					{NAVIGATION_DEMO_2.map(renderNavItem)}
+					{navigation.map(renderNavItem)}
 					{/* <TemplatesDropdown/> */}
 				</div>
 				{/* Mobile view */}

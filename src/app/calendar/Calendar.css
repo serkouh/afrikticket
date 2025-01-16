@@ -122,3 +122,49 @@
     padding: 5px;
   }
 }
+
+.event-tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+.event-tooltip[title]:hover:after {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  white-space: pre-wrap;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 1000;
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.event-green {
+  background-color: rgb(220 252 231) !important;
+  color: rgb(22 101 52) !important;
+  border: none !important;
+}
+
+.event-red {
+  background-color: rgb(254 226 226) !important;
+  color: rgb(185 28 28) !important;
+  border: none !important;
+}
+
+.rbc-toolbar button {
+  @apply rounded-full px-4 py-1.5 text-sm font-medium;
+}
+
+.rbc-toolbar button.rbc-active {
+  @apply bg-neutral-900 text-white;
+}
+
+.MuiDialog-paper {
+  border-radius: 24px !important;
+  overflow: hidden;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "moment/locale/fr";
@@ -10,7 +10,38 @@ moment.locale('fr');
 const localizer = momentLocalizer(moment);
 
 const MobileCalendar = () => {
-  const [calevents] = React.useState<any>(Events);
+  const [calevents, setCalEvents] = React.useState<any>([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/calendar`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+          const formattedEvents = data.events.map((event: any) => ({
+            id: event.id,
+            title: event.title,
+            start: new Date(event.start),
+            end: new Date(event.end),
+            allDay: event.allDay,
+            color: event.extendedProps?.status === 'upcoming' ? 'green' : 'default',
+            extendedProps: event.extendedProps
+          }));
+          
+          setCalEvents(formattedEvents);
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const eventColors = (event: any) => {
     if (event.color) {

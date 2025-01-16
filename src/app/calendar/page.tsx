@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import CardContent from "@mui/material/CardContent";
 import Dialog from "@mui/material/Dialog";
@@ -24,7 +24,7 @@ import MobileCalendar from "./MobileCalendar";
 
 // import PageContainer from "@/app/components/container/PageContainer";
 // import Breadcrumb from "@/app/(DashboardLayout)/layout/shared/breadcrumb/Breadcrumb";
-import { IconCheck } from "@tabler/icons-react";
+import { IconCheck, IconMapPin, IconBuilding, IconCoin, IconTicket, IconFileDescription, IconCalendarEvent } from "@tabler/icons-react";
 // import BlankCard from "@/app/components/shared/BlankCard";
 
 moment.locale('fr');
@@ -58,10 +58,21 @@ type EvType = {
   color?: string;
 };
 
+// First, define the EventComponent outside of the BigCalendar component
+const EventComponent = ({ event }: any) => {
+  return (
+    <div className="event-tooltip">
+      <strong>{event.title}</strong>
+    </div>
+  );
+};
+
 const BigCalendar = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const [selectedEvent, setSelectedEvent] = React.useState<any>(null);
+  const [showEventDetails, setShowEventDetails] = React.useState(false);
 
-  const [calevents, setCalEvents] = React.useState<any>(Events);
+  const [calevents, setCalEvents] = React.useState<any>([]);
   const [open, setOpen] = React.useState<boolean>(false);
   const [title, setTitle] = React.useState<string>("");
   const [slot, setSlot] = React.useState<EvType>();
@@ -69,6 +80,47 @@ const BigCalendar = () => {
   const [end, setEnd] = React.useState<any | null>();
   const [color, setColor] = React.useState<string>("default");
   const [update, setUpdate] = React.useState<EvType | undefined | any>();
+
+  const handleEventClick = (event: any) => {
+    setSelectedEvent(event);
+    setShowEventDetails(true);
+  };
+
+  const handleCloseEventDetails = () => {
+    setShowEventDetails(false);
+    setSelectedEvent(null);
+  };
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/calendar`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+          const formattedEvents = data.events.map((event: any) => ({
+            id: event.id,
+            title: event.title,
+            start: new Date(event.start),
+            end: new Date(event.end),
+            allDay: event.allDay,
+            color: event.extendedProps?.status === 'upcoming' ? 'green' : 'red',
+            extendedProps: event.extendedProps
+          }));
+          
+          setCalEvents(formattedEvents);
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const ColorVariation = [
     {
@@ -171,12 +223,14 @@ const BigCalendar = () => {
     setUpdate(null);
   };
 
-  const eventColors = (event: EvType) => {
-    if (event.color) {
-      return { className: `event-${event.color}` };
-    }
-
-    return { className: `event-default` };
+  const eventColors = (event: any) => {
+    const colorClass = event.color ? `event-${event.color}` : 'event-default';
+    return {
+      className: colorClass,
+      style: {
+        cursor: 'pointer'
+      }
+    };
   };
 
   const handleStartChange = (newValue: any) => {
@@ -209,9 +263,6 @@ const BigCalendar = () => {
           <MobileCalendar />
         ) : (
           <CardContent>
-            {/* ------------------------------------------- */}
-            {/* Calendar */}
-            {/* ------------------------------------------- */}
             <Calendar
               selectable
               events={calevents}
@@ -220,134 +271,94 @@ const BigCalendar = () => {
               defaultDate={new Date()}
               localizer={localizer}
               style={{ height: "calc(100vh - 350px)" }}
-              // onSelectEvent={(event: any) => editEvent(event)}
-              // onSelectSlot={(slotInfo: any) => addNewEventAlert(slotInfo)}
-              eventPropGetter={(event: any) => eventColors(event)}
+              eventPropGetter={eventColors}
               messages={messages}
               components={{
                 toolbar: CustomToolbar,
+                event: EventComponent
               }}
+              onSelectEvent={handleEventClick}
             />
-
           </CardContent>
         )}
-        {/* ------------------------------------------- */}
-        {/* Add Calendar Event Dialog */}
-        {/* ------------------------------------------- */}
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
-          <form onSubmit={update ? updateEvent : submitHandler}>
-            <DialogContent>
-              {/* ------------------------------------------- */}
-              {/* Add Edit title */}
-              {/* ------------------------------------------- */}
-              <Typography variant="h4" sx={{ mb: 2 }}>
-                {update ? "Update Event" : "Add Event"}
-              </Typography>
-              <Typography mb={3} variant="subtitle2">
-                {!update
-                  ? "To add Event kindly fillup the title and choose the event color and press the add button"
-                  : "To Edit/Update Event kindly change the title and choose the event color and press the update button"}
-                {slot?.title}
-              </Typography>
 
-              <TextField
-                id="Event Title"
-                placeholder="Enter Event Title"
-                variant="outlined"
-                fullWidth
-                label="Event Title"
-                value={title}
-                sx={{ mb: 3 }}
-                onChange={inputChangeHandler}
-              />
-              {/* ------------------------------------------- */}
-              {/* Selection of Start and end date */}
-              {/* ------------------------------------------- */}
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Start Date"
-                  // inputFormat="MM/dd/yyyy"
-                  value={start}
-                  onChange={handleStartChange}
-                // renderInput={(params: any) => (
-                //   <TextField {...params} fullWidth sx={{ mb: 3 }} />
-                // )}
-                />
-                <DatePicker
-                  label="End Date"
-                  // inputFormat="MM/dd/yyyy"
-                  value={end}
-                  onChange={handleEndChange}
-                // renderInput={(params: any) => (
-                //   <TextField
-                //     {...params}
-                //     fullWidth
-                //     sx={{ mb: 3 }}
-                //     error={start > end}
-                //     helperText={
-                //       start > end
-                //         ? "End date must be later than start date"
-                //         : ""
-                //     }
-                //   />
-                // )}
-                />
-              </LocalizationProvider>
+        {/* Event Details Dialog */}
+        <Dialog 
+          open={showEventDetails} 
+          onClose={handleCloseEventDetails}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogContent className="!p-6">
+            {selectedEvent && (
+              <div className="flex flex-col space-y-6">
+                {selectedEvent.extendedProps?.image && (
+                  <div className="relative w-full h-48 rounded-xl overflow-hidden">
+                    <img 
+                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${selectedEvent.extendedProps.image}`}
+                      alt={selectedEvent.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                
+                <div className="flex justify-between items-start">
+                  <Typography variant="h5" component="h2" className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                    {selectedEvent.title}
+                  </Typography>
+                  <span className={`px-4 py-1.5 rounded-full text-sm font-medium ${
+                    selectedEvent.extendedProps?.status === 'upcoming' 
+                      ? 'bg-green-100 text-green-700' 
+                      : 'bg-red-100 text-red-700'
+                  }`}>
+                    {selectedEvent.extendedProps?.status || 'upcoming'}
+                  </span>
+                </div>
 
-              {/* ------------------------------------------- */}
-              {/* Calendar Event Color*/}
-              {/* ------------------------------------------- */}
-              <Typography variant="h6" fontWeight={600} my={2}>
-                Select Event Color
-              </Typography>
-              {/* ------------------------------------------- */}
-              {/* colors for event */}
-              {/* ------------------------------------------- */}
-              {ColorVariation.map((mcolor) => {
-                return (
-                  <Fab
-                    color="primary"
-                    style={{ backgroundColor: mcolor.eColor }}
-                    sx={{
-                      marginRight: "3px",
-                      transition: "0.1s ease-in",
-                      scale: mcolor.value === color ? "0.9" : "0.7",
-                    }}
-                    size="small"
-                    key={mcolor.id}
-                    onClick={() => selectinputChangeHandler(mcolor.value)}
-                  >
-                    {mcolor.value === color ? <IconCheck width={16} /> : ""}
-                  </Fab>
-                );
-              })}
-            </DialogContent>
-            {/* ------------------------------------------- */}
-            {/* Action for dialog */}
-            {/* ------------------------------------------- */}
-            <DialogActions sx={{ p: 3 }}>
-              <Button onClick={handleClose}>Cancel</Button>
-
-              {update ? (
-                <Button
-                  type="submit"
-                  color="error"
-                  variant="contained"
-                  onClick={() => deleteHandler(update)}
-                >
-                  Delete
-                </Button>
-              ) : (
-                ""
-              )}
-              <Button type="submit" disabled={!title} variant="contained">
-                {update ? "Update Event" : "Add Event"}
-              </Button>
-            </DialogActions>
-            {/* ------------------------------------------- */}
-            {/* End Calendar */}
-            {/* ------------------------------------------- */}
-          </form>
+                <div className="grid gap-4 text-neutral-600 dark:text-neutral-300">
+                  <div className="flex items-center gap-3">
+                    <IconMapPin size={20} className="text-neutral-500" stroke={1.5} /> 
+                    <span>{selectedEvent.extendedProps?.location || 'No location'}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <IconBuilding size={20} className="text-neutral-500" stroke={1.5} />
+                    <span>{selectedEvent.extendedProps?.organization || 'No organization'}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <IconCalendarEvent size={20} className="text-neutral-500" stroke={1.5} />
+                    <span>{new Date(selectedEvent.start).toLocaleString('fr-FR', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false,
+                    })}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <IconTicket size={20} className="text-neutral-500" stroke={1.5} />
+                    <span>{selectedEvent.extendedProps?.ticketCount || 0} tickets</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <IconCoin size={20} className="text-neutral-500" stroke={1.5} />
+                    <span>{selectedEvent.extendedProps?.totalCost || 0} GF</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <IconFileDescription size={20} className="text-neutral-500 mt-1" stroke={1.5} />
+                    <p className="text-sm leading-relaxed">{selectedEvent.extendedProps?.description || 'No description'}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+          <DialogActions className="!p-6 !pt-0">
+            <Button 
+              onClick={handleCloseEventDetails}
+              className="bg-primary-6000 hover:bg-primary-700 text-white px-6 py-2 rounded-full"
+            >
+              Fermer
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     </div>

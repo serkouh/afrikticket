@@ -5,133 +5,150 @@ import ButtonPrimary from '@/shared/ButtonPrimary'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import eventTicket from '@/images/event_ticket.jpg'
 
 interface Ticket {
   id: number
-  event: {
-    id: number
-    title: string
-    date: string
-    price: string
-    images: Array<{
-      id: number
-      image_path: string
-    }>
-  }
-  status: string
-  token: string
+  title: string
+  description: string
+  date: string
+  location: string
   price: string
-  purchase_date: string
+  main_image: string
+  tickets: {
+    count: number
+    total_cost: number
+    status: string
+  }
 }
 
 interface TicketSummary {
   total_tickets: number
   total_spent: number
-  upcoming_events: number
-  past_events: number
-  today_events: number
+  total_events: number
 }
 
 const TicketPurchaseHistory: FC = () => {
   const router = useRouter()
-  const [tickets, setTickets] = useState<{
-    past: Ticket[]
-    today: Ticket[]
+  const [events, setEvents] = useState<{
     upcoming: Ticket[]
-  }>({ past: [], today: [], upcoming: [] })
+    today: Ticket[]
+    past: Ticket[]
+  }>({
+    upcoming: [],
+    today: [],
+    past: []
+  })
   const [summary, setSummary] = useState<TicketSummary>({
     total_tickets: 0,
     total_spent: 0,
-    upcoming_events: 0,
-    past_events: 0,
-    today_events: 0
+    total_events: 0
   })
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/tickets`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/events`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`
             }
           }
         )
+        
+        // Log the response to check its structure
+        console.log('API Response:', response.data);
+
         if (response.data.status === 'success') {
-          setTickets(response.data.data.tickets)
-          setSummary(response.data.data.summary)
-          // console.log(tickets)
+          setEvents(response.data.data.events || { upcoming: [], today: [], past: [] });
+          setSummary(response.data.data.summary || { total_tickets: 0, total_spent: 0, total_events: 0 });
         }
       } catch (error) {
-        console.error('Error fetching tickets:', error)
+        console.error('Error fetching tickets:', error);
       }
     }
 
-    fetchTickets()
-  }, [])
+    fetchTickets();
+  }, []);
 
-  const renderTicketCard = (ticket: Ticket) => {
+  const renderEventCard = (event: Ticket) => {
+    const imagePath = event.main_image
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${event.main_image}`
+      : eventTicket;
+
     return (
-      <div key={ticket.id} className="p-6 bg-white dark:bg-neutral-900 rounded-2xl shadow-lg border border-neutral-100 grey:border-neutral-500">
-        <div className="flex justify-between items-start gap-6">
-          {/* Event Image */}
-        <div className="relative w-32 h-32 rounded-xl overflow-hidden flex-shrink-0">
-          <Image
-            src={
-              ticket.event.images?.[0]?.image_path
-                ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${ticket.event.images[0].image_path}`
-                : 'eventTicket'
-            }
-            alt={ticket.event.title}
-            fill
-            className="object-cover"
-          />
-        </div>
-          <div className="flex-grow grid grid-cols-3 gap-6">
-            <div className="col-span-2">
-              <h3 className="text-xl font-semibold mb-4">{ticket.event.title}</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <p className="text-neutral-500">
-                  <span className="block text-sm">Date de l&apos;événement</span>
-                  {new Date(ticket.event.date).toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </p>
-                <p className="text-neutral-500">
-                  <span className="block text-sm">Acheté le</span>
-                  {new Date(ticket.purchase_date).toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
+      <div key={event.id} className="group relative bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl overflow-hidden hover:shadow-xl transition-shadow">
+        <div className="flex flex-col sm:flex-row sm:items-center p-4 sm:p-5 gap-4">
+          <div className="relative w-32 h-32 rounded-xl overflow-hidden flex-shrink-0">
+            <Image
+              src={imagePath}
+              alt={event.title}
+              fill
+              className="object-cover transform group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-10 group-hover:bg-opacity-20 transition-opacity" />
+          </div>
+          
+          <div className="flex-grow space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold line-clamp-1 text-neutral-900 dark:text-neutral-100">
+                  {event.title}
+                </h3>
+                <span className={`px-4 py-1.5 rounded-full text-sm font-medium ${
+                  event.tickets.status === 'upcoming' 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-red-100 text-red-700'
+                }`}>
+                  {event.tickets.status}
+                </span>
+              </div>
+              
+              <div className="flex flex-wrap items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-3">
+                <span className="flex items-center">
+                  <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {new Date(event.date).toLocaleDateString('fr-FR')}
+                </span>
+                <span className="flex items-center">
+                  <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {event.location}
+                </span>
+              </div>
+            </div>
+
+            <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
+
+            <div className="flex flex-wrap justify-between items-end">
+              <div className="space-y-1">
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">Tickets achetés</p>
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
+                    {event.tickets.count}
+                  </span>
+                  <span className="text-sm text-neutral-500">×</span>
+                  <span className="text-lg font-medium text-neutral-900 dark:text-neutral-100">
+                    {event.price} GF
+                  </span>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">Total</p>
+                <p className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
+                  {event.tickets.total_cost} GF
                 </p>
               </div>
             </div>
-            
-            <div className="text-right">
-              <span className="text-2xl font-bold text-primary-6000">{ticket.price} GF</span>
-              <span className={`mt-2 block px-4 py-1 rounded-full text-sm ${
-                ticket.status === 'valid' 
-                  ? 'bg-green-100 text-green-700' 
-                  : 'bg-red-100 text-red-700'
-              }`}>
-                {ticket.status}
-              </span>
-            </div>
           </div>
-
-          {/* <div className="flex-shrink-0">
-            <ButtonPrimary className="min-w-[140px] h-[88px]" disabled>
-              Voir le billet
-            </ButtonPrimary>
-          </div> */}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="container mx-auto py-16 space-y-16">
@@ -147,35 +164,35 @@ const TicketPurchaseHistory: FC = () => {
             <p className="text-neutral-600 dark:text-neutral-400">Total dépensé</p>
           </div>
           <div className="bg-purple-50 dark:bg-purple-900/30 p-6 rounded-2xl">
-            <p className="text-2xl font-bold">{summary.upcoming_events}</p>
-            <p className="text-neutral-600 dark:text-neutral-400">Événements à venir</p>
+            <p className="text-2xl font-bold">{summary.total_events}</p>
+            <p className="text-neutral-600 dark:text-neutral-400">Total d&lsquo;événements</p>
           </div>
         </div>
       </div>
 
-      {tickets.upcoming.length > 0 && (
+      {events.upcoming.length > 0 && (
         <div className="space-y-6">
           <h3 className="text-2xl font-semibold">Événements à venir</h3>
           <div className="space-y-4">
-            {tickets.upcoming.map(renderTicketCard)}
+            {events.upcoming.map(renderEventCard)}
           </div>
         </div>
       )}
 
-      {tickets.today.length > 0 && (
+      {events.today.length > 0 && (
         <div className="space-y-6">
           <h3 className="text-2xl font-semibold">Aujourd&apos;hui</h3>
           <div className="space-y-4">
-            {tickets.today.map(renderTicketCard)}
+            {events.today.map(renderEventCard)}
           </div>
         </div>
       )}
 
-      {tickets.past.length > 0 && (
+      {events.past.length > 0 && (
         <div className="space-y-6">
           <h3 className="text-2xl font-semibold">Événements passés</h3>
           <div className="space-y-4">
-            {tickets.past.map(renderTicketCard)}
+            {events.past.map(renderEventCard)}
           </div>
         </div>
       )}

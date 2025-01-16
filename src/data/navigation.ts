@@ -178,227 +178,49 @@ const templatesChildrenMenus: NavItemType[] = [
 ]
 
 export const NAVIGATION_DEMO: NavItemType[] = [
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '/',
-	// 	name: 'Home',
-	// 	type: 'dropdown',
-	// 	children: demoChildMenus,
-	// 	isNew: true,
-	// },
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '/',
-	// 	name: 'Five columns',
-	// 	type: 'megaMenu',
-	// 	megaMenu: megaMenuDemo,
-	// },
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '/listing-stay',
-	// 	name: 'Listing Page',
-	// 	type: 'dropdown',
-	// 	children: [
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-stay',
-	// 			name: 'Stay listings',
-	// 			type: 'dropdown',
-	// 			children: [
-	// 				{ id: ncNanoId(), href: '/listing-stay', name: 'Stay page' },
-	// 				{
-	// 					id: ncNanoId(),
-	// 					href: '/listing-stay-map',
-	// 					name: 'Stay page (map)',
-	// 				},
-	// 				{ id: ncNanoId(), href: '/listing-stay-detail', name: 'Stay Detail' },
-	// 			],
-	// 		},
 
-	// 		//
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-experiences',
-	// 			name: 'Experiences listings',
-	// 			type: 'dropdown',
-	// 			children: [
-	// 				{
-	// 					id: ncNanoId(),
-	// 					href: '/listing-experiences',
-	// 					name: 'Experiences page',
-	// 				},
-	// 				{
-	// 					id: ncNanoId(),
-	// 					href: '/listing-experiences-map',
-	// 					name: 'Experiences page (map)',
-	// 				},
-	// 				{
-	// 					id: ncNanoId(),
-	// 					href: '/listing-experiences-detail',
-	// 					name: 'Experiences Detail',
-	// 				},
-	// 			],
-	// 		},
-
-	// 		//
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-car',
-	// 			name: 'Cars listings',
-	// 			type: 'dropdown',
-	// 			children: [
-	// 				{ id: ncNanoId(), href: '/listing-car', name: 'Cars page' },
-	// 				{ id: ncNanoId(), href: '/listing-car-map', name: 'Cars page (map)' },
-	// 				{ id: ncNanoId(), href: '/listing-event-detail', name: 'Car Detail' },
-	// 			],
-	// 		},
-
-	// 		//
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-real-estate',
-	// 			name: 'Real Estate Listings',
-	// 			type: 'dropdown',
-	// 			children: [
-	// 				{
-	// 					id: ncNanoId(),
-	// 					href: '/listing-real-estate',
-	// 					name: 'Real Estate Listings',
-	// 				},
-	// 				{
-	// 					id: ncNanoId(),
-	// 					href: '/listing-real-estate-map',
-	// 					name: 'Real Estate Maps',
-	// 				},
-	// 			],
-	// 		},
-	// 		//
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-flights',
-	// 			name: 'Flights listings',
-	// 		},
-	// 	],
-	// },
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '/author',
-	// 	name: 'Templates',
-	// 	type: 'dropdown',
-	// 	children: templatesChildrenMenus,
-	// },
-
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '#',
-	// 	name: 'Autres pages',
-	// 	type: 'dropdown',
-	// 	children: otherPageChildMenus,
-	// },
+	{ id: ncNanoId(), href: '/', name: 'Accueil' },
 	{ id: ncNanoId(), href: '/about', name: 'À propos' },
 	{ id: ncNanoId(), href: '/contact', name: 'Contactez-nous' },
 	{ id: ncNanoId(), href: '/login', name: 'Se connecter' },
 	{ id: ncNanoId(), href: '/signup', name: "S'inscrire" },
 	{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique d'achat de billets" },
 	{ id: ncNanoId(), href: '/account', name: "Mettre à jour le profil" },
-	{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique des billets" },
 	{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
-]
+];
 
-export const NAVIGATION_DEMO_2: NavItemType[] = [
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '/',
-	// 	name: 'Home',
-	// 	type: 'dropdown',
-	// 	children: demoChildMenus,
-	// 	isNew: true,
-	// },
 
-	// //
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '/listing-stay',
-	// 	name: 'Listing pages',
-	// 	children: [
-	// 		{ id: ncNanoId(), href: '/listing-stay', name: 'Stay listings' },
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-stay-map',
-	// 			name: 'Stay listings (map)',
-	// 		},
-	// 		{ id: ncNanoId(), href: '/listing-stay-detail', name: 'Stay detail' },
 
-	// 		//
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-experiences',
-	// 			name: 'Experiences listings',
-	// 		},
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-experiences-map',
-	// 			name: 'Experiences (map)',
-	// 		},
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-experiences-detail',
-	// 			name: 'Experiences detail',
-	// 		},
-	// 	],
-	// },
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '/listing-car',
-	// 	name: 'Listing pages',
-	// 	children: [
-	// 		{ id: ncNanoId(), href: '/listing-car', name: 'Cars listings' },
-	// 		{ id: ncNanoId(), href: '/listing-car-map', name: 'Cars listings (map)' },
-	// 		{ id: ncNanoId(), href: '/listing-event-detail', name: 'Car detail' },
+export const navigation: NavItemType[] = [
 
-	// 		//
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-real-estate',
-	// 			name: 'Real estate listings',
-	// 		},
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-real-estate-map',
-	// 			name: 'Real estate (map)',
-	// 		},
-	// 		//
-	// 		{
-	// 			id: ncNanoId(),
-	// 			href: '/listing-flights',
-	// 			name: 'Flights listings',
-	// 		},
-	// 	],
-	// },
-
-	// //
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '/author',
-	// 	name: 'Templates',
-	// 	type: 'dropdown',
-	// 	children: templatesChildrenMenus,
-	// },
-
-	// //
-	// {
-	// 	id: ncNanoId(),
-	// 	href: '#',
-	// 	name: '',
-	// 	type: 'dropdown',
-	// 	children: otherPageChildMenus,
-	// },
-
+	{ id: ncNanoId(), href: '/', name: 'Accueil' },
 	{ id: ncNanoId(), href: '/about', name: 'À propos' },
 	{ id: ncNanoId(), href: '/contact', name: 'Contactez-nous' },
-	{ id: ncNanoId(), href: '/login', name: 'Se connecter' },
-	{ id: ncNanoId(), href: '/signup', name: "S'inscrire" },
-	{ id: ncNanoId(), href: '/account', name: "Profil" },
-	{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique des billets" },
+	// { id: ncNanoId(), href: '/login', name: 'Se connecter' },
+	// { id: ncNanoId(), href: '/signup', name: "S'inscrire" },
+	// { id: ncNanoId(), href: '/account', name: "Profil" },
+	// { id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique des billets" },
 	{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
 ]
+
+// Check for authenticated user
+const user = JSON.parse(localStorage.getItem('user') || 'null'); // Get user from localStorage
+
+// console.log(user)
+
+if (user) {
+	navigation.push(
+		{ id: ncNanoId(), href: '/account', name: "Profil" }, 
+		{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique des billets" },
+		{ id: ncNanoId(), href: '/donation-history', name: "Historique des dons" },
+	);
+} else {
+	navigation.push(
+		{ id: ncNanoId(), href: '/login', name: 'Se connecter' }, 
+		{ id: ncNanoId(), href: '/signup', name: "S'inscrire" } 
+	);
+}
+
+export default navigation;
+
+

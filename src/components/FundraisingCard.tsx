@@ -40,7 +40,7 @@ const FundraisingCard: FC<FundraisingCardProps> = ({
 				<div className="space-y-3">
 					<div className="relative h-2 w-full overflow-hidden rounded-full bg-neutral-200">
 						<div
-							className="bg-primary-6000 absolute left-0 top-0 h-full"
+							className="bg-primary-600 dark:bg-primary-400 absolute left-0 top-0 h-full"
 							style={{ width: `${stats.progress_percentage}%` }}
 						/>
 					</div>

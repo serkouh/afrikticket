@@ -5,6 +5,7 @@ import { useParams, usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import axios from 'axios'
 import ButtonPrimary from '@/shared/ButtonPrimary'
+import FundraisingCard from '@/components/FundraisingCard'
 import Input from '@/shared/Input'
 import eventTicket from '@/images/event_ticket.jpg'
 import eventDetails from '@/images/eventDetails.jpg'
@@ -47,6 +48,7 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 	const router = useRouter()
 	const [fundraisingData, setFundraisingData] = useState<FundraisingData | null>(null)
 	const [donationAmount, setDonationAmount] = useState<string>('')
+	const [relatedFundraisings, setRelatedFundraisings] = useState<FundraisingData[]>([])
 
 
 	useEffect(() => {
@@ -82,6 +84,27 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 			fetchData()
 		}
 	}, [params.id])
+
+	useEffect(() => {
+		const fetchRelatedFundraisings = async () => {
+			try {
+				const response = await axios.get(
+					`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/fundraising`,
+					{
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem('token')}`,
+						},
+					}
+				)
+				if (response.status === 200) {
+					setRelatedFundraisings(response.data.data.fundraisings)
+				}
+			} catch (error) {
+				console.error('Error fetching related fundraisings:', error)
+			}
+		}
+		fetchRelatedFundraisings()
+	}, [])
 
 	
 
@@ -277,13 +300,19 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 				</div>
 			</main>
 
-			{/* <div className="max-w-7xl mx-auto mt-24 space-y-24 lg:mt-28 lg:space-y-28">
+			<div className="max-w-7xl mx-auto mt-24 space-y-24 lg:mt-28 lg:space-y-28">
 				<SectionSliderNewCategories
 					heading="Autres campagnes"
-					categoryCardType="card4"
 					itemPerRow={4}
+					renderCard={(index: number) => (
+						<FundraisingCard 
+							key={relatedFundraisings[index]?.fundraising.id} 
+							data={relatedFundraisings[index]} 
+						/>
+					)}
+					items={relatedFundraisings}
 				/>
-			</div> */}
+			</div>
 		</div>
 	)
 }

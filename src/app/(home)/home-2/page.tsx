@@ -103,92 +103,93 @@ const DEMO_CATS_2: TaxonomyType[] = [
 
 function PageHome2() {
   return (
-    <main className="nc-PageHome2 relative overflow-hidden">
-      <div className="container relative space-y-24 mb-24 lg:space-y-28 lg:mb-28">
-        <SectionHero2 className="" />
+    // <main className="nc-PageHome2 relative overflow-hidden">
+    //   <div className="container relative space-y-24 mb-24 lg:space-y-28 lg:mb-28">
+    //     <SectionHero2 className="" />
 
-        <div className="ncSectionLogos grid grid-cols-3 lg:grid-cols-5 gap-5 sm:gap-16">
-          <div className="flex items-end justify-center">
-            <Image className="block dark:hidden" src={logo1} alt="logo1" />
-            <Image className="hidden dark:block" src={logo1Dark} alt="logo1" />
-          </div>
-          <div className="flex items-end justify-center">
-            <Image className="block dark:hidden" src={logo4} alt="logo4" />
-            <Image className="hidden dark:block" src={logo4Dark} alt="logo4" />
-          </div>
-          <div className="flex items-end justify-center">
-            <Image className="block dark:hidden" src={logo2} alt="logo2" />
-            <Image className="hidden dark:block" src={logo2Dark} alt="logo2" />
-          </div>
-          <div className="flex items-end justify-center">
-            <Image className="block dark:hidden" src={logo3} alt="logo3" />
-            <Image className="hidden dark:block" src={logo3Dark} alt="logo3" />
-          </div>
+    //     <div className="ncSectionLogos grid grid-cols-3 lg:grid-cols-5 gap-5 sm:gap-16">
+    //       <div className="flex items-end justify-center">
+    //         <Image className="block dark:hidden" src={logo1} alt="logo1" />
+    //         <Image className="hidden dark:block" src={logo1Dark} alt="logo1" />
+    //       </div>
+    //       <div className="flex items-end justify-center">
+    //         <Image className="block dark:hidden" src={logo4} alt="logo4" />
+    //         <Image className="hidden dark:block" src={logo4Dark} alt="logo4" />
+    //       </div>
+    //       <div className="flex items-end justify-center">
+    //         <Image className="block dark:hidden" src={logo2} alt="logo2" />
+    //         <Image className="hidden dark:block" src={logo2Dark} alt="logo2" />
+    //       </div>
+    //       <div className="flex items-end justify-center">
+    //         <Image className="block dark:hidden" src={logo3} alt="logo3" />
+    //         <Image className="hidden dark:block" src={logo3Dark} alt="logo3" />
+    //       </div>
 
-          <div className="flex items-end justify-center">
-            <Image className="block dark:hidden" src={logo5} alt="logo5" />
-            <Image className="hidden dark:block" src={logo5Dark} alt="logo5" />
-          </div>
-        </div>
+    //       <div className="flex items-end justify-center">
+    //         <Image className="block dark:hidden" src={logo5} alt="logo5" />
+    //         <Image className="hidden dark:block" src={logo5Dark} alt="logo5" />
+    //       </div>
+    //     </div>
 
-        <SectionHowItWork
-          data={[
-            {
-              id: 1,
-              img: HIW1img,
-              imgDark: HIW1imgDark,
-              title: "Smart search",
-              desc: "Name the area or type of home you are looking for the search bar. Our app will find you the perfect match.",
-            },
-            {
-              id: 2,
-              img: HIW2img,
-              imgDark: HIW2imgDark,
-              title: "Choose property",
-              desc: "From the number of options our app will provide, you can select any property that you like to explore.",
-            },
-            {
-              id: 3,
-              img: HIW3img,
-              imgDark: HIW3imgDark,
-              title: "Book you property",
-              desc: "Find a home or space from our search bar. Enter your specific location, property type and price range.",
-            },
-          ]}
-        />
+    //     <SectionHowItWork
+    //       data={[
+    //         {
+    //           id: 1,
+    //           img: HIW1img,
+    //           imgDark: HIW1imgDark,
+    //           title: "Smart search",
+    //           desc: "Name the area or type of home you are looking for the search bar. Our app will find you the perfect match.",
+    //         },
+    //         {
+    //           id: 2,
+    //           img: HIW2img,
+    //           imgDark: HIW2imgDark,
+    //           title: "Choose property",
+    //           desc: "From the number of options our app will provide, you can select any property that you like to explore.",
+    //         },
+    //         {
+    //           id: 3,
+    //           img: HIW3img,
+    //           imgDark: HIW3imgDark,
+    //           title: "Book you property",
+    //           desc: "Find a home or space from our search bar. Enter your specific location, property type and price range.",
+    //         },
+    //       ]}
+    //     />
 
-        <div className="relative py-16">
-          <BackgroundSection />
-          <SectionGridFeatureProperty />
-        </div>
+    //     <div className="relative py-16">
+    //       <BackgroundSection />
+    //       <SectionGridFeatureProperty />
+    //     </div>
 
-        <SectionOurFeatures type="type2" rightImg={rightImgPng} />
+    //     <SectionOurFeatures type="type2" rightImg={rightImgPng} />
 
-        <SectionDowloadApp />
+    //     <SectionDowloadApp />
 
-        <SectionSliderNewCategories
-          categories={DEMO_CATS_2}
-          categoryCardType="card4"
-          itemPerRow={4}
-          heading="Suggestions for discovery"
-          subHeading="Popular places to stay that Chisfis recommends for you"
-        />
+    //     <SectionSliderNewCategories
+    //       categories={DEMO_CATS_2}
+    //       categoryCardType="card4"
+    //       itemPerRow={4}
+    //       heading="Suggestions for discovery"
+    //       subHeading="Popular places to stay that Chisfis recommends for you"
+    //     />
 
-        <div className="relative py-16">
-          <BackgroundSection className="bg-neutral-100 dark:bg-black dark:bg-opacity-20 " />
-          <SectionGridAuthorBox boxCard="box2" />
-        </div>
+    //     <div className="relative py-16">
+    //       <BackgroundSection className="bg-neutral-100 dark:bg-black dark:bg-opacity-20 " />
+    //       <SectionGridAuthorBox boxCard="box2" />
+    //     </div>
 
-        <SectionSliderNewCategories
-          heading="Explore by types of stays"
-          subHeading="Explore houses based on 10 types of stays"
-          categoryCardType="card5"
-          itemPerRow={5}
-        />
+    //     <SectionSliderNewCategories
+    //       heading="Explore by types of stays"
+    //       subHeading="Explore houses based on 10 types of stays"
+    //       categoryCardType="card5"
+    //       itemPerRow={5}
+    //     />
 
-        <SectionSubscribe2 />
-      </div>
-    </main>
+    //     <SectionSubscribe2 />
+    //   </div>
+    // </main>
+    <div></div>
   );
 }
 

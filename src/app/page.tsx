@@ -6,6 +6,7 @@ import CarCard from '@/components/CarCard'
 import FundraisingCard from '@/components/FundraisingCard'
 import axios from 'axios'
 import Heading2 from '@/shared/Heading2'
+import SectionSliderNewCategories from '@/components/SectionSliderNewCategories'
 // Add these interfaces at the top of your page.tsx file
 interface Event {
 	id: number
@@ -90,32 +91,40 @@ function PageHome() {
 			<div className="container relative space-y-24 mb-24 lg:space-y-28 lg:mb-28">
 				<SectionHero className="pt-10 lg:pt-16 lg:pb-16" />
 				
-				{/* Events Section */}
+				{/* Events Section with Slider */}
 				<div>
 					<Heading2
 						heading="Événements à venir"
 						subHeading="Découvrez les événements à venir"
 					/>
-					<div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8">
-						{events?.map((event) => (
-							<CarCard key={event.id} data={event} />
-						))}
+					<div className="relative flow-root">
+						<SectionSliderNewCategories
+							itemPerRow={4}
+							renderCard={(index: number) => (
+								<CarCard key={events[index]?.id} data={events[index]} />
+							)}
+							items={events}
+						/>
 					</div>
 				</div>
 
-				{/* Fundraising Section */}
+				{/* Fundraising Section with Slider */}
 				<div>
 					<Heading2
 						heading="Campagnes de collecte de fonds actives"
 						subHeading="."
 					/>
-					<div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8">
-						{fundraisings?.map((item) => (
-							<FundraisingCard 
-								key={item.fundraising.id} 
-								data={item} 
-							/>
-						))}
+					<div className="relative flow-root">
+						<SectionSliderNewCategories
+							itemPerRow={4}
+							renderCard={(index: number) => (
+								<FundraisingCard 
+									key={fundraisings[index]?.fundraising.id} 
+									data={fundraisings[index]} 
+								/>
+							)}
+							items={fundraisings}
+						/>
 					</div>
 				</div>
 			</div>

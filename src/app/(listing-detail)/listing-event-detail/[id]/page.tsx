@@ -22,6 +22,7 @@ import LikeSaveBtns from '@/components/LikeSaveBtns'
 import { usePathname, useRouter } from 'next/navigation'
 import SectionDateRange from '../../SectionDateRange'
 import RentalCarDatesRangeInput from '../RentalCarDatesRangeInput'
+import CarCard from '@/components/CarCard'
 import { Route } from 'next'
 import {
 	Backpack03Icon,
@@ -71,12 +72,49 @@ interface EventData {
 	}
 }
 
+interface Event {
+	id: number
+	title: string
+	description: string
+	start_date: string
+	end_date: string
+	price: string
+	image?: string
+	time_remaining: string
+	remaining_tickets: number
+}
+
 const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 	const params = useParams()
 	const pathname = usePathname()
 	const router = useRouter()
 	const [eventData, setEventData] = useState<EventData | null>(null)
 	const [ticketNumber, setTicketNumber] = useState<string | null>(null)
+	const [relatedEvents, setRelatedEvents] = useState<Event[]>([])
+
+	useEffect(() => {
+		const fetchRelatedEvents = async () => {
+			try {
+				const response = await axios.get(
+					`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events`,
+					{
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem('token')}`,
+						},
+					}
+				)
+				if (response.status === 200) {
+					const filteredEvents = response.data.data.filter(
+						(event: Event) => event.id !== Number(params.id)
+					)
+					setRelatedEvents(filteredEvents)
+				}
+			} catch (error) {
+				console.error('Error fetching related events:', error)
+			}
+		}
+		fetchRelatedEvents()
+	}, [params.id])
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -127,7 +165,9 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 		}
 
 		if (ticketCount > remainingTickets) {
-			toast.error(`Désolé, il ne reste que ${remainingTickets} billets disponibles`)
+			toast.error(
+				`Désolé, il ne reste que ${remainingTickets} billets disponibles`,
+			)
 			return
 		}
 
@@ -139,7 +179,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 				quantity: ticketCount,
 				price: price,
 				total: price * ticketCount,
-			})
+			}),
 		)
 
 		router.push('/checkout')
@@ -282,9 +322,9 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 	}
 
 	return (
-		<div className="nc-ListingCarDetailPage">
+		<div className="nc-ListingCarDetailPage container mx-auto px-4 sm:px-6 lg:px-8 pb-24">
 			{/* SINGLE HEADER */}
-			<header className="rounded-md sm:rounded-xl">
+			<header className="rounded-md sm:rounded-xl mt-8 lg:mt-10">
 				<div className="relative grid grid-cols-4 gap-1 sm:gap-2">
 					<div className="relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
 						<Image
@@ -334,8 +374,8 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 				</div>
 			</header>
 
-			{/* MAIn */}
-			<main className="relative z-10 mt-11 flex flex-col lg:flex-row">
+			{/* MAIN */}
+			<main className="relative z-10 mt-11 flex flex-col lg:flex-row max-w-7xl mx-auto">
 				{/* CONTENT */}
 				<div className="w-full space-y-8 lg:w-3/5 lg:space-y-10 lg:pr-10 xl:w-2/3">
 					{renderSection2()}
@@ -347,23 +387,19 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 				</div>
 			</main>
 
-			<div className="container relative mb-24 space-y-24 lg:mb-28 lg:space-y-28"></div>
-
-			<SectionSliderNewCategories
-				heading="Événements suggérés"
-				categoryCardType="card3"
-				itemPerRow={4}
-			/>
-
-			<div className="container relative mb-24 space-y-24 lg:mb-28 lg:space-y-28"></div>
-
-			<SectionSliderNewCategories
-				heading="Campagnes de collecte de fonds"
-				categoryCardType="card4"
-				itemPerRow={4}
-			/>
-
-			<div className="container relative mb-24 space-y-24 lg:mb-28 lg:space-y-28"></div>
+			<div className="max-w-7xl mx-auto mt-24 space-y-24 lg:mt-28 lg:space-y-28">
+				<SectionSliderNewCategories
+					heading="Événements suggérés"
+					itemPerRow={4}
+					renderCard={(index: number) => (
+						<CarCard 
+							key={relatedEvents[index]?.id} 
+							data={relatedEvents[index]} 
+						/>
+					)}
+					items={relatedEvents}
+				/>
+			</div>
 		</div>
 	)
 }

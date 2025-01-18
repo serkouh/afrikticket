@@ -11,6 +11,7 @@ import Link from 'next/link'
 import axios, { AxiosResponse } from 'axios'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 export interface PageLoginProps {}
 
@@ -40,35 +41,32 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
 	const router = useRouter()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
+		e.preventDefault();
 		try {
-			const response: AxiosResponse = await axios.post(
-				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`,
-				{
-					email,
-					password,
-				},
-			)
-
-			if (response.status === 200) {
-				const { user, token, message } = response.data
-				setUser(user)
-				setMessage(message)
-				localStorage.setItem('user', JSON.stringify(user))
-				localStorage.setItem('token', token)
-				router.push('/account')
-			} else {
-				setMessage('Une erreur est survenue lors de la connexion')
-			}
+		  const response: AxiosResponse = await axios.post(
+			`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`,
+			{
+			  email,
+			  password,
+			},
+		  );
+	  
+		  if (response.status === 200) {
+			const { user, token } = response.data;
+			setUser(user);
+			localStorage.setItem('user', JSON.stringify(user));
+			localStorage.setItem('token', token);
+			toast.success('Connexion réussie');
+			router.push('/account');
+		  }
 		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				setMessage(error.response?.data?.message || 'Erreur de connexion')
-			} else {
-				setMessage('Une erreur inattendue est survenue')
-			}
-			console.error('Login error:', error)
+		  if (axios.isAxiosError(error)) {
+			toast.error(error.response?.data?.message || 'Erreur de connexion');
+		  } else {
+			toast.error('Une erreur inattendue est survenue');
+		  }
 		}
-	}
+	  };
 
 	return (
 		<div className={`nc-PageLogin`}>

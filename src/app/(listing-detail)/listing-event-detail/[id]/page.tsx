@@ -36,6 +36,7 @@ import SectionSliderNewCategories from '@/components/SectionSliderNewCategories'
 import { Label } from '@headlessui/react'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 
 export interface ListingCarDetailPageProps {}
 
@@ -77,8 +78,6 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 	const [eventData, setEventData] = useState<EventData | null>(null)
 	const [ticketNumber, setTicketNumber] = useState<string | null>(null)
 
-	
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -113,86 +112,40 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 		}
 	}, [params.id])
 
-	// function useCountdown(hours: number, minutes: number) {
-	// 	const [countdown, setCountdown] = useState({
-	// 		hours,
-	// 		minutes,
-	// 		seconds: 0,
-	// 	})
-
-	// 	useEffect(() => {
-	// 		let totalSeconds = hours * 3600 + minutes * 60
-
-	// 		const timer = setInterval(() => {
-	// 			if (totalSeconds <= 0) {
-	// 				clearInterval(timer)
-	// 			} else {
-	// 				totalSeconds -= 1
-
-	// 				const updatedHours = Math.floor(totalSeconds / 3600)
-	// 				const updatedMinutes = Math.floor((totalSeconds % 3600) / 60)
-	// 				const updatedSeconds = totalSeconds % 60
-
-	// 				setCountdown({
-	// 					hours: updatedHours,
-	// 					minutes: updatedMinutes,
-	// 					seconds: updatedSeconds,
-	// 				})
-	// 			}
-	// 		}, 1000)
-
-	// 		return () => clearInterval(timer)
-	// 	}, [hours, minutes])
-
-	// 	return countdown
-	// }
-
 	if (!params.id) {
 		return <div>no id...</div>
 	}
 
-	const handleBuyTicket = async () => {
-		if (!ticketNumber || Number(ticketNumber) <= 0) {
-			alert('Please enter a valid ticket number')
+	const handleBuyTicket = () => {
+		const ticketCount = Number(ticketNumber)
+		const remainingTickets = eventData?.tickets?.remaining ?? 0
+		const price = eventData?.event?.price ?? 0
+
+		if (!ticketCount || ticketCount <= 0) {
+			toast.error('Veuillez entrer un nombre de billets valide')
 			return
 		}
 
-		try {
-			const token = localStorage.getItem('token')
-			console.log('token', token)
-			if (!token) {
-				alert('Please login to purchase tickets')
-				return
-			}
-
-			const response = await axios.post(
-				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${params.id}/tickets`,
-				{
-					quantity: Number(ticketNumber),
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-						'Content-Type': 'application/json',
-					},
-				},
-			)
-
-			if (response.status >= 200 && response.status < 300) {
-				console.log('Purchase successful:', response.data)
-				router.push('/checkout')
-			}
-		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				console.error('Error details:', error.response?.data)
-			} else {
-				console.error('Error:', error)
-			}
+		if (ticketCount > remainingTickets) {
+			toast.error(`Désolé, il ne reste que ${remainingTickets} billets disponibles`)
+			return
 		}
+
+		localStorage.setItem(
+			'checkoutData',
+			JSON.stringify({
+				type: 'ticket',
+				eventId: params.id,
+				quantity: ticketCount,
+				price: price,
+				total: price * ticketCount,
+			})
+		)
+
+		router.push('/checkout')
 	}
 
 	// const { hours, minutes, seconds } = useCountdown(1, 30)
-
 	const handleOpenModalImageGallery = () => {
 		router.push(`${pathname}/?modal=PHOTO_TOUR_SCROLLABLE` as Route)
 	}
@@ -244,15 +197,30 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 								hour12: false,
 							})}
 					</p>
-					<p style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
-	<span>Temps restant pour l&apos;événement: {eventData?.timing?.time_remaining}</span>
-	<span className={`text-lg font-semibold ${
-		eventData?.tickets?.remaining !== undefined && eventData.tickets.remaining > 0 ? 'text-green-600' : 'text-red-600'
-	}`}>
-		Nombre de billets restants: {eventData?.tickets?.remaining ?? 0} sur {eventData?.tickets?.total ?? 0}
-	</span>
-</p>
-
+					<p
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'flex-start',
+							gap: '8px',
+						}}
+					>
+						<span>
+							Temps restant pour l&apos;événement:{' '}
+							{eventData?.timing?.time_remaining}
+						</span>
+						<span
+							className={`text-lg font-semibold ${
+								eventData?.tickets?.remaining !== undefined &&
+								eventData.tickets.remaining > 0
+									? 'text-green-600'
+									: 'text-red-600'
+							}`}
+						>
+							Nombre de billets restants: {eventData?.tickets?.remaining ?? 0}{' '}
+							sur {eventData?.tickets?.total ?? 0}
+						</span>
+					</p>
 				</div>
 			</div>
 		)
@@ -273,9 +241,16 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 
 				<div className="space-y-1">
 					<Input
-						placeholder="Entrez le numéro du billet"
+						type="number"
+						min="1"
+						max={eventData?.tickets?.remaining}
+						placeholder="Nombre de billets"
+						value={ticketNumber || ''}
 						onChange={(e) => setTicketNumber(e.target.value)}
 					/>
+					<span className="text-sm text-neutral-500 dark:text-neutral-400">
+						{eventData?.tickets?.remaining} billets disponibles
+					</span>
 				</div>
 
 				{/* SUM */}

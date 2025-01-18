@@ -7,6 +7,7 @@ import 'rc-slider/assets/index.css'
 import Footer2 from '@/components/Footer2'
 import ThemeProvider from './theme-provider'
 import { headers } from 'next/headers'
+import ToastProvider from '@/providers/ToastProvider'
 
 const poppins = Poppins({
 	subsets: ['latin'],
@@ -35,6 +36,7 @@ export default function RootLayout({
 						{showFooter && <Footer2 />}
 					</div>
 					<ClientCommons />
+					<ToastProvider />
 				</body>
 			</ThemeProvider>
 		</html>

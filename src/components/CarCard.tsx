@@ -84,9 +84,15 @@ const CarCard: FC<CarCardProps> = ({
 						{data.price}
 					</span>
 
-					<Link href={`/listing-event-detail/${data.id}`} className="flex flex-col">
-						<ButtonPrimary>Acheter un billet</ButtonPrimary>
-					</Link>
+					{data.remaining_tickets > 0 ? (
+						<Link href={`/listing-event-detail/${data.id}`} className="flex flex-col">
+							<ButtonPrimary>Acheter un billet</ButtonPrimary>
+						</Link>
+					) : (
+						<span className="px-4 py-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-500 rounded-full font-medium">
+							Sold Out
+						</span>
+					)}
 				</div>
 			</div>
 		)

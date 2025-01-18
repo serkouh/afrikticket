@@ -5,6 +5,7 @@ import Label from '@/components/Label'
 import ButtonPrimary from '@/shared/ButtonPrimary'
 import Input from '@/shared/Input'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 
 const AccountPass = () => {
 	const [currentPassword, setCurrentPassword] = useState('')
@@ -20,36 +21,40 @@ const AccountPass = () => {
 	}, [])
 
 	const handleUpdatePassword = async () => {
-		if (
-			currentPassword === '' ||
-			newPassword === '' ||
-			confirmPassword === ''
-		) {
-			setMessage('Veuillez remplir tous les champs')
-			setTimeout(() => setMessage(''), 3000)
-			return
+		if (currentPassword === '' || newPassword === '' || confirmPassword === '') {
+		  toast.error('Veuillez remplir tous les champs');
+		  return;
 		}
-		const response = await axios.put(
+		
+		try {
+		  const response = await axios.put(
 			`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/${user.id}/password`,
 			{
-				currentPassword,
-				newPassword,
-				confirmPassword,
+			  currentPassword,
+			  newPassword,
+			  confirmPassword,
 			},
 			{
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('token')}`,
-				},
+			  headers: {
+				Authorization: `Bearer ${localStorage.getItem('token')}`,
+			  },
 			},
-		)
-		if (response.status === 200) {
-			setMessage(response.data.message)
-			setTimeout(() => setMessage(''), 3000)
-		} else {
-			setMessage(response.data.message)
-			setTimeout(() => setMessage(''), 3000)
+		  );
+		  
+		  if (response.status === 200) {
+			toast.success('Mot de passe mis à jour avec succès');
+			setCurrentPassword('');
+			setNewPassword('');
+			setConfirmPassword('');
+		  }
+		} catch (error) {
+		  if (axios.isAxiosError(error)) {
+			toast.error(error.response?.data?.message || 'Erreur lors de la mise à jour du mot de passe');
+		  } else {
+			toast.error('Une erreur inattendue est survenue');
+		  }
 		}
-	}
+	  };
 	return (
 		<div className="space-y-6 sm:space-y-8">
 			{/* HEADING */}

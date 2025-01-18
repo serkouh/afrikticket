@@ -2,7 +2,7 @@
 
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
-import React, { FC, Fragment, useState } from 'react'
+import React, { FC, Fragment, useState, useEffect } from 'react'
 import visaPng from '@/images/vis.png'
 import mastercardPng from '@/images/mastercard.svg'
 import Input from '@/shared/Input'
@@ -16,6 +16,10 @@ import converSelectedDateToString from '@/utils/converSelectedDateToString'
 import ModalSelectGuests from '@/components/ModalSelectGuests'
 import Image from 'next/image'
 import { GuestsObject } from '../(client-components)/type'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
+import toast from 'react-hot-toast'
+
 
 export interface CheckOutPagePageMainProps {
 	className?: string
@@ -24,6 +28,103 @@ export interface CheckOutPagePageMainProps {
 const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 	className = '',
 }) => {
+	const router = useRouter();
+	const [checkoutData, setCheckoutData] = useState<any>(null);
+	const [formData, setFormData] = useState({
+		quantity: '',
+		amount: '',
+		name: '',
+		email: '',
+		phone: ''
+	});
+
+	useEffect(() => {
+		const data = localStorage.getItem('checkoutData');
+		if (data) {
+			setCheckoutData(JSON.parse(data));
+		}
+
+		// Get user info from localStorage
+		const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+		const checkoutInfo = JSON.parse(localStorage.getItem('checkoutData') || '{}');
+		
+		setFormData(prev => ({
+			...prev,
+			name: userInfo.name || '',
+			email: userInfo.email || '',
+			phone: userInfo.phone || '',
+			amount: checkoutInfo.amount || '',
+			quantity: checkoutInfo.quantity || ''
+		}));
+	}, []);
+
+	// Update localStorage when amount/quantity changes
+	const handleQuantityAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		const field = checkoutData?.type === 'donation' ? 'amount' : 'quantity';
+		
+		setFormData(prev => ({ ...prev, [field]: value }));
+		
+		// Update checkoutData in localStorage
+		const updatedCheckoutData = {
+			...checkoutData,
+			[field]: value,
+			total: checkoutData?.type === 'donation' 
+				? Number(value) 
+				: (checkoutData?.price || 0) * Number(value)
+		};
+		localStorage.setItem('checkoutData', JSON.stringify(updatedCheckoutData));
+	};
+
+	const handlePayment = async () => {
+		try {
+		  const token = localStorage.getItem('token');
+		  if (!token) {
+			toast.error('Veuillez vous connecter pour continuer');
+			return;
+		  }
+	  
+		  let response;
+		  if (checkoutData.type === 'donation') {
+			response = await axios.post(
+			  `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/fundraising/${checkoutData.fundraisingId}/donate`,
+			  {
+				amount: checkoutData.amount,
+				payment_method: "credit_card"
+			  },
+			  {
+				headers: {
+				  Authorization: `Bearer ${token}`,
+				  'Content-Type': 'application/json',
+				},
+			  }
+			);
+		  } else {
+			response = await axios.post(
+			  `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${checkoutData.eventId}/tickets`,
+			  {
+				quantity: checkoutData.quantity,
+			  },
+			  {
+				headers: {
+				  Authorization: `Bearer ${token}`,
+				  'Content-Type': 'application/json',
+				},
+			  }
+			);
+		  }
+	  
+		  if (response.status >= 200 && response.status < 300) {
+			localStorage.removeItem('checkoutData');
+			toast.success('Paiement effectué avec succès');
+			router.push(`/thank-you?type=${checkoutData.type}`);
+		  }
+		} catch (error) {
+		  console.error('Payment error:', error);
+		  toast.error('Le paiement a échoué. Veuillez réessayer.');
+		}
+	  };
+
 	const [startDate, setStartDate] = useState<Date | null>(
 		new Date('2023/02/06'),
 	)
@@ -90,73 +191,47 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 		return (
 			<div className="flex w-full flex-col space-y-8 border-neutral-200 px-0 dark:border-neutral-700 sm:rounded-2xl sm:border sm:p-6 xl:p-8">
 				<h2 className="text-3xl font-semibold lg:text-4xl">
-				Confirmation et paiement
+					Confirmation et paiement
 				</h2>
 				<div className="border-b border-neutral-200 dark:border-neutral-700"></div>
 				<div>
 					<div>
-						{/* <h3 className="text-2xl font-semibold">Your trip</h3> */}
 						<div className="space-y-1 mb-5">
 							<Label>
-							Nombre de billets</Label>
-							<Input type="number" defaultValue="8" />
+								{checkoutData?.type === 'donation' ? 'Montant du don' : 'Nombre de billets'}
+							</Label>
+							<Input 
+								type="number" 
+								value={checkoutData?.type === 'donation' ? formData.amount : formData.quantity}
+								onChange={handleQuantityAmountChange}
+								min="1"
+								className="focus:ring-primary-500 focus:border-primary-500"
+							/>
 						</div>
 						<div className="space-y-1 mb-5">
-							<Label>Nom </Label>
-							<Input defaultValue="John Doe" />
+							<Label>Nom</Label>
+							<Input 
+								value={formData.name}
+								onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+							/>
 						</div>
 						<div className="space-y-1 mb-5">
-							<Label>
-							E-mail </Label>
-							<Input type='email' defaultValue="example@gmail.com" />
+							<Label>E-mail</Label>
+							<Input 
+								type='email' 
+								value={formData.email}
+								onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+							/>
 						</div>
 						<div className="space-y-1 mb-5">
-							<Label>Numéro de téléphone </Label>
-							<Input type='number' defaultValue="123456789" />
+							<Label>Numéro de téléphone</Label>
+							<Input 
+								type='tel'
+								value={formData.phone}
+								onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+							/>
 						</div>
 					</div>
-					{/* <div className="z-10 mt-6 flex flex-col divide-y divide-neutral-200 overflow-hidden rounded-3xl border border-neutral-200 dark:divide-neutral-700 dark:border-neutral-700 sm:flex-row sm:divide-x sm:divide-y-0">
-						<ModalSelectDate
-							renderChildren={({ openModal }) => (
-								<button
-									onClick={openModal}
-									className="flex flex-1 justify-between space-x-5 p-5 text-left hover:bg-neutral-50 dark:hover:bg-neutral-800"
-									type="button"
-								>
-									<div className="flex flex-col">
-										<span className="text-sm text-neutral-400">Date</span>
-										<span className="mt-1.5 text-lg font-semibold">
-											{converSelectedDateToString([startDate, endDate])}
-										</span>
-									</div>
-									<PencilSquareIcon className="h-6 w-6 text-neutral-600 dark:text-neutral-400" />
-								</button>
-							)}
-						/>
-
-						<ModalSelectGuests
-							renderChildren={({ openModal }) => (
-								<button
-									type="button"
-									onClick={openModal}
-									className="flex flex-1 justify-between space-x-5 p-5 text-left hover:bg-neutral-50 dark:hover:bg-neutral-800"
-								>
-									<div className="flex flex-col">
-										<span className="text-sm text-neutral-400">Guests</span>
-										<span className="mt-1.5 text-lg font-semibold">
-											<span className="line-clamp-1">
-												{`${
-													(guests.guestAdults || 0) +
-													(guests.guestChildren || 0)
-												} Guests, ${guests.guestInfants || 0} Infants`}
-											</span>
-										</span>
-									</div>
-									<PencilSquareIcon className="h-6 w-6 text-neutral-600 dark:text-neutral-400" />
-								</button>
-							)}
-						/>
-					</div> */}
 				</div>
 
 				<div>
@@ -166,19 +241,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 					<div className="mt-6">
 						<TabGroup>
 							<TabList className="my-5 flex gap-1">
-								<Tab as={Fragment}>
-									{({ selected }) => (
-										<button
-											className={`rounded-full px-4 py-1.5 focus:outline-none sm:px-6 sm:py-2.5 ${selected
-													? 'bg-neutral-800 text-white dark:bg-neutral-200 dark:text-neutral-900'
-													: 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800'
-												}`}
-										>
-											argent orange
-										</button>
-									)}
-								</Tab>
-								<Tab as={Fragment}>
+							<Tab as={Fragment}>
 									{({ selected }) => (
 										<button
 											className={`flex items-center justify-center rounded-full px-4 py-1.5 focus:outline-none sm:px-6 sm:py-2.5 ${selected
@@ -196,6 +259,19 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 										</button>
 									)}
 								</Tab>
+								<Tab as={Fragment}>
+									{({ selected }) => (
+										<button
+											className={`rounded-full px-4 py-1.5 focus:outline-none sm:px-6 sm:py-2.5 ${selected
+													? 'bg-neutral-800 text-white dark:bg-neutral-200 dark:text-neutral-900'
+													: 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800'
+												}`}
+										>
+											argent orange
+										</button>
+									)}
+								</Tab>
+								
 							</TabList>
 
 							<TabPanels>
@@ -246,7 +322,9 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 							</TabPanels>
 						</TabGroup>
 						<div className="pt-8">
-							<ButtonPrimary href={'/thank-you'}>Confirmer et payer</ButtonPrimary>
+							<ButtonPrimary onClick={handlePayment}>
+								Confirmer le paiement
+							</ButtonPrimary>
 						</div>
 					</div>
 				</div>

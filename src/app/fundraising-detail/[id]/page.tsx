@@ -91,38 +91,13 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 			return
 		}
 
-		try {
-			const token = localStorage.getItem('token')
-			if (!token) {
-				alert('Please login to make a donation')
-				return
-			}
+		localStorage.setItem('checkoutData', JSON.stringify({
+			type: 'donation',
+			amount: Number(donationAmount),
+			fundraisingId: params.id
+		}));
 
-			const response = await axios.post(
-				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/fundraising/${params.id}/donate`,
-				{
-					amount: Number(donationAmount),
-					payment_method: "credit_card"
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-						'Content-Type': 'application/json',
-					},
-				}
-			)
-
-			if (response.status >= 200 && response.status < 300) {
-				console.log('Donation successful:', response.data)
-				router.push('/checkout')
-			}
-		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				console.error('Error details:', error.response?.data)
-			} else {
-				console.error('Error:', error)
-			}
-		}
+		router.push('/checkout')
 	}
 
 	const renderSection2 = () => {

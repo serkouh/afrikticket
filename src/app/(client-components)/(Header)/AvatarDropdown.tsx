@@ -4,15 +4,65 @@ import {
 	PopoverPanel,
 	Transition,
 } from '@headlessui/react'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import Avatar from '@/shared/Avatar'
 import SwitchDarkMode2 from '@/shared/SwitchDarkMode2'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
 interface Props {
 	className?: string
 }
 
 export default function AvatarDropdown({ className = '' }: Props) {
+	const router = useRouter();
+	const [userData, setUserData] = useState({
+		name: '',
+		email: ''
+	});
+
+	useEffect(() => {
+		const userStr = localStorage.getItem('user');
+		if (userStr) {
+			try {
+				const user = JSON.parse(userStr);
+				setUserData({
+					name: user.name || 'User',
+					email: user.email || 'email@example.com'
+				});
+			} catch (e) {
+				console.error('Error parsing user data:', e);
+			}
+		}
+	}, []);
+
+	const handleLogout = async () => {
+		try {
+			const token = localStorage.getItem('token');
+			await axios.post(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/logout`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			// Clear localStorage
+			localStorage.removeItem('token');
+			localStorage.removeItem('user');
+			
+			toast.success('Déconnexion réussie');
+			router.push('/login');
+		} catch (error) {
+			console.error('Logout error:', error);
+			toast.error('Erreur lors de la déconnexion');
+		}
+	};
+
 	return (
 		<>
 			<Popover className={`AvatarDropdown relative flex ${className}`}>
@@ -37,10 +87,9 @@ export default function AvatarDropdown({ className = '' }: Props) {
 									<div className="relative grid grid-cols-1 gap-6 bg-white px-6 py-7 dark:bg-neutral-800">
 										<div className="flex items-center space-x-3">
 											<Avatar sizeClass="w-12 h-12" />
-
 											<div className="flex-grow">
-												<h4 className="font-semibold">Eden Smith</h4>
-												<p className="mt-0.5 text-xs">Los Angeles, CA</p>
+												<h4 className="font-semibold">{userData.name}</h4>
+												<p className="mt-0.5 text-xs">{userData.email}</p>
 											</div>
 										</div>
 
@@ -162,46 +211,8 @@ export default function AvatarDropdown({ className = '' }: Props) {
 
 										<div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
 
-										{/* ------------------ dark mode --------------------- */}
-										{/* <div className="-m-3 flex items-center justify-between rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700">
-											<div className="flex items-center">
-												<div className="flex flex-shrink-0 items-center justify-center text-neutral-500 dark:text-neutral-300">
-													<svg
-														width="24"
-														height="24"
-														viewBox="0 0 24 24"
-														fill="none"
-														xmlns="http://www.w3.org/2000/svg"
-													>
-														<path
-															d="M12.0001 7.88989L10.9301 9.74989C10.6901 10.1599 10.8901 10.4999 11.3601 10.4999H12.6301C13.1101 10.4999 13.3001 10.8399 13.0601 11.2499L12.0001 13.1099"
-															stroke="currentColor"
-															strokeWidth="1.5"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														/>
-														<path
-															d="M8.30011 18.0399V16.8799C6.00011 15.4899 4.11011 12.7799 4.11011 9.89993C4.11011 4.94993 8.66011 1.06993 13.8001 2.18993C16.0601 2.68993 18.0401 4.18993 19.0701 6.25993C21.1601 10.4599 18.9601 14.9199 15.7301 16.8699V18.0299C15.7301 18.3199 15.8401 18.9899 14.7701 18.9899H9.26011C8.16011 18.9999 8.30011 18.5699 8.30011 18.0399Z"
-															stroke="currentColor"
-															strokeWidth="1.5"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														/>
-														<path
-															d="M8.5 22C10.79 21.35 13.21 21.35 15.5 22"
-															stroke="currentColor"
-															strokeWidth="1.5"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														/>
-													</svg>
-												</div>
-												<div className="ml-4">
-													<p className="text-sm font-medium">{'Dark theme'}</p>
-												</div>
-											</div>
-											<SwitchDarkMode2 />
-										</div> */}
+
+
 
 										{/* ------------------ 2 --------------------- */}
 										<Link
@@ -267,10 +278,11 @@ export default function AvatarDropdown({ className = '' }: Props) {
 										</Link>
 
 										{/* ------------------ 2 --------------------- */}
-										<Link
-											href={'/#'}
+										<button
+											onClick={() => {
+												handleLogout();
+											}}
 											className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700"
-											onClick={() => close()}
 										>
 											<div className="flex flex-shrink-0 items-center justify-center text-neutral-500 dark:text-neutral-300">
 												<svg
@@ -304,9 +316,9 @@ export default function AvatarDropdown({ className = '' }: Props) {
 												</svg>
 											</div>
 											<div className="ml-4">
-												<p className="text-sm font-medium">{'Log out'}</p>
+												<p className="text-sm font-medium">{'Déconnexion'}</p>
 											</div>
-										</Link>
+										</button>
 									</div>
 								</div>
 							</PopoverPanel>

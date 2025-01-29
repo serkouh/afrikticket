@@ -12,6 +12,7 @@ import eventDetails from '@/images/eventDetails.jpg'
 import eventDetails2 from '@/images/eventDetails2.jpg'
 import SectionSliderNewCategories from '@/components/SectionSliderNewCategories'
 import { HeartIcon, ShareIcon, UserGroupIcon, BanknotesIcon, ChartBarIcon } from '@heroicons/react/24/outline'
+import { StaticImageData } from 'next/image'
 
 interface FundraisingDetailPageProps {}
 
@@ -245,46 +246,70 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 		)
 	}
 
+	const renderImageGrid = () => {
+		// Helper function to handle both StaticImageData and string URLs
+		const getImageSrc = (image: string | StaticImageData): string => {
+			return typeof image === 'string' ? image : image.src;
+		};
+
+		// Get main image URL with proper type checking
+		const mainImage = fundraisingData?.fundraising.images?.find(img => img.is_main === 1);
+		const mainImageUrl = mainImage
+			? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${mainImage.image_path}`
+			: getImageSrc(eventTicket);
+
+		// Get gallery images (excluding main image)
+		const galleryImages = fundraisingData?.fundraising.images
+			?.filter(img => img.is_main !== 1)
+			?.slice(0, 2)
+			.map(img => `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${img.image_path}`) || [];
+
+		// Fill remaining slots with default images if needed
+		while (galleryImages.length < 2) {
+			galleryImages.push(getImageSrc(eventDetails));
+		}
+
+		return (
+			<div className="relative grid grid-cols-4 gap-2 sm:gap-4">
+				{/* Main large image */}
+				<div className="relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
+					<Image
+						fill
+						src={mainImageUrl}
+						alt="fundraising main"
+						className="rounded-md object-cover sm:rounded-xl"
+						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+					/>
+					<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
+				</div>
+
+				{/* Side images */}
+				{galleryImages.map((imgUrl, index) => (
+					<div
+						key={index}
+						className={`relative ${index === 0 ? 'col-span-1 row-span-2' : ''} cursor-pointer overflow-hidden rounded-md sm:rounded-xl`}
+					>
+						<div className={index === 0 ? '' : 'aspect-h-3 aspect-w-4'}>
+							<Image
+								fill
+								className="rounded-md object-cover sm:rounded-xl"
+								src={imgUrl}
+								alt={`Fundraising photo ${index + 1}`}
+								sizes="400px"
+							/>
+						</div>
+						<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
+					</div>
+				))}
+			</div>
+		);
+	}
+
 	return (
 		<div className="nc-ListingCarDetailPage container mx-auto px-4 sm:px-6 lg:px-8 pb-24">
 			{/* SINGLE HEADER */}
 			<header className="rounded-md sm:rounded-xl mt-8 lg:mt-10">
-				<div className="relative grid grid-cols-4 gap-2 sm:gap-4">
-					<div className="relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
-						<Image
-							fill
-							src={fundraisingData?.fundraising.images?.find(img => img.is_main === 1)?.image_path
-								? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${fundraisingData.fundraising.images.find(img => img.is_main === 1)?.image_path}`
-							: eventTicket}
-							alt="fundraising main"
-							className="rounded-md object-cover sm:rounded-xl"
-							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-						/>
-					</div>
-
-					{/* Additional images */}
-					<div className="relative col-span-1 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
-						<Image
-							fill
-							className="rounded-md object-cover sm:rounded-xl"
-							src={eventDetails}
-							alt="additional 1"
-							sizes="400px"
-						/>
-					</div>
-
-					<div className="relative overflow-hidden rounded-md sm:rounded-xl">
-						<div className="aspect-h-3 aspect-w-4">
-							<Image
-								fill
-								className="h-full w-full rounded-md object-cover sm:rounded-xl"
-								src={eventDetails2}
-								alt="additional 2"
-								sizes="400px"
-							/>
-						</div>
-					</div>
-				</div>
+				{renderImageGrid()}
 			</header>
 
 			{/* MAIN */}

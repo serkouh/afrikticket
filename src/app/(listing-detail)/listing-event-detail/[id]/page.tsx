@@ -1,6 +1,7 @@
 'use client'
 
 import React, { FC, useEffect, useState } from 'react'
+
 import {
 	ArrowRightIcon,
 	CheckCircleIcon,
@@ -38,39 +39,50 @@ import { Label } from '@headlessui/react'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { StaticImageData } from 'next/image'
 
 export interface ListingCarDetailPageProps {}
 
 interface EventData {
 	event: {
-		title: string
-		description: string
-		date: string
-		duration: number
-		max_tickets: number
-		price: number
+	  title: string
+	  description: string
+	  date: string
+	  duration: number
+	  max_tickets: number
+	  price: number
 	}
 	timing: {
-		start_date: string | undefined
-		end_date: string | undefined
-		duration: number
-		is_ongoing: boolean
-		time_remaining: string
+	  start_date: string | undefined
+	  end_date: string | undefined
+	  duration: number
+	  is_ongoing: boolean
+	  time_remaining: string
 	}
 	tickets: {
-		sold: number
-		remaining: number
-		total: number
+	  sold: number
+	  remaining: number
+	  total: number
 	}
 	images: {
-		main: {
-			url: string
-		} | null
-		gallery: Array<{
-			url: string
-		}>
+	  main: {
+		id: number
+		event_id: number
+		image_path: string
+		is_main: number
+		created_at: string
+		updated_at: string
+	  } | null
+	  gallery: Array<{
+		id: number
+		event_id: number
+		image_path: string
+		is_main: number
+		created_at: string
+		updated_at: string
+	  }>
 	}
-}
+  }
 
 interface Event {
 	id: number
@@ -189,6 +201,75 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 	const handleOpenModalImageGallery = () => {
 		router.push(`${pathname}/?modal=PHOTO_TOUR_SCROLLABLE` as Route)
 	}
+
+	const renderImageGrid = () => {
+		// Helper function to handle both StaticImageData and string URLs
+		const getImageSrc = (image: string | StaticImageData): string => {
+			return typeof image === 'string' ? image : image.src;
+		};
+
+		// Get main image URL with proper type checking
+		const mainImageUrl = eventData?.images?.main?.image_path
+			? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${eventData.images.main.image_path}`
+			: getImageSrc(eventTicket2);
+
+		// Get gallery images with proper type checking
+		const galleryImages = eventData?.images?.gallery?.slice(0, 3).map(img => 
+			`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${img.image_path}`
+		) || [];
+
+		// Fill remaining slots with default images if needed
+		while (galleryImages.length < 3) {
+			galleryImages.push(getImageSrc(eventDetails));
+		}
+
+		return (
+			<div className="relative grid grid-cols-4 gap-1 sm:gap-2">
+				{/* Main large image */}
+				<div className="relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
+					<Image
+						fill
+						src={mainImageUrl}
+						alt="Main event photo"
+						className="rounded-md object-cover sm:rounded-xl"
+						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+					/>
+					<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
+				</div>
+
+				{/* First side image */}
+				<div className="relative col-span-1 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
+					<Image
+						fill
+						className="rounded-md object-cover sm:rounded-xl"
+						src={galleryImages[0]}
+						alt="Event photo 1"
+						sizes="400px"
+					/>
+					<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
+				</div>
+
+				{/* Last two smaller images */}
+				{galleryImages.slice(1).map((imgUrl, index) => (
+					<div
+						key={index}
+						className="relative overflow-hidden rounded-md sm:rounded-xl"
+					>
+						<div className="aspect-h-3 aspect-w-4">
+							<Image
+								fill
+								className="h-full w-full rounded-md object-cover sm:rounded-xl"
+								src={imgUrl}
+								alt={`Event photo ${index + 2}`}
+								sizes="400px"
+							/>
+						</div>
+						<div className="absolute inset-0 cursor-pointer bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
+					</div>
+				))}
+			</div>
+		);
+	};
 
 	const renderSection2 = () => {
 		return (
@@ -325,53 +406,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 		<div className="nc-ListingCarDetailPage container mx-auto px-4 sm:px-6 lg:px-8 pb-24">
 			{/* SINGLE HEADER */}
 			<header className="rounded-md sm:rounded-xl mt-8 lg:mt-10">
-				<div className="relative grid grid-cols-4 gap-1 sm:gap-2">
-					<div className="relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
-						<Image
-							fill
-							src={eventData?.images?.main?.url || eventTicket2}
-							alt="photo 0"
-							className="rounded-md object-cover sm:rounded-xl"
-							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-						/>
-						<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100"></div>
-					</div>
-
-					{/*  */}
-					<div className="relative col-span-1 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
-						<Image
-							fill
-							className="rounded-md object-cover sm:rounded-xl"
-							src={eventDetails}
-							alt="photo 1"
-							sizes="400px"
-						/>
-						<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100"></div>
-					</div>
-
-					{/*  */}
-					{PHOTOS.filter((_, i) => i >= 2 && i < 4).map((item, index) => (
-						<div
-							key={index}
-							className={`relative overflow-hidden rounded-md sm:rounded-xl ${
-								index >= 2 ? 'block' : ''
-							}`}
-						>
-							<div className="aspect-h-3 aspect-w-4">
-								<Image
-									fill
-									className="h-full w-full rounded-md object-cover sm:rounded-xl"
-									src={eventDetails2}
-									alt="photos"
-									sizes="400px"
-								/>
-							</div>
-
-							{/* OVERLAY */}
-							<div className="absolute inset-0 cursor-pointer bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
-						</div>
-					))}
-				</div>
+				{renderImageGrid()}
 			</header>
 
 			{/* MAIN */}

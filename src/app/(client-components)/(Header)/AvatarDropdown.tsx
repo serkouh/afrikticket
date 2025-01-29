@@ -18,23 +18,32 @@ interface Props {
 
 export default function AvatarDropdown({ className = '' }: Props) {
 	const router = useRouter();
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [userData, setUserData] = useState({
 		name: '',
-		email: ''
+		email: '',
+		avatar: ''
 	});
 
 	useEffect(() => {
 		const userStr = localStorage.getItem('user');
-		if (userStr) {
+		const token = localStorage.getItem('token');
+		
+		if (userStr && token) {
 			try {
 				const user = JSON.parse(userStr);
 				setUserData({
 					name: user.name || 'User',
-					email: user.email || 'email@example.com'
+					email: user.email || 'email@example.com',
+					avatar: user.profile_image || ''
 				});
+				setIsAuthenticated(true);
 			} catch (e) {
 				console.error('Error parsing user data:', e);
+				setIsAuthenticated(false);
 			}
+		} else {
+			setIsAuthenticated(false);
 		}
 	}, []);
 
@@ -63,6 +72,10 @@ export default function AvatarDropdown({ className = '' }: Props) {
 		}
 	};
 
+	if (!isAuthenticated) {
+		return null;
+	}
+
 	return (
 		<>
 			<Popover className={`AvatarDropdown relative flex ${className}`}>
@@ -71,7 +84,10 @@ export default function AvatarDropdown({ className = '' }: Props) {
 						<PopoverButton
 							className={`flex h-10 w-10 items-center justify-center self-center rounded-full text-slate-700 hover:bg-slate-100 focus:outline-none dark:text-slate-300 dark:hover:bg-slate-800 sm:h-12 sm:w-12`}
 						>
-							<Avatar sizeClass="w-8 h-8 sm:w-9 sm:h-9" />
+							<Avatar 
+								sizeClass="w-8 h-8 sm:w-9 sm:h-9" 
+								imgUrl={userData.avatar}
+							/>
 						</PopoverButton>
 						<Transition
 							as={Fragment}
@@ -86,7 +102,11 @@ export default function AvatarDropdown({ className = '' }: Props) {
 								<div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5">
 									<div className="relative grid grid-cols-1 gap-6 bg-white px-6 py-7 dark:bg-neutral-800">
 										<div className="flex items-center space-x-3">
-											<Avatar sizeClass="w-12 h-12" />
+											<Avatar 
+												sizeClass="w-12 h-12" 
+												imgUrl={userData.avatar}
+												userName={userData.name}
+											/>
 											<div className="flex-grow">
 												<h4 className="font-semibold">{userData.name}</h4>
 												<p className="mt-0.5 text-xs">{userData.email}</p>

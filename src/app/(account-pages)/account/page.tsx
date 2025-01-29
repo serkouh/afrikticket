@@ -35,25 +35,70 @@ const AccountPage = () => {
 		setNewPhone(userData.phone?.toString() || '')
 	}, [router])
 
-	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files[0]) {
-			setNewProfileImage(e.target.files[0])
+			const file = e.target.files[0];
+			setNewProfileImage(file);
+			
+			const formData = new FormData();
+			formData.append('_method', 'PUT');
+			formData.append('profile_image', file);
+			formData.append('name', newName);
+			formData.append('email', newEmail);
+			formData.append('phone', newPhone);
+
+			try {
+				const response = await axios.post(
+					`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/${user?.id}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+							Authorization: `Bearer ${localStorage.getItem('token')}`,
+						},
+					}
+				);
+
+				if (response.status === 200) {
+					const updatedUser = response.data.user;
+					setUser(updatedUser);
+					localStorage.setItem('user', JSON.stringify(updatedUser));
+					setNewName(updatedUser.name);
+					setNewEmail(updatedUser.email);
+					setNewPhone(updatedUser.phone);
+					setMessage('Photo de profil mise à jour avec succès');
+					setTimeout(() => setMessage(''), 3000);
+
+					window.location.reload();
+				}
+			} catch (error: any) {
+				console.error('Image update error:', error.response?.data);
+				setMessage(error.response?.data?.message || 'Erreur lors de la mise à jour de la photo');
+				setTimeout(() => setMessage(''), 3000);
+			}
 		}
-	}
+	};
 
 	const handleUpdateUser = async () => {
-		if (!user?.id) return
+		if (!user?.id) return;
 
-		const formData = new FormData()
-		formData.append('name', newName)
-		formData.append('email', newEmail)
-		formData.append('phone', newPhone)
+		// Validate required fields
+		if (!newName.trim() || !newEmail.trim()) {
+			setMessage('Le nom et l\'email sont obligatoires');
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append('_method', 'PUT'); // Important for Laravel to handle PUT requests
+		formData.append('name', newName);
+		formData.append('email', newEmail);
+		formData.append('phone', newPhone);
 		if (newProfileImage) {
-			formData.append('profile_image', newProfileImage)
+			formData.append('profile_image', newProfileImage);
 		}
 
 		try {
-			const response = await axios.put(
+			const response = await axios.post( // Change to POST with _method: 'PUT'
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/${user.id}`,
 				formData,
 				{
@@ -62,19 +107,21 @@ const AccountPage = () => {
 						Authorization: `Bearer ${localStorage.getItem('token')}`,
 					},
 				}
-			)
+			);
 
 			if (response.status === 200) {
-				setUser(response.data.user)
-				localStorage.setItem('user', JSON.stringify(response.data.user))
-				setMessage('Profil mis à jour avec succès')
-				setTimeout(() => setMessage(''), 3000)
+				const updatedUser = response.data.user;
+				setUser(updatedUser);
+				localStorage.setItem('user', JSON.stringify(updatedUser));
+				setMessage('Profil mis à jour avec succès');
+				setTimeout(() => setMessage(''), 3000);
 			}
-		} catch (error) {
-			setMessage('Erreur lors de la mise à jour du profil')
-			setTimeout(() => setMessage(''), 3000)
+		} catch (error: any) {
+			console.error('Update error:', error.response?.data);
+			setMessage(error.response?.data?.message || 'Erreur lors de la mise à jour du profil');
+			setTimeout(() => setMessage(''), 3000);
 		}
-	}
+	};
 
 	return (
 		<div className="space-y-6 sm:space-y-8">

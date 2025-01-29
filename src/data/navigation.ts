@@ -196,10 +196,6 @@ export const navigation: NavItemType[] = [
 	{ id: ncNanoId(), href: '/', name: 'Accueil' },
 	{ id: ncNanoId(), href: '/about', name: 'À propos' },
 	{ id: ncNanoId(), href: '/contact', name: 'Contactez-nous' },
-	// { id: ncNanoId(), href: '/login', name: 'Se connecter' },
-	// { id: ncNanoId(), href: '/signup', name: "S'inscrire" },
-	// { id: ncNanoId(), href: '/account', name: "Profil" },
-	// { id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique des billets" },
 	{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
 ]
 

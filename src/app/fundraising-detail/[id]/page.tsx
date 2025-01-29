@@ -261,16 +261,16 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 		// Get gallery images (excluding main image)
 		const galleryImages = fundraisingData?.fundraising.images
 			?.filter(img => img.is_main !== 1)
-			?.slice(0, 2)
+			?.slice(0, 3)
 			.map(img => `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${img.image_path}`) || [];
 
 		// Fill remaining slots with default images if needed
-		while (galleryImages.length < 2) {
+		while (galleryImages.length < 3) {
 			galleryImages.push(getImageSrc(eventDetails));
 		}
 
 		return (
-			<div className="relative grid grid-cols-4 gap-2 sm:gap-4">
+			<div className="relative grid grid-cols-4 gap-1 sm:gap-2">
 				{/* Main large image */}
 				<div className="relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
 					<Image
@@ -283,22 +283,34 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 					<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
 				</div>
 
-				{/* Side images */}
-				{galleryImages.map((imgUrl, index) => (
+				{/* First side image */}
+				<div className="relative col-span-1 row-span-2 cursor-pointer overflow-hidden rounded-md sm:rounded-xl">
+					<Image
+						fill
+						className="rounded-md object-cover sm:rounded-xl"
+						src={galleryImages[0]}
+						alt="Fundraising photo 1"
+						sizes="400px"
+					/>
+					<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
+				</div>
+
+				{/* Last two smaller images */}
+				{galleryImages.slice(1).map((imgUrl, index) => (
 					<div
 						key={index}
-						className={`relative ${index === 0 ? 'col-span-1 row-span-2' : ''} cursor-pointer overflow-hidden rounded-md sm:rounded-xl`}
+						className="relative overflow-hidden rounded-md sm:rounded-xl"
 					>
-						<div className={index === 0 ? '' : 'aspect-h-3 aspect-w-4'}>
+						<div className="aspect-h-3 aspect-w-4">
 							<Image
 								fill
-								className="rounded-md object-cover sm:rounded-xl"
+								className="h-full w-full rounded-md object-cover sm:rounded-xl"
 								src={imgUrl}
-								alt={`Fundraising photo ${index + 1}`}
+								alt={`Fundraising photo ${index + 2}`}
 								sizes="400px"
 							/>
 						</div>
-						<div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
+						<div className="absolute inset-0 cursor-pointer bg-neutral-900 bg-opacity-20 opacity-0 transition-opacity hover:opacity-100" />
 					</div>
 				))}
 			</div>

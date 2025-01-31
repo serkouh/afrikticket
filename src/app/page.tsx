@@ -24,6 +24,7 @@ import {
 	IconHelpCircle,
 	IconChartBar,
 	IconBuildingCommunity,
+	IconClock,
 } from '@tabler/icons-react'
 import Image from 'next/image'
 import eventImage from '@/images/event_ticket2.jpg'
@@ -79,7 +80,13 @@ interface ImpactStory {
 	story: string
 	image: string | StaticImageData
 	impact: string
-	type?: 'education' | 'health' | 'community' | 'environment' | 'animal' | 'other'
+	type?:
+		| 'education'
+		| 'health'
+		| 'community'
+		| 'environment'
+		| 'animal'
+		| 'other'
 }
 
 interface Testimonial {
@@ -95,7 +102,8 @@ function PageHome() {
 	const [fundraisings, setFundraisings] = useState<FundraisingData[]>([])
 	const [isLoading, setIsLoading] = useState(true)
 	const [activeEventCategory, setActiveEventCategory] = useState<string>('tous')
-	const [activeFundraisingCategory, setActiveFundraisingCategory] = useState<string>('tous')
+	const [activeFundraisingCategory, setActiveFundraisingCategory] =
+		useState<string>('tous')
 
 	// Add new state variables
 	// Impact Stories Data
@@ -131,7 +139,6 @@ function PageHome() {
 			type: 'environment',
 		},
 	])
-
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -221,94 +228,92 @@ function PageHome() {
 
 	const renderImpactStories = () => {
 		const icons = {
-		  education: <IconSchool className="h-6 w-6" />,
-		  health: <IconBandage className="h-6 w-6" />,
-		  community: <IconUsers className="h-6 w-6" />,
-		  environment: <IconTrees className="h-6 w-6" />,
-		  animal: <IconPaw className="h-6 w-6" />,
-		  other: <IconHelpCircle className="h-6 w-6" />
-		};
-	  
+			education: <IconSchool className="h-6 w-6" />,
+			health: <IconBandage className="h-6 w-6" />,
+			community: <IconUsers className="h-6 w-6" />,
+			environment: <IconTrees className="h-6 w-6" />,
+			animal: <IconPaw className="h-6 w-6" />,
+			other: <IconHelpCircle className="h-6 w-6" />,
+		}
+
 		return (
-		  <section className="relative overflow-hidden bg-gradient-to-b from-neutral-50 to-white py-24">
-			<div className="absolute inset-0 overflow-hidden">
-			  <div className="absolute -left-10 top-20 h-40 w-40 rounded-full bg-primary-100/40" />
-			  <div className="absolute right-0 top-40 h-60 w-60 rounded-full bg-secondary-100/30" />
-			  <div className="absolute bottom-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-50/30" />
-			</div>
-	  
-			<div className="container mx-auto px-4 sm:px-6 lg:px-8">
-			  <motion.div 
-				initial={{ opacity: 0, y: 20 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				className="mx-auto mb-16 max-w-2xl text-center"
-			  >
-				<span className="mb-4 inline-block rounded-full bg-primary-100 px-4 py-2 text-sm font-medium text-primary-700">
-				  NOS IMPACTS
-				</span>
-				<h2 className="mb-4 text-4xl font-bold">Histoires qui inspirent</h2>
-				<p className="text-lg text-neutral-600">
-				  Découvrez comment vos dons transforment des vies et créent un
-				  impact durable dans nos communautés.
-				</p>
-			  </motion.div>
-	  
-			  <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-				{impactStories.map((story, index) => (
-				  <motion.div
-					key={story.id}
-					initial={{ opacity: 0, y: 20 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ delay: index * 0.1 }}
-					whileHover={{ y: -5 }}
-					className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:shadow-xl w-full min-w-[420px]"
-				  >
-					{/* //change the width here  */}
-					<div className="absolute right-0 top-0 h-20 w-20 -translate-y-10 translate-x-10 transform rounded-full bg-primary-100 transition-transform group-hover:translate-y-0 group-hover:translate-x-0" />
-					
-					<div className="relative h-48 overflow-hidden">
-					  <Image
-						src={story.image}
-						alt={story.name}
-						fill
-						className="transform object-cover transition-transform duration-300 group-hover:scale-105"
-					  />
-					  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-					</div>
-					
-					<div className="relative flex h-[300px] flex-col p-6">
-					  <div className="mb-4">
-						<div className="mb-3 flex items-center gap-2">
-						  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-primary-700">
-							{icons[story.type || 'other']}
-						  </div>
-						  <h3 className="text-xl font-semibold">{story.title}</h3>
-						</div>
-						<p className="line-clamp-3 text-sm text-neutral-600">
-						  {story.story}
+			<section className="relative overflow-hidden bg-gradient-to-b from-neutral-50 to-white py-24">
+				<div className="absolute inset-0 overflow-hidden">
+					<div className="absolute -left-10 top-20 h-40 w-40 rounded-full bg-primary-100/40" />
+					<div className="absolute right-0 top-40 h-60 w-60 rounded-full bg-secondary-100/30" />
+					<div className="absolute bottom-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-50/30" />
+				</div>
+
+				<div className="container mx-auto px-4 sm:px-6 lg:px-8">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						className="mx-auto mb-16 max-w-2xl text-center"
+					>
+						<span className="mb-4 inline-block rounded-full bg-primary-100 px-4 py-2 text-sm font-medium text-primary-700">
+							NOS IMPACTS
+						</span>
+						<h2 className="mb-4 text-4xl font-bold">Histoires qui inspirent</h2>
+						<p className="text-lg text-neutral-600">
+							Découvrez comment vos dons transforment des vies et créent un
+							impact durable dans nos communautés.
 						</p>
-					  </div>
-					  
-					  <div className="mt-auto border-t pt-4">
-						<div className="flex items-center gap-4 rounded-full bg-primary-50 px-4 py-2">
-						  <span className="text-sm font-medium text-primary-700 shrink-0">
-							Impact réalisé
-						  </span>
-						  <span className="font-semibold text-primary-700 truncate">
-							{story.impact}
-						  </span>
-						</div>
-					  </div>
+					</motion.div>
+
+					<div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+						{impactStories.map((story, index) => (
+							<motion.div
+								key={story.id}
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ delay: index * 0.1 }}
+								whileHover={{ y: -5 }}
+								className="group relative w-full min-w-[420px] overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:shadow-xl"
+							>
+								{/* //change the width here  */}
+								<div className="absolute right-0 top-0 h-20 w-20 -translate-y-10 translate-x-10 transform rounded-full bg-primary-100 transition-transform group-hover:translate-x-0 group-hover:translate-y-0" />
+
+								<div className="relative h-48 overflow-hidden">
+									<Image
+										src={story.image}
+										alt={story.name}
+										fill
+										className="transform object-cover transition-transform duration-300 group-hover:scale-105"
+									/>
+									<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+								</div>
+
+								<div className="relative flex h-[300px] flex-col p-6">
+									<div className="mb-4">
+										<div className="mb-3 flex items-center gap-2">
+											<div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-primary-700">
+												{icons[story.type || 'other']}
+											</div>
+											<h3 className="text-xl font-semibold">{story.title}</h3>
+										</div>
+										<p className="line-clamp-3 text-sm text-neutral-600">
+											{story.story}
+										</p>
+									</div>
+
+									<div className="mt-auto border-t pt-4">
+										<div className="flex items-center gap-4 rounded-full bg-primary-50 px-4 py-2">
+											<span className="shrink-0 text-sm font-medium text-primary-700">
+												Impact réalisé
+											</span>
+											<span className="truncate font-semibold text-primary-700">
+												{story.impact}
+											</span>
+										</div>
+									</div>
+								</div>
+							</motion.div>
+						))}
 					</div>
-				  </motion.div>
-				))}
-			  </div>
-			</div>
-		  </section>
-		);
-	  };
-
-
+				</div>
+			</section>
+		)
+	}
 
 	const renderCTA = () => {
 		return (
@@ -459,19 +464,23 @@ function PageHome() {
 					<div className="mb-12 flex items-center justify-between">
 						<h2 className="text-3xl font-bold">Événements à venir</h2>
 						<div className="flex gap-3">
-							{['Tous', 'Festival', 'Concert', 'Sport', 'Art'].map((category) => (
-								<button
-									key={category}
-									onClick={() => setActiveEventCategory(category.toLowerCase())}
-									className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-										activeEventCategory === category.toLowerCase()
-											? 'bg-[#00B252] text-white'
-											: 'bg-white text-neutral-600 hover:bg-neutral-100'
-									}`}
-								>
-									{category}
-								</button>
-							))}
+							{['Tous', 'Festival', 'Concert', 'Sport', 'Art'].map(
+								(category) => (
+									<button
+										key={category}
+										onClick={() =>
+											setActiveEventCategory(category.toLowerCase())
+										}
+										className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
+											activeEventCategory === category.toLowerCase()
+												? 'bg-[#00B252] text-white'
+												: 'bg-white text-neutral-600 hover:bg-neutral-100'
+										}`}
+									>
+										{category}
+									</button>
+								),
+							)}
 						</div>
 					</div>
 
@@ -481,47 +490,56 @@ function PageHome() {
 							{events.map((event, index) => (
 								<motion.div
 									key={event.id}
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: index * 0.1 }}
-									className="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:bg-neutral-800"
+									initial={{ opacity: 0, scale: 0.9 }}
+									animate={{ opacity: 1, scale: 1 }}
+									transition={{ duration: 0.5 }}
+									className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
 								>
-									<div className="relative aspect-[4/3]">
-										{event.image && (
-											<Image
-												src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${event.image}`}
-												alt={event.title}
-												fill
-												className="object-cover transition-transform duration-300 group-hover:scale-105"
-											/>
-										)}
-										<div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent" />
-										<div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-											<span className="rounded-full bg-primary-600 px-3 py-1 text-sm font-medium text-white">
+									{/* Image Container */}
+									<div className="relative aspect-[4/3] overflow-hidden">
+										<Image
+											src={
+												event.image
+													? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${event.image}`
+													: event.title
+											}
+											alt={event.title}
+											fill
+											className="object-cover transition-transform duration-500 group-hover:scale-105"
+										/>
+
+										{/* Time Badge */}
+										<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-primary-600 backdrop-blur-sm">
+											<div className="flex items-center gap-1.5">
+												<IconClock className="h-4 w-4" />
 												{event.time_remaining}
-											</span>
-											<button className="rounded-full bg-white/20 p-2 backdrop-blur-sm transition hover:bg-white/30">
-												<IconHeart className="h-5 w-5 text-white" />
-											</button>
+											</div>
 										</div>
 									</div>
 
-									<div className="p-6">
-										<h3 className="mb-2 text-xl font-semibold text-neutral-900 dark:text-white">
+									<div className="p-5">
+										<h3 className="mb-4 line-clamp-1 text-lg font-semibold text-neutral-900">
 											{event.title}
 										</h3>
-										<p className="mb-4 line-clamp-2 text-sm text-neutral-600 dark:text-neutral-300">
-											{event.description}
-										</p>
 
+										{/* Price and Tickets */}
 										<div className="flex items-center justify-between">
-											<span className="text-lg font-semibold text-primary-600">
-												{event.price}
+											<span className="text-lg font-medium text-primary-600">
+												{event.price} GP
 											</span>
-											<span className="rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700 dark:bg-primary-900/50 dark:text-primary-300">
+											<span className="rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
 												{event.remaining_tickets} places
 											</span>
 										</div>
+
+										{/* CTA Button */}
+										<Link
+											href={`/listing-event-detail/${event.id}`}
+											className="group/btn mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-primary-600"
+										>
+											Acheter un billet
+											<IconArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+										</Link>
 									</div>
 								</motion.div>
 							))}
@@ -539,19 +557,23 @@ function PageHome() {
 					<div className="mb-12 flex items-center justify-between">
 						<h2 className="text-3xl font-bold">Campagnes de collecte</h2>
 						<div className="flex gap-3">
-							{['Tous', 'Education', 'Santé', 'Sport', 'Culture'].map((category) => (
-								<button
-									key={category}
-									onClick={() => setActiveFundraisingCategory(category.toLowerCase())}
-									className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-										activeFundraisingCategory === category.toLowerCase()
-											? 'bg-[#00B252] text-white'
-											: 'bg-white text-neutral-600 hover:bg-neutral-100'
-									}`}
-								>
-									{category}
-								</button>
-							))}
+							{['Tous', 'Education', 'Santé', 'Sport', 'Culture'].map(
+								(category) => (
+									<button
+										key={category}
+										onClick={() =>
+											setActiveFundraisingCategory(category.toLowerCase())
+										}
+										className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
+											activeFundraisingCategory === category.toLowerCase()
+												? 'bg-[#00B252] text-white'
+												: 'bg-white text-neutral-600 hover:bg-neutral-100'
+										}`}
+									>
+										{category}
+									</button>
+								),
+							)}
 						</div>
 					</div>
 
@@ -574,7 +596,7 @@ function PageHome() {
 											className="object-cover transition-transform duration-500 group-hover:scale-105"
 										/>
 									)}
-									
+
 									{/* Organization Badge */}
 									<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-primary-600 backdrop-blur-sm">
 										<div className="flex items-center gap-1.5">
@@ -585,7 +607,7 @@ function PageHome() {
 								</div>
 
 								<div className="p-5">
-									<h3 className="mb-4 text-lg font-semibold text-neutral-900 line-clamp-1">
+									<h3 className="mb-4 line-clamp-1 text-lg font-semibold text-neutral-900">
 										{item.fundraising.title}
 									</h3>
 
@@ -595,7 +617,7 @@ function PageHome() {
 											<span className="font-medium text-primary-600">
 												{item.stats.total_raised} GP
 											</span>
-											<span className="text-neutral-500 text-xs">
+											<span className="text-xs text-neutral-500">
 												Objectif: {item.fundraising.goal} GP
 											</span>
 										</div>

@@ -148,8 +148,8 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 					<span>{fundraisingData?.fundraising.organization.name}</span>
 				</div>
 
-				{/* Progress Section */}
-				<div className="mt-8 p-6 bg-neutral-50 dark:bg-neutral-800 rounded-2xl">
+								{/* Progress Section */}
+								<div className="mt-8 p-6 bg-neutral-50 dark:bg-neutral-800 rounded-2xl">
 					<div className="grid grid-cols-3 gap-4">
 						<div className="text-center">
 							<BanknotesIcon className="w-8 h-8 mx-auto mb-2 text-primary-600" />
@@ -182,6 +182,7 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 						</div>
 					</div>
 				</div>
+
 
 				{/* Description */}
 				<div className="mt-8">

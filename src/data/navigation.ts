@@ -207,8 +207,8 @@ const user = JSON.parse(localStorage.getItem('user') || 'null'); // Get user fro
 if (user) {
 	navigation.push(
 		{ id: ncNanoId(), href: '/account', name: "Profil" }, 
-		{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique des billets" },
-		{ id: ncNanoId(), href: '/donation-history', name: "Historique des dons" },
+		{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Mes billets" },
+		{ id: ncNanoId(), href: '/donation-history', name: "Mes dons" },
 	);
 } else {
 	navigation.push(

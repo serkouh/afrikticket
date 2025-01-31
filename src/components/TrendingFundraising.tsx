@@ -103,7 +103,7 @@ const TrendingFundraising = () => {
           {/* Progress Bar */}
           <div>
             <div className="flex justify-between text-sm text-gray-700">
-              <span>Progression vers l'objectif</span>
+              <span>Progression vers l&apos;objectif</span>
               <span className="font-semibold">{trendingData.stats.progress_percentage}%</span>
             </div>
             <div className="relative h-3 rounded-full bg-gray-200 mt-2">

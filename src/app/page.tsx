@@ -22,6 +22,8 @@ import {
 	IconTrees,
 	IconPaw,
 	IconHelpCircle,
+	IconChartBar,
+	IconBuildingCommunity,
 } from '@tabler/icons-react'
 import Image from 'next/image'
 import eventImage from '@/images/event_ticket2.jpg'
@@ -92,9 +94,8 @@ function PageHome() {
 	const [events, setEvents] = useState<Event[]>([])
 	const [fundraisings, setFundraisings] = useState<FundraisingData[]>([])
 	const [isLoading, setIsLoading] = useState(true)
-	const [activeEventCategory, setActiveEventCategory] = useState('all')
-	const [activeFundraisingCategory, setActiveFundraisingCategory] =
-		useState('all')
+	const [activeEventCategory, setActiveEventCategory] = useState<string>('tous')
+	const [activeFundraisingCategory, setActiveFundraisingCategory] = useState<string>('tous')
 
 	// Add new state variables
 	// Impact Stories Data
@@ -131,42 +132,6 @@ function PageHome() {
 		},
 	])
 
-	// Enhanced Testimonials Data
-	const [testimonials] = useState<Testimonial[]>([
-		{
-			id: 1,
-			name: 'Jean Dupont',
-			role: 'Donateur mensuel',
-			content:
-				"Faire partie de cette communauté me permet de voir l'impact direct de mes dons. Les mises à jour régulières et la transparence totale me donnent confiance.",
-			avatar: '/images/avatar1.jpg',
-			donation: '50GP/mois',
-			impact: 'Soutient 3 projets',
-			rating: 5,
-		},
-		{
-			id: 2,
-			name: 'Sarah Lefebvre',
-			role: 'Bénévole & donatrice',
-			content:
-				"J'ai commencé comme donatrice et maintenant je suis aussi bénévole. Voir la transformation des communautés est une expérience incroyable.",
-			avatar: '/images/avatar2.jpg',
-			donation: '1000€ total',
-			impact: '20h/mois de bénévolat',
-			rating: 5,
-		},
-		{
-			id: 3,
-			name: 'Marc Antoine',
-			role: 'Partenaire entreprise',
-			content:
-				"Notre entreprise s'est engagée dans un partenariat à long terme. La plateforme facilite grandement le suivi et la communication de notre impact.",
-			avatar: '/images/avatar3.jpg',
-			donation: '5000€/an',
-			impact: '2 projets financés',
-			rating: 5,
-		},
-	])
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -256,115 +221,94 @@ function PageHome() {
 
 	const renderImpactStories = () => {
 		const icons = {
-			education: <IconSchool className="h-6 w-6" />,
-			health: <IconBandage className="h-6 w-6" />,
-			community: <IconUsers className="h-6 w-6" />,
-			environment: <IconTrees className="h-6 w-6" />,
-			animal: <IconPaw className="h-6 w-6" />,
-			other: <IconHelpCircle className="h-6 w-6" />
-			
-
+		  education: <IconSchool className="h-6 w-6" />,
+		  health: <IconBandage className="h-6 w-6" />,
+		  community: <IconUsers className="h-6 w-6" />,
+		  environment: <IconTrees className="h-6 w-6" />,
+		  animal: <IconPaw className="h-6 w-6" />,
+		  other: <IconHelpCircle className="h-6 w-6" />
 		};
-
+	  
 		return (
-			<section className="bg-neutral-50 py-20">
-				<div className="container">
-					<div className="mx-auto mb-16 max-w-2xl text-center">
-						<h2 className="mb-4 text-3xl font-bold">Histoires qui inspirent</h2>
-						<p className="text-neutral-600">
-							Découvrez comment vos dons transforment des vies et créent un
-							impact durable dans nos communautés.
+		  <section className="relative overflow-hidden bg-gradient-to-b from-neutral-50 to-white py-24">
+			<div className="absolute inset-0 overflow-hidden">
+			  <div className="absolute -left-10 top-20 h-40 w-40 rounded-full bg-primary-100/40" />
+			  <div className="absolute right-0 top-40 h-60 w-60 rounded-full bg-secondary-100/30" />
+			  <div className="absolute bottom-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-50/30" />
+			</div>
+	  
+			<div className="container mx-auto px-4 sm:px-6 lg:px-8">
+			  <motion.div 
+				initial={{ opacity: 0, y: 20 }}
+				whileInView={{ opacity: 1, y: 0 }}
+				className="mx-auto mb-16 max-w-2xl text-center"
+			  >
+				<span className="mb-4 inline-block rounded-full bg-primary-100 px-4 py-2 text-sm font-medium text-primary-700">
+				  NOS IMPACTS
+				</span>
+				<h2 className="mb-4 text-4xl font-bold">Histoires qui inspirent</h2>
+				<p className="text-lg text-neutral-600">
+				  Découvrez comment vos dons transforment des vies et créent un
+				  impact durable dans nos communautés.
+				</p>
+			  </motion.div>
+	  
+			  <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+				{impactStories.map((story, index) => (
+				  <motion.div
+					key={story.id}
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					transition={{ delay: index * 0.1 }}
+					whileHover={{ y: -5 }}
+					className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:shadow-xl w-full min-w-[420px]"
+				  >
+					{/* //change the width here  */}
+					<div className="absolute right-0 top-0 h-20 w-20 -translate-y-10 translate-x-10 transform rounded-full bg-primary-100 transition-transform group-hover:translate-y-0 group-hover:translate-x-0" />
+					
+					<div className="relative h-48 overflow-hidden">
+					  <Image
+						src={story.image}
+						alt={story.name}
+						fill
+						className="transform object-cover transition-transform duration-300 group-hover:scale-105"
+					  />
+					  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+					</div>
+					
+					<div className="relative flex h-[300px] flex-col p-6">
+					  <div className="mb-4">
+						<div className="mb-3 flex items-center gap-2">
+						  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-primary-700">
+							{icons[story.type || 'other']}
+						  </div>
+						  <h3 className="text-xl font-semibold">{story.title}</h3>
+						</div>
+						<p className="line-clamp-3 text-sm text-neutral-600">
+						  {story.story}
 						</p>
+					  </div>
+					  
+					  <div className="mt-auto border-t pt-4">
+						<div className="flex items-center gap-4 rounded-full bg-primary-50 px-4 py-2">
+						  <span className="text-sm font-medium text-primary-700 shrink-0">
+							Impact réalisé
+						  </span>
+						  <span className="font-semibold text-primary-700 truncate">
+							{story.impact}
+						  </span>
+						</div>
+					  </div>
 					</div>
-
-					<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-						{impactStories.map((story, index) => (
-							<motion.div
-								key={story.id}
-								initial={{ opacity: 0, y: 20 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								transition={{ delay: index * 0.1 }}
-								className="group overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:shadow-xl"
-							>
-								<div className="relative h-48">
-									<Image
-										src={story.image}
-										alt={story.name}
-										fill
-										className="transform object-cover transition-transform duration-300 group-hover:scale-105"
-									/>
-									<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-								</div>
-								
-								<div className="flex h-[220px] flex-col p-6">
-									<div className="mb-4">
-										<h3 className="mb-3 text-xl font-semibold">{story.title}</h3>
-										<p className="line-clamp-3 text-sm text-neutral-600">
-											{story.story}
-										</p>
-									</div>
-									
-									<div className="mt-auto flex items-center justify-between border-t pt-4">
-										<div className="flex items-center gap-2">
-											{/* Use different icons based on story type */}
-											<div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#E7FAF4] text-[#00B252]">
-											{icons[story.type || 'other']}
-											</div>
-											<span className="text-sm font-medium text-[#00B252]">
-												{story.impact}
-											</span>
-										</div>
-										{/* <span className="text-sm text-neutral-500">{story.name}</span> */}
-									</div>
-								</div>
-							</motion.div>
-						))}
-					</div>
-				</div>
-			</section>
+				  </motion.div>
+				))}
+			  </div>
+			</div>
+		  </section>
 		);
-	}
+	  };
 
-	const renderTestimonials = () => {
-		return (
-			<section className="bg-white py-20">
-				<div className="container">
-					<h2 className="mb-16 text-center text-3xl font-bold">
-						Ce que disent nos donateurs
-					</h2>
 
-					<div className="grid gap-8 md:grid-cols-3">
-						{testimonials.map((testimonial, index) => (
-							<motion.div
-								key={testimonial.id}
-								initial={{ opacity: 0, scale: 0.9 }}
-								whileInView={{ opacity: 1, scale: 1 }}
-								transition={{ delay: index * 0.1 }}
-								className="rounded-2xl bg-neutral-50 p-6"
-							>
-								<div className="mb-4 flex items-center">
-									<Image
-										src={testimonial.avatar}
-										alt={testimonial.name}
-										width={48}
-										height={48}
-										className="rounded-full"
-									/>
-									<div className="ml-4">
-										<h4 className="font-semibold">{testimonial.name}</h4>
-										<p className="text-sm text-neutral-500">
-											{testimonial.role}
-										</p>
-									</div>
-								</div>
-								<p className="text-neutral-600">{testimonial.content}</p>
-							</motion.div>
-						))}
-					</div>
-				</div>
-			</section>
-		)
-	}
 
 	const renderCTA = () => {
 		return (
@@ -380,7 +324,7 @@ function PageHome() {
 						</p>
 						<div className="flex justify-center gap-4">
 							<Link
-								href="/register"
+								href="/signup"
 								className="rounded-full bg-white px-8 py-3 font-medium text-[#00B252] transition-all hover:bg-opacity-90"
 							>
 								Créer un compte
@@ -515,23 +459,19 @@ function PageHome() {
 					<div className="mb-12 flex items-center justify-between">
 						<h2 className="text-3xl font-bold">Événements à venir</h2>
 						<div className="flex gap-3">
-							{['Tous', 'Festival', 'Concert', 'Sport', 'Art'].map(
-								(category) => (
-									<button
-										key={category}
-										onClick={() =>
-											setActiveEventCategory(category.toLowerCase())
-										}
-										className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-											activeEventCategory === category.toLowerCase()
-												? 'bg-[#00B252] text-white'
-												: 'bg-white text-neutral-600 hover:bg-neutral-100'
-										}`}
-									>
-										{category}
-									</button>
-								),
-							)}
+							{['Tous', 'Festival', 'Concert', 'Sport', 'Art'].map((category) => (
+								<button
+									key={category}
+									onClick={() => setActiveEventCategory(category.toLowerCase())}
+									className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
+										activeEventCategory === category.toLowerCase()
+											? 'bg-[#00B252] text-white'
+											: 'bg-white text-neutral-600 hover:bg-neutral-100'
+									}`}
+								>
+									{category}
+								</button>
+							))}
 						</div>
 					</div>
 
@@ -599,23 +539,19 @@ function PageHome() {
 					<div className="mb-12 flex items-center justify-between">
 						<h2 className="text-3xl font-bold">Campagnes de collecte</h2>
 						<div className="flex gap-3">
-							{['Tous', 'Education', 'Santé', 'Sport', 'Culture'].map(
-								(category) => (
-									<button
-										key={category}
-										onClick={() =>
-											setActiveFundraisingCategory(category.toLowerCase())
-										}
-										className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-											activeFundraisingCategory === category.toLowerCase()
-												? 'bg-[#00B252] text-white'
-												: 'bg-white text-neutral-600 hover:bg-neutral-100'
-										}`}
-									>
-										{category}
-									</button>
-								),
-							)}
+							{['Tous', 'Education', 'Santé', 'Sport', 'Culture'].map((category) => (
+								<button
+									key={category}
+									onClick={() => setActiveFundraisingCategory(category.toLowerCase())}
+									className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
+										activeFundraisingCategory === category.toLowerCase()
+											? 'bg-[#00B252] text-white'
+											: 'bg-white text-neutral-600 hover:bg-neutral-100'
+									}`}
+								>
+									{category}
+								</button>
+							))}
 						</div>
 					</div>
 
@@ -626,56 +562,59 @@ function PageHome() {
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
 								transition={{ duration: 0.5 }}
-								className="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl dark:bg-neutral-800"
+								className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
 							>
-								<div className="relative aspect-[4/3]">
+								{/* Image Container */}
+								<div className="relative aspect-[4/3] overflow-hidden">
 									{item.fundraising.images?.[0]?.image_path && (
-										<img
+										<Image
 											src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${item.fundraising.images[0].image_path}`}
 											alt={item.fundraising.title}
-											className="h-full w-full object-cover transition-transform group-hover:scale-105"
+											fill
+											className="object-cover transition-transform duration-500 group-hover:scale-105"
 										/>
 									)}
+									
+									{/* Organization Badge */}
+									<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-primary-600 backdrop-blur-sm">
+										<div className="flex items-center gap-1.5">
+											<IconBuildingCommunity className="h-4 w-4" />
+											{item.fundraising.organization.name}
+										</div>
+									</div>
 								</div>
 
-								<div className="p-6">
-									<h3 className="mb-2 text-xl font-semibold text-neutral-900 dark:text-white">
+								<div className="p-5">
+									<h3 className="mb-4 text-lg font-semibold text-neutral-900 line-clamp-1">
 										{item.fundraising.title}
 									</h3>
-									<p className="mb-4 line-clamp-2 text-sm text-neutral-600 dark:text-neutral-300">
-										{item.fundraising.description}
-									</p>
 
+									{/* Progress Section */}
 									<div className="mb-4">
-										<div className="mb-2 flex justify-between text-sm">
-											<span className="text-neutral-600 dark:text-neutral-300">
-												Progression
+										<div className="flex items-center justify-between text-sm">
+											<span className="font-medium text-primary-600">
+												{item.stats.total_raised} GP
 											</span>
-											<span className="font-semibold text-primary-600">
-												{item.stats.progress_percentage}%
+											<span className="text-neutral-500 text-xs">
+												Objectif: {item.fundraising.goal} GP
 											</span>
 										</div>
-										<div className="h-2 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700">
+										<div className="relative mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-100">
 											<div
-												className="h-full bg-primary-600 transition-all duration-500"
+												className="absolute inset-y-0 left-0 rounded-full bg-primary-500"
 												style={{ width: `${item.stats.progress_percentage}%` }}
 											/>
 										</div>
 									</div>
 
-									<div className="flex items-center justify-between">
-										<div>
-											<span className="text-lg font-semibold text-primary-600">
-												{item.stats.total_raised}
-											</span>
-											<span className="text-sm text-neutral-500 dark:text-neutral-400">
-												/{item.fundraising.goal}
-											</span>
-										</div>
-										<span className="text-sm text-neutral-500 dark:text-neutral-400">
-											{item.stats.total_donors} donateurs
-										</span>
-									</div>
+									{/* CTA Button */}
+									<Link
+										href={`/fundraising-detail/${item.fundraising.id}`}
+										className="group/btn flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-primary-600"
+									>
+										Faire un don
+										<IconArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+									</Link>
 								</div>
 							</motion.div>
 						))}
@@ -689,9 +628,6 @@ function PageHome() {
 					<TrendingFundraising />
 				</div>
 			</section>
-
-			{/* Add Testimonials Section */}
-			{renderTestimonials()}
 
 			{/* Add CTA Section */}
 			{renderCTA()}

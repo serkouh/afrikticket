@@ -127,7 +127,7 @@ export default function AvatarDropdown({ className = '' }: Props) {
 												<IconUser className="h-6 w-6" />
 											</div>
 											<div className="ml-4">
-												<p className="text-sm font-medium">{'Mon compte'}</p>
+												<p className="text-sm font-medium">{'Mon profile'}</p>
 											</div>
 										</Link>
 

@@ -13,26 +13,26 @@ const navigation: {
 } = {
 	solutions: [
 		{ name: 'Marketing', href: '#' },
-		{ name: 'Analytics', href: '#' },
-		{ name: 'Automation', href: '#' },
+		{ name: 'Analytique', href: '#' },
+		{ name: 'Automatisation', href: '#' },
 		{ name: 'Commerce', href: '#' },
 	],
 	support: [
-		{ name: 'Submit ticket', href: '#' },
+		{ name: 'Soumettre un ticket', href: '#' },
 		{ name: 'Documentation', href: '#' },
 		{ name: 'Guides', href: '#' },
 	],
 	company: [
-		{ name: 'About', href: '#' },
+		{ name: 'À propos', href: '#' },
 		{ name: 'Blog', href: '#' },
-		{ name: 'Jobs', href: '#' },
-		{ name: 'Press', href: '#' },
+		{ name: 'Emplois', href: '#' },
+		{ name: 'Presse', href: '#' },
 	],
 	legal: [
-		{ name: 'Terms of service', href: '#' },
-		{ name: 'Privacy policy', href: '#' },
-		{ name: 'License', href: '#' },
-		{ name: 'Insights', href: '#' },
+		{ name: 'Conditions d\'utilisation', href: '#' },
+		{ name: 'Politique de confidentialité', href: '#' },
+		{ name: 'Licence', href: '#' },
+		{ name: 'Statistiques', href: '#' },
 	],
 	social: [
 		{
@@ -107,8 +107,7 @@ export default function Footer2() {
 					<div className="space-y-8">
 						<Logo className="w-20" />
 						<p className="text-balance text-sm/6 text-gray-600 dark:text-neutral-400">
-							Making the world a better place through constructing elegant
-							hierarchies.
+							Faire du monde un endroit meilleur en construisant des hiérarchies élégantes.
 						</p>
 						<div className="flex gap-x-6">
 							{navigation.social.map((item) => (
@@ -163,7 +162,7 @@ export default function Footer2() {
 						<div className="md:grid md:grid-cols-2 md:gap-8">
 							<div>
 								<h3 className="text-sm/6 font-semibold text-gray-900 dark:text-neutral-300">
-									Company
+									Entreprise
 								</h3>
 								<ul role="list" className="mt-6 space-y-4">
 									{navigation.company.map((item) => (
@@ -180,7 +179,7 @@ export default function Footer2() {
 							</div>
 							<div className="mt-10 md:mt-0">
 								<h3 className="text-sm/6 font-semibold text-gray-900 dark:text-neutral-300">
-									Legal
+									Mentions légales
 								</h3>
 								<ul role="list" className="mt-6 space-y-4">
 									{navigation.legal.map((item) => (
@@ -200,7 +199,7 @@ export default function Footer2() {
 				</div>
 				<div className="mt-16 border-t border-gray-900/10 pt-8 dark:border-gray-700 sm:mt-20 lg:mt-24">
 					<p className="text-sm/6 text-gray-600 dark:text-neutral-400">
-						&copy; 2024 DevArch Digital, tous les droits sont réservés .
+						&copy; 2024 DevArch Digital, tous les droits sont réservés .
 					</p>
 				</div>
 			</div>

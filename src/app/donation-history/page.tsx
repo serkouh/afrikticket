@@ -4,6 +4,8 @@ import React, { FC, useEffect, useState } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
 import defaultImage from '@/images/event_ticket.jpg'
+import { IconHeartHandshake } from '@tabler/icons-react'
+import Link from 'next/link'
 
 interface Fundraising {
 	id: number
@@ -29,6 +31,31 @@ interface FundraisingSummary {
 	total_donations: number
 	total_contributed: number
 	total_fundraisings: number
+}
+
+const EmptyDonations = () => {
+	return (
+		<div className="flex flex-col items-center justify-center rounded-2xl border border-neutral-200/70 bg-white p-12 text-center shadow-sm">
+			<div className="rounded-full bg-neutral-100 p-4">
+				<IconHeartHandshake className="h-12 w-12 text-neutral-400" />
+			</div>
+			<h3 className="mt-4 text-xl font-semibold text-neutral-900">
+				Aucun don effectué
+			</h3>
+			<p className="mt-2 max-w-sm text-neutral-600">
+				Vous n&apos;avez pas encore fait de dons. Découvrez les collectes en cours et commencez à faire la différence !
+			</p>
+			<Link
+				href="/"
+				className="mt-6 inline-flex items-center gap-2 rounded-lg bg-secondary-brand px-6 py-3 text-sm font-medium text-white transition-all hover:bg-secondary-dark"
+			>
+				Découvrir les collectes
+				<svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+				</svg>
+			</Link>
+		</div>
+	)
 }
 
 const DonationHistory: FC = () => {
@@ -202,31 +229,38 @@ const DonationHistory: FC = () => {
 				</div>
 			</div>
 
-			{fundraisings.active.length > 0 && (
-				<div className="space-y-6">
-					<h3 className="text-2xl font-semibold">Collectes actives</h3>
-					<div className="space-y-4">
-						{fundraisings.active.map(renderFundraisingCard)}
-					</div>
-				</div>
-			)}
+			{/* Show empty state when no donations are found */}
+			{!fundraisings.active.length && !fundraisings.completed.length && !fundraisings.cancelled.length ? (
+				<EmptyDonations />
+			) : (
+				<>
+					{fundraisings.active.length > 0 && (
+						<div className="space-y-6">
+							<h3 className="text-2xl font-semibold">Collectes actives</h3>
+							<div className="space-y-4">
+								{fundraisings.active.map(renderFundraisingCard)}
+							</div>
+						</div>
+					)}
 
-			{fundraisings.completed.length > 0 && (
-				<div className="space-y-6">
-					<h3 className="text-2xl font-semibold">Collectes terminées</h3>
-					<div className="space-y-4">
-						{fundraisings.completed.map(renderFundraisingCard)}
-					</div>
-				</div>
-			)}
+					{fundraisings.completed.length > 0 && (
+						<div className="space-y-6">
+							<h3 className="text-2xl font-semibold">Collectes terminées</h3>
+							<div className="space-y-4">
+								{fundraisings.completed.map(renderFundraisingCard)}
+							</div>
+						</div>
+					)}
 
-			{fundraisings.cancelled.length > 0 && (
-				<div className="space-y-6">
-					<h3 className="text-2xl font-semibold">Collectes annulées</h3>
-					<div className="space-y-4">
-						{fundraisings.cancelled.map(renderFundraisingCard)}
-					</div>
-				</div>
+					{fundraisings.cancelled.length > 0 && (
+						<div className="space-y-6">
+							<h3 className="text-2xl font-semibold">Collectes annulées</h3>
+							<div className="space-y-4">
+								{fundraisings.cancelled.map(renderFundraisingCard)}
+							</div>
+						</div>
+					)}
+				</>
 			)}
 		</div>
 	)

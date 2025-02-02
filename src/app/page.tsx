@@ -377,17 +377,18 @@ function PageHome() {
 								</p>
 
 								{/* Search Bar */}
-								<div className="flex max-w-xl overflow-hidden rounded-full border-2 border-neutral-200 bg-white">
-									<div className="flex flex-1 items-center px-6">
-										<IconSearch className="h-5 w-5 text-neutral-400" />
+								<div className="flex max-w-xl overflow-hidden rounded-full border-2 border-secondary-brand/20 bg-white transition-all focus-within:border-secondary-brand/50 hover:border-secondary-brand/30">
+									<div className="flex flex-1 items-center gap-3 px-6">
+										<IconSearch className="h-5 w-5 text-secondary-brand/70" />
 										<input
 											type="text"
 											placeholder="Rechercher un événement..."
-											className="w-full border-none bg-transparent px-4 py-4 text-neutral-800 placeholder-neutral-400 focus:outline-none"
+											className="w-full border-none bg-transparent py-4 text-neutral-800 placeholder-neutral-500 focus:outline-none focus:ring-0"
 										/>
 									</div>
-									<button className="bg-secondary-brand px-8 py-4 font-medium text-white transition-all hover:bg-secondary-dark">
-										Rechercher
+									<button className="group relative overflow-hidden bg-secondary-brand px-8 py-4 font-medium text-white transition-all hover:bg-secondary-dark">
+										<span className="relative z-10">Rechercher</span>
+										<div className="absolute inset-0 -translate-x-full bg-primary-brand/20 transition-transform group-hover:translate-x-0" />
 									</button>
 								</div>
 							</motion.div>

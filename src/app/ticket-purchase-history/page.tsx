@@ -6,6 +6,8 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import eventTicket from '@/images/event_ticket.jpg'
+import { IconTicket } from '@tabler/icons-react'
+import Link from 'next/link'
 
 interface Ticket {
   id: number
@@ -26,6 +28,31 @@ interface TicketSummary {
   total_tickets: number
   total_spent: number
   total_events: number
+}
+
+const EmptyTickets = () => {
+  return (
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-neutral-200/70 bg-white p-12 text-center shadow-sm">
+      <div className="rounded-full bg-neutral-100 p-4">
+        <IconTicket className="h-12 w-12 text-neutral-400" />
+      </div>
+      <h3 className="mt-4 text-xl font-semibold text-neutral-900">
+        Aucun billet trouvé
+      </h3>
+      <p className="mt-2 max-w-sm text-neutral-600">
+        Vous n&apos;avez pas encore acheté de billets. Découvrez nos événements et commencez votre aventure !
+      </p>
+      <Link
+        href="/"
+        className="mt-6 inline-flex items-center gap-2 rounded-lg bg-secondary-brand px-6 py-3 text-sm font-medium text-white transition-all hover:bg-secondary-dark"
+      >
+        Découvrir les événements
+        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </Link>
+    </div>
+  )
 }
 
 const TicketPurchaseHistory: FC = () => {
@@ -165,36 +192,43 @@ const TicketPurchaseHistory: FC = () => {
           </div>
           <div className="bg-purple-50 dark:bg-purple-900/30 p-6 rounded-2xl">
             <p className="text-2xl font-bold">{summary.total_events}</p>
-            <p className="text-neutral-600 dark:text-neutral-400">Total d&lsquo;événements</p>
+            <p className="text-neutral-600 dark:text-neutral-400">Total d&apos;événements</p>
           </div>
         </div>
       </div>
 
-      {events.upcoming.length > 0 && (
-        <div className="space-y-6">
-          <h3 className="text-2xl font-semibold">Événements à venir</h3>
-          <div className="space-y-4">
-            {events.upcoming.map(renderEventCard)}
-          </div>
-        </div>
-      )}
+      {/* Show empty state when no tickets are found */}
+      {!events.upcoming.length && !events.today.length && !events.past.length ? (
+        <EmptyTickets />
+      ) : (
+        <>
+          {events.upcoming.length > 0 && (
+            <div className="space-y-6">
+              <h3 className="text-2xl font-semibold">Événements à venir</h3>
+              <div className="space-y-4">
+                {events.upcoming.map(renderEventCard)}
+              </div>
+            </div>
+          )}
 
-      {events.today.length > 0 && (
-        <div className="space-y-6">
-          <h3 className="text-2xl font-semibold">Aujourd&apos;hui</h3>
-          <div className="space-y-4">
-            {events.today.map(renderEventCard)}
-          </div>
-        </div>
-      )}
+          {events.today.length > 0 && (
+            <div className="space-y-6">
+              <h3 className="text-2xl font-semibold">Aujourd&apos;hui</h3>
+              <div className="space-y-4">
+                {events.today.map(renderEventCard)}
+              </div>
+            </div>
+          )}
 
-      {events.past.length > 0 && (
-        <div className="space-y-6">
-          <h3 className="text-2xl font-semibold">Événements passés</h3>
-          <div className="space-y-4">
-            {events.past.map(renderEventCard)}
-          </div>
-        </div>
+          {events.past.length > 0 && (
+            <div className="space-y-6">
+              <h3 className="text-2xl font-semibold">Événements passés</h3>
+              <div className="space-y-4">
+                {events.past.map(renderEventCard)}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   )

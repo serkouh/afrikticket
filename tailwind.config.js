@@ -51,6 +51,8 @@ module.exports = {
 					700: customColors('--c-primary-700'),
 					800: customColors('--c-primary-800'),
 					900: customColors('--c-primary-900'),
+					brand: '#FCB212',
+					light: '#FFD375',
 				},
 				secondary: {
 					50: customColors('--c-secondary-50'),
@@ -63,6 +65,8 @@ module.exports = {
 					700: customColors('--c-secondary-700'),
 					800: customColors('--c-secondary-800'),
 					900: customColors('--c-secondary-900'),
+					brand: '#178257',
+					dark: '#21664A',
 				},
 				neutral: {
 					50: customColors('--c-neutral-50'),
@@ -75,6 +79,7 @@ module.exports = {
 					700: customColors('--c-neutral-700'),
 					800: customColors('--c-neutral-800'),
 					900: customColors('--c-neutral-900'),
+					custom: '#E6E4E1',
 				},
 			},
 			animation: {

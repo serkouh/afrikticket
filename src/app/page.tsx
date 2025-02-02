@@ -36,7 +36,7 @@ import Link from 'next/link'
 import TrendingFundraising from '@/components/TrendingFundraising'
 import { StaticImageData } from 'next/image'
 
-// Add these interfaces at the top of your page.tsx file
+
 interface Event {
 	id: number
 	title: string
@@ -198,7 +198,7 @@ function PageHome() {
 		]
 
 		return (
-			<section className="bg-gradient-to-b from-[#FAFFFE] to-white py-20">
+			<section className="bg-white py-20">
 				<div className="container">
 					<h2 className="mb-16 text-center text-3xl font-bold">
 						Comment ça marche ?
@@ -213,7 +213,7 @@ function PageHome() {
 								transition={{ delay: index * 0.2 }}
 								className="text-center"
 							>
-								<div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-[#E7FAF4] text-[#00B252]">
+								<div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-secondary-brand/10 text-secondary-brand">
 									{step.icon}
 								</div>
 								<h3 className="mb-4 text-xl font-semibold">{step.title}</h3>
@@ -237,20 +237,20 @@ function PageHome() {
 		}
 
 		return (
-			<section className="relative overflow-hidden bg-gradient-to-b from-neutral-50 to-white py-24">
+			<section className="relative overflow-hidden bg-white py-24">
 				<div className="absolute inset-0 overflow-hidden">
-					<div className="absolute -left-10 top-20 h-40 w-40 rounded-full bg-primary-100/40" />
-					<div className="absolute right-0 top-40 h-60 w-60 rounded-full bg-secondary-100/30" />
-					<div className="absolute bottom-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-50/30" />
+					<div className="absolute -left-10 top-20 h-40 w-40 rounded-full bg-primary-brand/10" />
+					<div className="absolute right-0 top-40 h-60 w-60 rounded-full bg-secondary-brand/10" />
+					<div className="absolute bottom-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-light/10" />
 				</div>
 
-				<div className="container mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="container relative">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						className="mx-auto mb-16 max-w-2xl text-center"
 					>
-						<span className="mb-4 inline-block rounded-full bg-primary-100 px-4 py-2 text-sm font-medium text-primary-700">
+						<span className="mb-4 inline-block rounded-full bg-secondary-brand/20 px-4 py-2 text-sm font-medium text-secondary-brand">
 							NOS IMPACTS
 						</span>
 						<h2 className="mb-4 text-4xl font-bold">Histoires qui inspirent</h2>
@@ -270,7 +270,7 @@ function PageHome() {
 								whileHover={{ y: -5 }}
 								className="group relative w-full min-w-[420px] overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:shadow-xl"
 							>
-								{/* //change the width here  */}
+								{/* //change the width here asadi9i*/}
 								<div className="absolute right-0 top-0 h-20 w-20 -translate-y-10 translate-x-10 transform rounded-full bg-primary-100 transition-transform group-hover:translate-x-0 group-hover:translate-y-0" />
 
 								<div className="relative h-48 overflow-hidden">
@@ -317,7 +317,7 @@ function PageHome() {
 
 	const renderCTA = () => {
 		return (
-			<section className="bg-[#00B252] py-20">
+			<section className="bg-secondary-brand py-20">
 				<div className="container">
 					<div className="mx-auto max-w-2xl text-center text-white">
 						<h2 className="mb-6 text-4xl font-bold">
@@ -330,13 +330,13 @@ function PageHome() {
 						<div className="flex justify-center gap-4">
 							<Link
 								href="/signup"
-								className="rounded-full bg-white px-8 py-3 font-medium text-[#00B252] transition-all hover:bg-opacity-90"
+								className="rounded-full bg-white px-8 py-3 font-medium text-secondary-brand transition-all hover:bg-opacity-90"
 							>
 								Créer un compte
 							</Link>
 							<Link
 								href="/about"
-								className="rounded-full border-2 border-white px-8 py-3 font-medium text-white transition-all hover:bg-white hover:text-[#00B252]"
+								className="rounded-full border-2 border-white px-8 py-3 font-medium text-white transition-all hover:bg-white hover:text-secondary-brand"
 							>
 								En savoir plus
 							</Link>
@@ -350,7 +350,7 @@ function PageHome() {
 	return (
 		<main className="min-h-screen">
 			{/* Hero Section - Without filters */}
-			<section className="relative bg-[#FAFFFE] pb-20 pt-10">
+			<section className="relative bg-white py-20">
 				<div className="container relative">
 					<div className="grid items-center gap-12 lg:grid-cols-2">
 						{/* Left Column - Content */}
@@ -361,14 +361,14 @@ function PageHome() {
 								className="space-y-8"
 							>
 								{/* Green Label */}
-								<span className="inline-block rounded-full bg-[#E7FAF4] px-6 py-2 text-sm font-medium text-[#00B252]">
+								<span className="inline-block rounded-full bg-secondary-brand/20 px-6 py-2 text-sm font-medium text-secondary-brand">
 									Découvrez des événements uniques
 								</span>
 
 								{/* Main Heading */}
 								<h1 className="text-[2.75rem] font-bold leading-[1.2] text-neutral-900 lg:text-6xl">
 									Créez des moments{' '}
-									<span className="text-[#00B252]">inoubliables</span> ensemble
+									<span className="text-secondary-brand">inoubliables</span> ensemble
 								</h1>
 
 								<p className="text-lg text-neutral-600">
@@ -386,7 +386,7 @@ function PageHome() {
 											className="w-full border-none bg-transparent px-4 py-4 text-neutral-800 placeholder-neutral-400 focus:outline-none"
 										/>
 									</div>
-									<button className="bg-[#00B252] px-8 py-4 font-medium text-white transition-all hover:bg-[#009245]">
+									<button className="bg-secondary-brand px-8 py-4 font-medium text-white transition-all hover:bg-secondary-dark">
 										Rechercher
 									</button>
 								</div>
@@ -417,9 +417,9 @@ function PageHome() {
 										animate={{ opacity: 1, y: 0 }}
 										className="flex items-center gap-3 rounded-2xl bg-white px-5 py-3 shadow-md"
 									>
-										<IconCalendar className="h-6 w-6 text-[#00B252]" />
+										<IconCalendar className="h-6 w-6 text-secondary-brand" />
 										<div>
-											<p className="font-medium text-[#00B252]">200+</p>
+											<p className="font-medium text-secondary-brand">200+</p>
 											<p className="text-sm text-neutral-600">Événements</p>
 										</div>
 									</motion.div>
@@ -430,9 +430,9 @@ function PageHome() {
 										transition={{ delay: 0.1 }}
 										className="flex items-center gap-3 rounded-2xl bg-white px-5 py-3 shadow-md"
 									>
-										<IconMoodHappy className="h-6 w-6 text-[#00B252]" />
+										<IconMoodHappy className="h-6 w-6 text-secondary-brand" />
 										<div>
-											<p className="font-medium text-[#00B252]">300+</p>
+											<p className="font-medium text-secondary-brand">300+</p>
 											<p className="text-sm text-neutral-600">Fond</p>
 										</div>
 									</motion.div>
@@ -442,9 +442,9 @@ function PageHome() {
 										transition={{ delay: 0.1 }}
 										className="flex items-center gap-3 rounded-2xl bg-white px-5 py-3 shadow-md"
 									>
-										<IconUsers className="h-6 w-6 text-[#00B252]" />
+										<IconUsers className="h-6 w-6 text-secondary-brand" />
 										<div>
-											<p className="font-medium text-[#00B252]">50k+</p>
+											<p className="font-medium text-secondary-brand">50k+</p>
 											<p className="text-sm text-neutral-600">Utilisateurs</p>
 										</div>
 									</motion.div>
@@ -472,10 +472,10 @@ function PageHome() {
 											setActiveEventCategory(category.toLowerCase())
 										}
 										className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-											activeEventCategory === category.toLowerCase()
-												? 'bg-[#00B252] text-white'
-												: 'bg-white text-neutral-600 hover:bg-neutral-100'
-										}`}
+											activeFundraisingCategory === category.toLowerCase()
+											  ? 'bg-secondary-brand text-white'
+											  : 'bg-white text-neutral-600 hover:bg-neutral-100'
+										  }`}
 									>
 										{category}
 									</button>
@@ -509,7 +509,7 @@ function PageHome() {
 										/>
 
 										{/* Time Badge */}
-										<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-primary-600 backdrop-blur-sm">
+										<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-secondary-brand backdrop-blur-sm">
 											<div className="flex items-center gap-1.5">
 												<IconClock className="h-4 w-4" />
 												{event.time_remaining}
@@ -524,7 +524,7 @@ function PageHome() {
 
 										{/* Price and Tickets */}
 										<div className="flex items-center justify-between">
-											<span className="text-lg font-medium text-primary-600">
+											<span className="text-lg font-medium text-secondary-brand">
 												{event.price} GP
 											</span>
 											<span className="rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
@@ -535,7 +535,7 @@ function PageHome() {
 										{/* CTA Button */}
 										<Link
 											href={`/listing-event-detail/${event.id}`}
-											className="group/btn mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-primary-600"
+											className="group/btn mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-brand px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-secondary-dark"
 										>
 											Acheter un billet
 											<IconArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
@@ -566,9 +566,9 @@ function PageHome() {
 										}
 										className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
 											activeFundraisingCategory === category.toLowerCase()
-												? 'bg-[#00B252] text-white'
-												: 'bg-white text-neutral-600 hover:bg-neutral-100'
-										}`}
+											  ? 'bg-secondary-brand text-white'
+											  : 'bg-white text-neutral-600 hover:bg-neutral-100'
+										  }`}
 									>
 										{category}
 									</button>
@@ -598,7 +598,7 @@ function PageHome() {
 									)}
 
 									{/* Organization Badge */}
-									<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-primary-600 backdrop-blur-sm">
+									<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-secondary-brand backdrop-blur-sm">
 										<div className="flex items-center gap-1.5">
 											<IconBuildingCommunity className="h-4 w-4" />
 											{item.fundraising.organization.name}
@@ -614,7 +614,7 @@ function PageHome() {
 									{/* Progress Section */}
 									<div className="mb-4">
 										<div className="flex items-center justify-between text-sm">
-											<span className="font-medium text-primary-600">
+											<span className="font-medium text-secondary-brand">
 												{item.stats.total_raised} GP
 											</span>
 											<span className="text-xs text-neutral-500">
@@ -623,7 +623,7 @@ function PageHome() {
 										</div>
 										<div className="relative mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-100">
 											<div
-												className="absolute inset-y-0 left-0 rounded-full bg-primary-500"
+												className="absolute inset-y-0 left-0 rounded-full bg-secondary-brand"
 												style={{ width: `${item.stats.progress_percentage}%` }}
 											/>
 										</div>
@@ -632,7 +632,7 @@ function PageHome() {
 									{/* CTA Button */}
 									<Link
 										href={`/fundraising-detail/${item.fundraising.id}`}
-										className="group/btn flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-primary-600"
+										className="group/btn flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-brand px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-secondary-dark"
 									>
 										Faire un don
 										<IconArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />

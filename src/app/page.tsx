@@ -36,7 +36,6 @@ import Link from 'next/link'
 import TrendingFundraising from '@/components/TrendingFundraising'
 import { StaticImageData } from 'next/image'
 
-
 interface Event {
 	id: number
 	title: string
@@ -47,6 +46,7 @@ interface Event {
 	image?: string
 	time_remaining: string
 	remaining_tickets: number
+	category?: string
 }
 
 interface FundraisingData {
@@ -55,6 +55,7 @@ interface FundraisingData {
 		title: string
 		description: string
 		goal: string
+		category?: string
 		organization: {
 			id: number
 			name: string
@@ -101,9 +102,40 @@ function PageHome() {
 	const [events, setEvents] = useState<Event[]>([])
 	const [fundraisings, setFundraisings] = useState<FundraisingData[]>([])
 	const [isLoading, setIsLoading] = useState(true)
-	const [activeEventCategory, setActiveEventCategory] = useState<string>('tous')
+	const [activeEventCategory, setActiveEventCategory] = useState<string>('Tous')
 	const [activeFundraisingCategory, setActiveFundraisingCategory] =
-		useState<string>('tous')
+		useState<string>('Tous')
+	const [filteredEvents, setFilteredEvents] = useState<Event[]>([])
+	const [filteredFundraisings, setFilteredFundraisings] = useState<
+		FundraisingData[]
+	>([])
+	const [currentEventPage, setCurrentEventPage] = useState(0)
+	const [currentFundraisingPage, setCurrentFundraisingPage] = useState(0)
+	const itemsPerPage = 4
+
+	const eventCategoryMapping = {
+		Tous: 'all',
+		Festival: 'festival',
+		Concert: 'concert',
+		Sport: 'sport',
+		Art: 'art',
+		Education: 'education',
+		Technologie: 'technology',
+		Business: 'business',
+		Autre: 'other',
+	}
+
+	const fundraisingCategoryMapping = {
+		Tous: 'all',
+		Education: 'education',
+		Santé: 'health',
+		Environnement: 'environment',
+		Humanitaire: 'humanitarian',
+		Technologie: 'technology',
+		Communauté: 'community',
+		Urgence: 'emergency',
+		Autre: 'other',
+	}
 
 	// Add new state variables
 	// Impact Stories Data
@@ -159,6 +191,7 @@ function PageHome() {
 
 				if (eventsResponse.status === 200 || eventsResponse.status === 201) {
 					setEvents(eventsResponse.data.data)
+					setFilteredEvents(eventsResponse.data.data)
 				}
 				if (
 					fundraisingResponse.status === 200 ||
@@ -175,6 +208,54 @@ function PageHome() {
 
 		fetchData()
 	}, [])
+
+	useEffect(() => {
+		if (activeEventCategory === 'Tous') {
+			setFilteredEvents(events)
+		} else {
+			const filtered = events.filter(
+				(event) =>
+					event.category?.toLowerCase() ===
+					eventCategoryMapping[
+						activeEventCategory as keyof typeof eventCategoryMapping
+					]?.toLowerCase(),
+			)
+			setFilteredEvents(filtered)
+		}
+	}, [activeEventCategory, events])
+
+	useEffect(() => {
+		if (activeFundraisingCategory === 'Tous') {
+			setFilteredFundraisings(fundraisings)
+		} else {
+			const filtered = fundraisings.filter(
+				(item) =>
+					item.fundraising.category?.toLowerCase() ===
+					fundraisingCategoryMapping[
+						activeFundraisingCategory as keyof typeof fundraisingCategoryMapping
+					]?.toLowerCase(),
+			)
+			setFilteredFundraisings(filtered)
+			setCurrentFundraisingPage(0)
+		}
+	}, [activeFundraisingCategory, fundraisings])
+
+	// Add this effect to handle pagination properly
+	useEffect(() => {
+		const getPageItems = (items: FundraisingData[], page: number) => {
+			const start = page * itemsPerPage
+			const end = start + itemsPerPage
+			return items.slice(start, end)
+		}
+
+		if (filteredFundraisings.length === 0) {
+			setCurrentFundraisingPage(0)
+		} else if (
+			getPageItems(filteredFundraisings, currentFundraisingPage).length === 0
+		) {
+			setCurrentFundraisingPage((prev) => Math.max(0, prev - 1))
+		}
+	}, [filteredFundraisings, currentFundraisingPage, itemsPerPage])
 
 	const renderHowItWorks = () => {
 		const steps = [
@@ -248,6 +329,8 @@ function PageHome() {
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6, ease: 'easeOut' }}
 						className="mx-auto mb-16 max-w-2xl text-center"
 					>
 						<span className="mb-4 inline-block rounded-full bg-secondary-brand/20 px-4 py-2 text-sm font-medium text-secondary-brand">
@@ -264,23 +347,27 @@ function PageHome() {
 						{impactStories.map((story, index) => (
 							<motion.div
 								key={story.id}
-								initial={{ opacity: 0, y: 20 }}
+								initial={{ opacity: 0, y: 30 }}
 								whileInView={{ opacity: 1, y: 0 }}
-								transition={{ delay: index * 0.1 }}
+								viewport={{ once: true, margin: '-100px' }}
+								transition={{
+									duration: 0.5,
+									ease: 'easeOut',
+									delay: index * 0.2,
+								}}
 								whileHover={{ y: -5 }}
-								className="group relative w-full min-w-[420px] overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:shadow-xl"
+								className="group relative w-full min-w-[420px] overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-xl"
 							>
-								{/* //change the width here asadi9i*/}
-								<div className="absolute right-0 top-0 h-20 w-20 -translate-y-10 translate-x-10 transform rounded-full bg-primary-100 transition-transform group-hover:translate-x-0 group-hover:translate-y-0" />
+								<div className="absolute right-0 top-0 h-20 w-20 -translate-y-10 translate-x-10 transform rounded-full bg-primary-100 transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0" />
 
 								<div className="relative h-48 overflow-hidden">
 									<Image
 										src={story.image}
 										alt={story.name}
 										fill
-										className="transform object-cover transition-transform duration-300 group-hover:scale-105"
+										className="transform object-cover transition-transform duration-500 group-hover:scale-105"
 									/>
-									<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+									<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 								</div>
 
 								<div className="relative flex h-[300px] flex-col p-6">
@@ -347,6 +434,12 @@ function PageHome() {
 		)
 	}
 
+	const getPageItems = (items: any[], page: number) => {
+		const start = page * itemsPerPage
+		const end = start + itemsPerPage
+		return items.slice(start, end)
+	}
+
 	return (
 		<main className="min-h-screen">
 			{/* Hero Section - Without filters */}
@@ -368,7 +461,8 @@ function PageHome() {
 								{/* Main Heading */}
 								<h1 className="text-[2.75rem] font-bold leading-[1.2] text-neutral-900 lg:text-6xl">
 									Créez des moments{' '}
-									<span className="text-secondary-brand">inoubliables</span> ensemble
+									<span className="text-secondary-brand">inoubliables</span>{' '}
+									ensemble
 								</h1>
 
 								<p className="text-lg text-neutral-600">
@@ -461,90 +555,145 @@ function PageHome() {
 
 			{/* Events Section - With filters */}
 			<section className="py-20">
-				<div className="container">
-					<div className="mb-12 flex items-center justify-between">
+				<div className="container relative">
+					<div className="mb-12">
 						<h2 className="text-3xl font-bold">Événements à venir</h2>
-						<div className="flex gap-3">
-							{['Tous', 'Festival', 'Concert', 'Sport', 'Art'].map(
-								(category) => (
-									<button
-										key={category}
-										onClick={() =>
-											setActiveEventCategory(category.toLowerCase())
-										}
-										className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-											activeFundraisingCategory === category.toLowerCase()
-											  ? 'bg-secondary-brand text-white'
-											  : 'bg-white text-neutral-600 hover:bg-neutral-100'
-										  }`}
-									>
-										{category}
-									</button>
-								),
-							)}
+						<div className="mt-6 flex gap-3 overflow-x-auto pb-2">
+							{Object.keys(eventCategoryMapping).map((category) => (
+								<button
+									key={category}
+									onClick={() => setActiveEventCategory(category)}
+									className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
+										activeEventCategory === category
+											? 'bg-secondary-brand text-white'
+											: 'bg-white text-neutral-600 hover:bg-neutral-100'
+									}`}
+								>
+									{category}
+								</button>
+							))}
 						</div>
 					</div>
 
+					{/* Navigation arrows */}
+					<button
+						onClick={() => setCurrentEventPage((prev) => Math.max(0, prev - 1))}
+						disabled={currentEventPage === 0}
+						className={`absolute -left-20 top-1/2 rounded-full p-2 shadow-md transition-all ${
+							currentEventPage === 0
+								? 'bg-neutral-100 text-neutral-400'
+								: 'bg-white text-neutral-600 hover:bg-neutral-100'
+						}`}
+					>
+						<IconChevronRight className="h-5 w-5 rotate-180" />
+					</button>
+					<button
+						onClick={() => setCurrentEventPage((prev) => prev + 1)}
+						disabled={
+							getPageItems(filteredEvents, currentEventPage + 1).length === 0
+						}
+						className={`absolute -right-20 top-1/2 rounded-full p-2 shadow-md transition-all ${
+							getPageItems(filteredEvents, currentEventPage + 1).length === 0
+								? 'bg-neutral-100 text-neutral-400'
+								: 'bg-white text-neutral-600 hover:bg-neutral-100'
+						}`}
+					>
+						<IconChevronRight className="h-5 w-5" />
+					</button>
+
 					{/* Events Grid */}
-					<div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-						<AnimatePresence>
-							{events.map((event, index) => (
+					<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+						{filteredEvents.length > 0 ? (
+							<AnimatePresence mode="popLayout">
 								<motion.div
-									key={event.id}
-									initial={{ opacity: 0, scale: 0.9 }}
-									animate={{ opacity: 1, scale: 1 }}
-									transition={{ duration: 0.5 }}
-									className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
+									key={currentEventPage}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									exit={{ opacity: 0 }}
+									transition={{ duration: 0.4, ease: 'easeInOut' }}
+									className="col-span-full grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 								>
-									{/* Image Container */}
-									<div className="relative aspect-[4/3] overflow-hidden">
-										<Image
-											src={
-												event.image
-													? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${event.image}`
-													: event.title
-											}
-											alt={event.title}
-											fill
-											className="object-cover transition-transform duration-500 group-hover:scale-105"
-										/>
+									{getPageItems(filteredEvents, currentEventPage).map(
+										(event, index) => (
+											<motion.div
+												key={event.id}
+												initial={{ opacity: 0, y: 20 }}
+												animate={{ opacity: 1, y: 0 }}
+												exit={{ opacity: 0, y: -20 }}
+												transition={{
+													duration: 0.4,
+													ease: 'easeOut',
+													delay: index * 0.1,
+												}}
+												className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
+											>
+												{/* Image Container */}
+												<div className="relative aspect-[4/3] overflow-hidden">
+													<Image
+														src={
+															event.image
+																? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${event.image}`
+																: event.title
+														}
+														alt={event.title}
+														fill
+														className="object-cover transition-transform duration-500 group-hover:scale-105"
+													/>
+													<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-secondary-brand backdrop-blur-sm">
+														<div className="flex items-center gap-1.5">
+															<IconClock className="h-4 w-4" />
+															{event.time_remaining}
+														</div>
+													</div>
+												</div>
 
-										{/* Time Badge */}
-										<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-secondary-brand backdrop-blur-sm">
-											<div className="flex items-center gap-1.5">
-												<IconClock className="h-4 w-4" />
-												{event.time_remaining}
-											</div>
-										</div>
-									</div>
+												<div className="p-5">
+													<h3 className="mb-4 line-clamp-1 text-lg font-semibold text-neutral-900">
+														{event.title}
+													</h3>
 
-									<div className="p-5">
-										<h3 className="mb-4 line-clamp-1 text-lg font-semibold text-neutral-900">
-											{event.title}
-										</h3>
+													<div className="flex items-center justify-between">
+														<span className="text-lg font-medium text-secondary-brand">
+															{event.price} GP
+														</span>
+														<span className="rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
+															{event.remaining_tickets} places
+														</span>
+													</div>
 
-										{/* Price and Tickets */}
-										<div className="flex items-center justify-between">
-											<span className="text-lg font-medium text-secondary-brand">
-												{event.price} GP
-											</span>
-											<span className="rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
-												{event.remaining_tickets} places
-											</span>
-										</div>
-
-										{/* CTA Button */}
-										<Link
-											href={`/listing-event-detail/${event.id}`}
-											className="group/btn mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-brand px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-secondary-dark"
-										>
-											Acheter un billet
-											<IconArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-										</Link>
-									</div>
+													<Link
+														href={`/listing-event-detail/${event.id}`}
+														className="group/btn mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-brand px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-secondary-dark"
+													>
+														Acheter un billet
+														<IconArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+													</Link>
+												</div>
+											</motion.div>
+										),
+									)}
 								</motion.div>
-							))}
-						</AnimatePresence>
+							</AnimatePresence>
+						) : (
+							<motion.div
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								className="col-span-full flex flex-col items-center justify-center py-16"
+							>
+								<div className="mb-4 rounded-full bg-neutral-100 p-4">
+									<IconSearch className="h-8 w-8 text-neutral-500" />
+								</div>
+								<h3 className="mb-2 text-xl font-semibold text-neutral-900">
+									Aucun événement trouvé
+								</h3>
+								<p className="text-center text-neutral-500">
+									Nous n&apos;avons trouvé aucun événement dans la catégorie
+									&quot;{activeEventCategory}&quot;.
+									<br />
+									Essayez une autre catégorie ou revenez plus tard.
+								</p>
+							</motion.div>
+						)}
 					</div>
 				</div>
 			</section>
@@ -554,93 +703,161 @@ function PageHome() {
 
 			{/* Fundraising Section - With filters */}
 			<section className="bg-neutral-50 py-20">
-				<div className="container">
-					<div className="mb-12 flex items-center justify-between">
+				<div className="container relative">
+					<div className="mb-12">
 						<h2 className="text-3xl font-bold">Campagnes de collecte</h2>
-						<div className="flex gap-3">
-							{['Tous', 'Education', 'Santé', 'Sport', 'Culture'].map(
-								(category) => (
-									<button
-										key={category}
-										onClick={() =>
-											setActiveFundraisingCategory(category.toLowerCase())
-										}
-										className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-											activeFundraisingCategory === category.toLowerCase()
-											  ? 'bg-secondary-brand text-white'
-											  : 'bg-white text-neutral-600 hover:bg-neutral-100'
-										  }`}
-									>
-										{category}
-									</button>
-								),
-							)}
+						<div className="mt-6 flex gap-3 overflow-x-auto pb-2">
+							{Object.keys(fundraisingCategoryMapping).map((category) => (
+								<button
+									key={category}
+									onClick={() => setActiveFundraisingCategory(category)}
+									className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
+										activeFundraisingCategory === category
+											? 'bg-secondary-brand text-white'
+											: 'bg-white text-neutral-600 hover:bg-neutral-100'
+									}`}
+								>
+									{category}
+								</button>
+							))}
 						</div>
 					</div>
 
+					{/* Navigation arrows */}
+					<button
+						onClick={() =>
+							setCurrentFundraisingPage((prev) => Math.max(0, prev - 1))
+						}
+						disabled={currentFundraisingPage === 0}
+						className={`absolute -left-20 top-1/2 rounded-full p-2 shadow-md transition-all ${
+							currentFundraisingPage === 0
+								? 'bg-neutral-100 text-neutral-400'
+								: 'bg-white text-neutral-600 hover:bg-neutral-100'
+						}`}
+					>
+						<IconChevronRight className="h-5 w-5 rotate-180" />
+					</button>
+					<button
+						onClick={() => setCurrentFundraisingPage((prev) => prev + 1)}
+						disabled={
+							getPageItems(filteredFundraisings, currentFundraisingPage + 1)
+								.length === 0
+						}
+						className={`absolute -right-20 top-1/2 rounded-full p-2 shadow-md transition-all ${
+							getPageItems(filteredFundraisings, currentFundraisingPage + 1)
+								.length === 0
+								? 'bg-neutral-100 text-neutral-400'
+								: 'bg-white text-neutral-600 hover:bg-neutral-100'
+						}`}
+					>
+						<IconChevronRight className="h-5 w-5" />
+					</button>
+					{/* Fundraising Grid */}
 					<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-						{fundraisings.map((item) => (
+						{filteredFundraisings.length > 0 ? (
+							<AnimatePresence mode="popLayout">
+								<motion.div
+									key={currentFundraisingPage}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									exit={{ opacity: 0 }}
+									transition={{ duration: 0.4, ease: 'easeInOut' }}
+									className="col-span-full grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+								>
+									{getPageItems(
+										filteredFundraisings,
+										currentFundraisingPage,
+									).map((item, index) => (
+										<motion.div
+											key={item.fundraising.id}
+											initial={{ opacity: 0, y: 20 }}
+											animate={{ opacity: 1, y: 0 }}
+											exit={{ opacity: 0, y: -20 }}
+											transition={{
+												duration: 0.4,
+												ease: 'easeOut',
+												delay: index * 0.1,
+											}}
+											className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
+										>
+											{/* Image Container */}
+											<div className="relative aspect-[4/3] overflow-hidden">
+												{item.fundraising.images?.[0]?.image_path && (
+													<Image
+														src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${item.fundraising.images[0].image_path}`}
+														alt={item.fundraising.title}
+														fill
+														className="object-cover transition-transform duration-500 group-hover:scale-105"
+													/>
+												)}
+
+												{/* Organization Badge */}
+												<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-secondary-brand backdrop-blur-sm">
+													<div className="flex items-center gap-1.5">
+														<IconBuildingCommunity className="h-4 w-4" />
+														{item.fundraising.organization.name}
+													</div>
+												</div>
+											</div>
+
+											<div className="p-5">
+												<h3 className="mb-4 line-clamp-1 text-lg font-semibold text-neutral-900">
+													{item.fundraising.title}
+												</h3>
+
+												{/* Progress Section */}
+												<div className="mb-4">
+													<div className="flex items-center justify-between text-sm">
+														<span className="font-medium text-secondary-brand">
+															{item.stats.total_raised} GP
+														</span>
+														<span className="text-xs text-neutral-500">
+															Objectif: {item.fundraising.goal} GP
+														</span>
+													</div>
+													<div className="relative mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-100">
+														<div
+															className="absolute inset-y-0 left-0 rounded-full bg-secondary-brand"
+															style={{
+																width: `${item.stats.progress_percentage}%`,
+															}}
+														/>
+													</div>
+												</div>
+
+												{/* CTA Button */}
+												<Link
+													href={`/fundraising-detail/${item.fundraising.id}`}
+													className="group/btn flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-brand px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-secondary-dark"
+												>
+													Faire un don
+													<IconArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+												</Link>
+											</div>
+										</motion.div>
+									))}
+								</motion.div>
+							</AnimatePresence>
+						) : (
 							<motion.div
-								key={item.fundraising.id}
-								initial={{ opacity: 0, scale: 0.9 }}
-								animate={{ opacity: 1, scale: 1 }}
-								transition={{ duration: 0.5 }}
-								className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								className="col-span-full flex flex-col items-center justify-center py-16"
 							>
-								{/* Image Container */}
-								<div className="relative aspect-[4/3] overflow-hidden">
-									{item.fundraising.images?.[0]?.image_path && (
-										<Image
-											src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${item.fundraising.images[0].image_path}`}
-											alt={item.fundraising.title}
-											fill
-											className="object-cover transition-transform duration-500 group-hover:scale-105"
-										/>
-									)}
-
-									{/* Organization Badge */}
-									<div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-secondary-brand backdrop-blur-sm">
-										<div className="flex items-center gap-1.5">
-											<IconBuildingCommunity className="h-4 w-4" />
-											{item.fundraising.organization.name}
-										</div>
-									</div>
+								<div className="mb-4 rounded-full bg-secondary-brand/10 p-4">
+									<IconHeart className="h-8 w-8 text-secondary-brand" />
 								</div>
-
-								<div className="p-5">
-									<h3 className="mb-4 line-clamp-1 text-lg font-semibold text-neutral-900">
-										{item.fundraising.title}
-									</h3>
-
-									{/* Progress Section */}
-									<div className="mb-4">
-										<div className="flex items-center justify-between text-sm">
-											<span className="font-medium text-secondary-brand">
-												{item.stats.total_raised} GP
-											</span>
-											<span className="text-xs text-neutral-500">
-												Objectif: {item.fundraising.goal} GP
-											</span>
-										</div>
-										<div className="relative mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-100">
-											<div
-												className="absolute inset-y-0 left-0 rounded-full bg-secondary-brand"
-												style={{ width: `${item.stats.progress_percentage}%` }}
-											/>
-										</div>
-									</div>
-
-									{/* CTA Button */}
-									<Link
-										href={`/fundraising-detail/${item.fundraising.id}`}
-										className="group/btn flex w-full items-center justify-center gap-2 rounded-xl bg-secondary-brand px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-secondary-dark"
-									>
-										Faire un don
-										<IconArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-									</Link>
-								</div>
+								<h3 className="mb-2 text-xl font-semibold text-neutral-900">
+									Aucune campagne trouvée
+								</h3>
+								<p className="text-center text-neutral-500">
+									Nous n&apos;avons trouvé aucune campagne de collecte dans la
+									catégorie &quot;{activeFundraisingCategory}&quot;.
+									<br />
+									Essayez une autre catégorie ou revenez plus tard.
+								</p>
 							</motion.div>
-						))}
+						)}
 					</div>
 				</div>
 			</section>

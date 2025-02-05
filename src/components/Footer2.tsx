@@ -101,106 +101,111 @@ const navigation: {
 
 export default function Footer2() {
 	return (
-		<footer className="border-t border-neutral-200 dark:border-neutral-700">
-			<div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
-				<div className="xl:grid xl:grid-cols-3 xl:gap-8">
-					<div className="space-y-8">
-						<Logo className="w-20" />
-						<p className="text-balance text-sm/6 text-gray-600 dark:text-neutral-400">
+		<footer className="relative overflow-hidden bg-white text-gray-600">
+			{/* Decorative elements */}
+			<div className="absolute inset-0 overflow-hidden">
+				<div className="absolute -left-10 top-20 h-40 w-40 rounded-full bg-primary-500/5" />
+				<div className="absolute right-0 top-40 h-60 w-60 rounded-full bg-secondary-500/5" />
+				<div className="absolute bottom-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-500/5" />
+			</div>
+
+			<div className="relative mx-auto max-w-7xl px-4 py-20">
+				{/* Main Footer Content */}
+				<div className="grid gap-16 md:grid-cols-2 lg:grid-cols-4">
+					{/* Brand Section */}
+					<div className="space-y-6">
+						<Logo className="h-12 w-auto" />
+						<p className="max-w-xs text-sm/relaxed text-gray-600">
 							Faire du monde un endroit meilleur en construisant des hiérarchies élégantes.
 						</p>
-						<div className="flex gap-x-6">
+						<div className="flex gap-4">
 							{navigation.social.map((item) => (
 								<a
 									key={item.name}
 									href={item.href}
-									className="text-gray-600 hover:text-gray-800 dark:text-neutral-400"
+									className="group relative rounded-full bg-white p-2 shadow-sm transition-all duration-200 hover:shadow-md"
 								>
 									<span className="sr-only">{item.name}</span>
-									<item.icon aria-hidden="true" className="size-6" />
+									<item.icon className="size-5 text-gray-600 transition-colors group-hover:text-primary-500" />
 								</a>
 							))}
 						</div>
 					</div>
-					<div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-						<div className="md:grid md:grid-cols-2 md:gap-8">
-							<div>
-								<h3 className="text-sm/6 font-semibold text-gray-900 dark:text-neutral-300">
-									Solutions
-								</h3>
-								<ul role="list" className="mt-6 space-y-4">
-									{navigation.solutions.map((item) => (
-										<li key={item.name}>
-											<a
-												href={item.href}
-												className="text-sm/6 text-gray-600 hover:text-gray-900 dark:text-neutral-400"
-											>
-												{item.name}
-											</a>
-										</li>
-									))}
-								</ul>
+
+					{/* Quick Links */}
+					<div>
+						<h3 className="mb-6 text-lg font-semibold text-gray-900">Solutions</h3>
+						<ul className="space-y-4">
+							{navigation.solutions.map((item) => (
+								<li key={item.name}>
+									<a
+										href={item.href}
+										className="text-sm text-gray-600 transition-colors hover:text-primary-600"
+									>
+										{item.name}
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+
+					{/* Support */}
+					<div>
+						<h3 className="mb-6 text-lg font-semibold text-gray-900">Support</h3>
+						<ul className="space-y-4">
+							{navigation.support.map((item) => (
+								<li key={item.name}>
+									<a
+										href={item.href}
+										className="text-sm text-gray-600 transition-colors hover:text-primary-600"
+									>
+										{item.name}
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+
+					{/* Newsletter */}
+					<div>
+						<h3 className="mb-6 text-lg font-semibold text-gray-900">Restez informé</h3>
+						<p className="mb-4 text-sm text-gray-600">
+							Inscrivez-vous à notre newsletter pour recevoir nos dernières actualités.
+						</p>
+						<form className="space-y-3">
+							<div className="relative">
+								<input
+									type="email"
+									placeholder="Votre email"
+									className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+								/>
 							</div>
-							<div className="mt-10 md:mt-0">
-								<h3 className="text-sm/6 font-semibold text-gray-900 dark:text-neutral-300">
-									Support
-								</h3>
-								<ul role="list" className="mt-6 space-y-4">
-									{navigation.support.map((item) => (
-										<li key={item.name}>
-											<a
-												href={item.href}
-												className="text-sm/6 text-gray-600 hover:text-gray-900 dark:text-neutral-400"
-											>
-												{item.name}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-						</div>
-						<div className="md:grid md:grid-cols-2 md:gap-8">
-							<div>
-								<h3 className="text-sm/6 font-semibold text-gray-900 dark:text-neutral-300">
-									Entreprise
-								</h3>
-								<ul role="list" className="mt-6 space-y-4">
-									{navigation.company.map((item) => (
-										<li key={item.name}>
-											<a
-												href={item.href}
-												className="text-sm/6 text-gray-600 hover:text-gray-900 dark:text-neutral-400"
-											>
-												{item.name}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-							<div className="mt-10 md:mt-0">
-								<h3 className="text-sm/6 font-semibold text-gray-900 dark:text-neutral-300">
-									Mentions légales
-								</h3>
-								<ul role="list" className="mt-6 space-y-4">
-									{navigation.legal.map((item) => (
-										<li key={item.name}>
-											<a
-												href={item.href}
-												className="text-sm/6 text-gray-600 hover:text-gray-900 dark:text-neutral-400"
-											>
-												{item.name}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-						</div>
+							<button
+								type="submit"
+								className="w-full rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-primary-600 hover:shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+							>
+								S'inscrire
+							</button>
+						</form>
 					</div>
 				</div>
-				<div className="mt-16 border-t border-gray-900/10 pt-8 dark:border-gray-700 sm:mt-20 lg:mt-24">
-					<p className="text-sm/6 text-gray-600 dark:text-neutral-400">
-						&copy; 2024 DevArch Digital, tous les droits sont réservés .
+
+				{/* Bottom Bar */}
+				<div className="mt-20 flex flex-col items-center justify-between gap-6 border-t border-gray-200 pt-8 sm:flex-row">
+					<p className="text-sm text-gray-600">
+						© {new Date().getFullYear()} DevArch Digital. Tous droits réservés.
 					</p>
+					<div className="flex flex-wrap gap-x-8 gap-y-2">
+						{navigation.legal.map((item) => (
+							<a
+								key={item.name}
+								href={item.href}
+								className="text-sm text-gray-600 transition-colors hover:text-primary-600"
+							>
+								{item.name}
+							</a>
+						))}
+					</div>
 				</div>
 			</div>
 		</footer>

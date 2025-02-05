@@ -181,7 +181,7 @@ const AccountPage = () => {
         <TabGroup>
           <TabList className="flex space-x-1 rounded-xl bg-white p-1 shadow-sm">
             <Tab className={({ selected }) =>
-              `flex items-center space-x-2 rounded-lg px-4 py-2.5 text-sm font-medium leading-5
+              `flex items-center space-x-2 rounded-lg px-4 py-2.5 text-sm font-medium leading-5 outline-none
               ${selected 
                 ? 'bg-primary-500 text-white shadow'
                 : 'text-gray-600 hover:bg-gray-100'
@@ -191,7 +191,7 @@ const AccountPage = () => {
               <span>Profil</span>
             </Tab>
             <Tab className={({ selected }) =>
-              `flex items-center space-x-2 rounded-lg px-4 py-2.5 text-sm font-medium leading-5
+              `flex items-center space-x-2 rounded-lg px-4 py-2.5 text-sm font-medium leading-5 outline-none
               ${selected 
                 ? 'bg-primary-500 text-white shadow'
                 : 'text-gray-600 hover:bg-gray-100'
@@ -200,8 +200,8 @@ const AccountPage = () => {
               <IconLock className="h-5 w-5" />
               <span>Sécurité</span>
             </Tab>
-            <Tab className={({ selected }) =>
-              `flex items-center space-x-2 rounded-lg px-4 py-2.5 text-sm font-medium leading-5
+            {/* <Tab className={({ selected }) =>
+              `flex items-center space-x-2 rounded-lg px-4 py-2.5 text-sm font-medium leading-5 outline-none
               ${selected 
                 ? 'bg-primary-500 text-white shadow'
                 : 'text-gray-600 hover:bg-gray-100'
@@ -209,7 +209,7 @@ const AccountPage = () => {
             }>
               <IconBell className="h-5 w-5" />
               <span>Notifications</span>
-            </Tab>
+            </Tab> */}
           </TabList>
 
           <TabPanels className="mt-8">
@@ -287,7 +287,7 @@ const AccountPage = () => {
                 <div>
                   <h3 className="text-lg font-medium">Changer le mot de passe</h3>
                   <p className="mt-1 text-sm text-gray-500">
-                    Assurez-vous d'utiliser un mot de passe fort et unique
+                    Assurez-vous d&apos;utiliser un mot de passe fort et unique
                   </p>
                 </div>
 

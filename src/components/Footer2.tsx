@@ -184,7 +184,7 @@ export default function Footer2() {
 								type="submit"
 								className="w-full rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-primary-600 hover:shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
 							>
-								S'inscrire
+								S&apos;inscrire
 							</button>
 						</form>
 					</div>

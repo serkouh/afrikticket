@@ -41,32 +41,36 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
 	const router = useRouter()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+		e.preventDefault()
 		try {
-		  const response: AxiosResponse = await axios.post(
-			`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`,
-			{
-			  email,
-			  password,
-			},
-		  );
-	  
-		  if (response.status === 200) {
-			const { user, token } = response.data;
-			setUser(user);
-			localStorage.setItem('user', JSON.stringify(user));
-			localStorage.setItem('token', token);
-			toast.success('Connexion réussie');
-			router.push('/account');
-		  }
+			const response: AxiosResponse = await axios.post(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`,
+				{
+					email,
+					password,
+				},
+			)
+
+			if (response.status === 200) {
+				const { user, token } = response.data
+				setUser(user)
+				localStorage.setItem('user', JSON.stringify(user))
+				localStorage.setItem('token', token)
+
+				await router.push('/')
+				toast.success('Connexion réussie')
+				setTimeout(() => {
+					window.location.reload()
+				}, 1000) // 1 second delay
+			}
 		} catch (error) {
-		  if (axios.isAxiosError(error)) {
-			toast.error(error.response?.data?.message || 'Erreur de connexion');
-		  } else {
-			toast.error('Une erreur inattendue est survenue');
-		  }
+			if (axios.isAxiosError(error)) {
+				toast.error(error.response?.data?.message || 'Erreur de connexion')
+			} else {
+				toast.error('Une erreur inattendue est survenue')
+			}
 		}
-	  };
+	}
 
 	return (
 		<div className={`nc-PageLogin`}>
@@ -104,9 +108,7 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
 									value={password}
 								/>
 							</label>
-							<ButtonPrimary type="submit">
-								Se connecter
-							</ButtonPrimary>
+							<ButtonPrimary type="submit">Se connecter</ButtonPrimary>
 						</form>
 
 						{/* OR */}

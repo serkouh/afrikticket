@@ -8,6 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import axios, { AxiosResponse } from 'axios'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-hot-toast'
 
 export interface PageSignUpProps {}
 
@@ -56,7 +57,11 @@ const PageSignUp: FC<PageSignUpProps> = ({}) => {
 				const { user, token, message } = response.data
 				localStorage.setItem('user', JSON.stringify(user))
 				localStorage.setItem('token', token)
-				router.push('/account')
+				await router.push('/')
+				toast.success('Inscription réussie')
+				setTimeout(() => {
+					window.location.reload()
+				}, 1000)
 			}
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

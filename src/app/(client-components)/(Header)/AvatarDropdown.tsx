@@ -65,8 +65,11 @@ export default function AvatarDropdown({ className = '' }: Props) {
 			localStorage.removeItem('token');
 			localStorage.removeItem('user');
 			
+			await router.push('/')
 			toast.success('Déconnexion réussie');
-			router.push('/login');
+			setTimeout(() => {
+				window.location.reload()
+			}, 1000)
 		} catch (error) {
 			console.error('Logout error:', error);
 			toast.error('Erreur lors de la déconnexion');

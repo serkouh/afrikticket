@@ -10,9 +10,18 @@ import Input from '@/shared/Input'
 import eventTicket from '@/images/event_ticket.jpg'
 import eventDetails from '@/images/eventDetails.jpg'
 import eventDetails2 from '@/images/eventDetails2.jpg'
+import orangeMoneyLogo from '@/images/Orange-Money-emblem.png'
 import SectionSliderNewCategories from '@/components/SectionSliderNewCategories'
-import { HeartIcon, ShareIcon, UserGroupIcon, BanknotesIcon, ChartBarIcon } from '@heroicons/react/24/outline'
+import {
+	HeartIcon,
+	ShareIcon,
+	UserGroupIcon,
+	BanknotesIcon,
+	ChartBarIcon,
+} from '@heroicons/react/24/outline'
+
 import { StaticImageData } from 'next/image'
+import { toast } from 'react-hot-toast'
 
 interface FundraisingDetailPageProps {}
 
@@ -45,12 +54,14 @@ interface FundraisingData {
 
 const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 	const params = useParams()
-	const pathname = usePathname() 
+	const pathname = usePathname()
 	const router = useRouter()
-	const [fundraisingData, setFundraisingData] = useState<FundraisingData | null>(null)
+	const [fundraisingData, setFundraisingData] =
+		useState<FundraisingData | null>(null)
 	const [donationAmount, setDonationAmount] = useState<string>('')
-	const [relatedFundraisings, setRelatedFundraisings] = useState<FundraisingData[]>([])
-
+	const [relatedFundraisings, setRelatedFundraisings] = useState<
+		FundraisingData[]
+	>([])
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -64,7 +75,7 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 							Authorization: token ? `Bearer ${token}` : '',
 							'Content-Type': 'application/json',
 						},
-					}
+					},
 				)
 
 				if (response.status >= 200 && response.status < 300) {
@@ -73,10 +84,15 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
 					console.error('Error fetching fundraising:', error.response?.data)
-					alert(error.response?.data?.message || 'Failed to load fundraising details')
+					alert(
+						error.response?.data?.message ||
+							'Failed to load fundraising details',
+					)
 				} else {
 					console.error('Unexpected error:', error)
-					alert('An unexpected error occurred while loading fundraising details')
+					alert(
+						'An unexpected error occurred while loading fundraising details',
+					)
 				}
 			}
 		}
@@ -95,7 +111,7 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 						headers: {
 							Authorization: `Bearer ${localStorage.getItem('token')}`,
 						},
-					}
+					},
 				)
 				if (response.status === 200) {
 					setRelatedFundraisings(response.data.data.fundraisings)
@@ -107,73 +123,82 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 		fetchRelatedFundraisings()
 	}, [])
 
-	
-
 	const handleDonate = async () => {
 		if (!donationAmount || Number(donationAmount) <= 0) {
 			alert('Please enter a valid donation amount')
 			return
 		}
 
-		localStorage.setItem('checkoutData', JSON.stringify({
-			type: 'donation',
-			amount: Number(donationAmount),
-			fundraisingId: params.id
-		}));
-
-		router.push('/checkout')
+		// Here we'll integrate with Orange Money payment in the future
+		// For now, we'll just show a success message and redirect
+		try {
+			toast.success('Don effectué avec succès!')
+			router.push('/thank-you?type=donation')
+		} catch (error) {
+			toast.error('Une erreur est survenue lors du don')
+		}
 	}
 
 	const renderSection2 = () => {
 		return (
 			<div className="listingSection__wrap">
 				{/* HEADING */}
-				<div className="flex justify-between items-center">
-					<h2 className="text-3xl font-bold">{fundraisingData?.fundraising.title}</h2>
+				<div className="flex items-center justify-between">
+					<h2 className="text-3xl font-bold">
+						{fundraisingData?.fundraising.title}
+					</h2>
 					<div className="flex gap-3">
 						<button className="flex items-center gap-2 text-neutral-600 hover:text-primary-600">
-							<HeartIcon className="w-5 h-5" />
+							<HeartIcon className="h-5 w-5" />
 							<span>Sauvegarder</span>
 						</button>
 						<button className="flex items-center gap-2 text-neutral-600 hover:text-primary-600">
-							<ShareIcon className="w-5 h-5" />
+							<ShareIcon className="h-5 w-5" />
 							<span>Partager</span>
 						</button>
 					</div>
 				</div>
-				
+
 				{/* Organization Info */}
 				<div className="mt-4 flex items-center text-neutral-500">
-					<UserGroupIcon className="w-5 h-5 mr-2" />
+					<UserGroupIcon className="mr-2 h-5 w-5" />
 					<span>{fundraisingData?.fundraising.organization.name}</span>
 				</div>
 
-								{/* Progress Section */}
-								<div className="mt-8 p-6 bg-neutral-50 dark:bg-neutral-800 rounded-2xl">
+				{/* Progress Section */}
+				<div className="mt-8 rounded-2xl bg-neutral-50 p-6 dark:bg-neutral-800">
 					<div className="grid grid-cols-3 gap-4">
 						<div className="text-center">
-							<BanknotesIcon className="w-8 h-8 mx-auto mb-2 text-primary-600" />
-							<div className="text-2xl font-bold">{fundraisingData?.stats.total_raised} GF</div>
+							<BanknotesIcon className="mx-auto mb-2 h-8 w-8 text-primary-600" />
+							<div className="text-2xl font-bold">
+								{fundraisingData?.stats.total_raised} GF
+							</div>
 							<div className="text-sm text-neutral-500">Collectés</div>
 						</div>
 						<div className="text-center">
-							<UserGroupIcon className="w-8 h-8 mx-auto mb-2 text-primary-600" />
-							<div className="text-2xl font-bold">{fundraisingData?.stats.total_donors}</div>
+							<UserGroupIcon className="mx-auto mb-2 h-8 w-8 text-primary-600" />
+							<div className="text-2xl font-bold">
+								{fundraisingData?.stats.total_donors}
+							</div>
 							<div className="text-sm text-neutral-500">Donateurs</div>
 						</div>
 						<div className="text-center">
-							<ChartBarIcon className="w-8 h-8 mx-auto mb-2 text-primary-600" />
-							<div className="text-2xl font-bold">{fundraisingData?.stats.progress_percentage}%</div>
+							<ChartBarIcon className="mx-auto mb-2 h-8 w-8 text-primary-600" />
+							<div className="text-2xl font-bold">
+								{fundraisingData?.stats.progress_percentage}%
+							</div>
 							<div className="text-sm text-neutral-500">Objectif</div>
 						</div>
 					</div>
 
 					{/* Progress Bar */}
 					<div className="mt-6">
-						<div className="relative w-full h-3 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
-							<div 
-								className="absolute left-0 top-0 h-full bg-primary-600 transition-all duration-300 rounded-full"
-								style={{ width: `${fundraisingData?.stats.progress_percentage || 0}%` }}
+						<div className="relative h-3 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700">
+							<div
+								className="absolute left-0 top-0 h-full rounded-full bg-primary-600 transition-all duration-300"
+								style={{
+									width: `${fundraisingData?.stats.progress_percentage || 0}%`,
+								}}
 							/>
 						</div>
 						<div className="mt-2 flex justify-between text-sm">
@@ -183,12 +208,13 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 					</div>
 				</div>
 
-
 				{/* Description */}
 				<div className="mt-8">
-					<h3 className="text-xl font-semibold mb-4">À propos de cette campagne</h3>
+					<h3 className="mb-4 text-xl font-semibold">
+						À propos de cette campagne
+					</h3>
 					<div className="prose dark:prose-invert">
-						<p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">
+						<p className="leading-relaxed text-neutral-600 dark:text-neutral-300">
 							{fundraisingData?.fundraising.description}
 						</p>
 					</div>
@@ -200,19 +226,19 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 	const renderSidebarPrice = () => {
 		return (
 			<div className="listingSectionSidebar__wrap shadow-xl">
-				<div className="p-6 bg-white dark:bg-neutral-900 rounded-3xl">
-					<h3 className="text-2xl font-semibold mb-6">Faire un don</h3>
-					
+				<div className="rounded-3xl bg-white p-6 dark:bg-neutral-900">
+					<h3 className="mb-6 text-2xl font-semibold">Faire un don</h3>
+
 					{/* Suggested Amounts */}
-					<div className="grid grid-cols-3 gap-3 mb-6">
+					<div className="mb-6 grid grid-cols-3 gap-3">
 						{['5000', '10000', '20000'].map((amount) => (
 							<button
 								key={amount}
 								onClick={() => setDonationAmount(amount)}
-								className={`py-3 px-4 rounded-xl border transition-all ${
+								className={`rounded-xl border px-4 py-3 transition-all ${
 									donationAmount === amount
-										? 'border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-600'
-										: 'border-neutral-200 dark:border-neutral-700 hover:border-primary-600'
+										? 'border-primary-600 bg-primary-50 text-primary-600 dark:bg-primary-900'
+										: 'border-neutral-200 hover:border-primary-600 dark:border-neutral-700'
 								}`}
 							>
 								{amount} GF
@@ -233,14 +259,24 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 						/>
 					</div>
 
-					{/* Donation Button */}
-					<ButtonPrimary onClick={handleDonate} className="w-full mt-6">
-						Faire un don maintenant
+					{/* Donation Button with Orange Money */}
+					<ButtonPrimary
+						onClick={handleDonate}
+						className="mt-6 flex w-full items-center justify-center gap-3"
+					>
+						<Image
+							src={orangeMoneyLogo}
+							alt="Orange Money"
+							width={24}
+							height={24}
+							className="object-contain"
+						/>
+						<span>Payer avec Orange Money</span>
 					</ButtonPrimary>
 
 					{/* Security Notice */}
-					<p className="mt-4 text-sm text-center text-neutral-500">
-							🔒 Transaction sécurisée
+					<p className="mt-4 text-center text-sm text-neutral-500">
+						🔒 Transaction sécurisée
 					</p>
 				</div>
 			</div>
@@ -250,24 +286,30 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 	const renderImageGrid = () => {
 		// Helper function to handle both StaticImageData and string URLs
 		const getImageSrc = (image: string | StaticImageData): string => {
-			return typeof image === 'string' ? image : image.src;
-		};
+			return typeof image === 'string' ? image : image.src
+		}
 
 		// Get main image URL with proper type checking
-		const mainImage = fundraisingData?.fundraising.images?.find(img => img.is_main === 1);
+		const mainImage = fundraisingData?.fundraising.images?.find(
+			(img) => img.is_main === 1,
+		)
 		const mainImageUrl = mainImage
 			? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${mainImage.image_path}`
-			: getImageSrc(eventTicket);
+			: getImageSrc(eventTicket)
 
 		// Get gallery images (excluding main image)
-		const galleryImages = fundraisingData?.fundraising.images
-			?.filter(img => img.is_main !== 1)
-			?.slice(0, 3)
-			.map(img => `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${img.image_path}`) || [];
+		const galleryImages =
+			fundraisingData?.fundraising.images
+				?.filter((img) => img.is_main !== 1)
+				?.slice(0, 3)
+				.map(
+					(img) =>
+						`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${img.image_path}`,
+				) || []
 
 		// Fill remaining slots with default images if needed
 		while (galleryImages.length < 3) {
-			galleryImages.push(getImageSrc(eventDetails));
+			galleryImages.push(getImageSrc(eventDetails))
 		}
 
 		return (
@@ -315,18 +357,18 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 					</div>
 				))}
 			</div>
-		);
+		)
 	}
 
 	return (
-		<div className="nc-ListingCarDetailPage container mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+		<div className="nc-ListingCarDetailPage container mx-auto px-4 pb-24 sm:px-6 lg:px-8">
 			{/* SINGLE HEADER */}
-			<header className="rounded-md sm:rounded-xl mt-8 lg:mt-10">
+			<header className="mt-8 rounded-md sm:rounded-xl lg:mt-10">
 				{renderImageGrid()}
 			</header>
 
 			{/* MAIN */}
-			<main className="relative z-10 mt-11 flex flex-col lg:flex-row max-w-7xl mx-auto">
+			<main className="relative z-10 mx-auto mt-11 flex max-w-7xl flex-col lg:flex-row">
 				{/* CONTENT */}
 				<div className="w-full space-y-8 lg:w-3/5 lg:space-y-10 lg:pr-10 xl:w-2/3">
 					{renderSection2()}
@@ -338,14 +380,14 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 				</div>
 			</main>
 
-			<div className="max-w-7xl mx-auto mt-24 space-y-24 lg:mt-28 lg:space-y-28">
+			<div className="mx-auto mt-24 max-w-7xl space-y-24 lg:mt-28 lg:space-y-28">
 				<SectionSliderNewCategories
 					heading="Autres campagnes"
 					itemPerRow={4}
 					renderCard={(index: number) => (
-						<FundraisingCard 
-							key={relatedFundraisings[index]?.fundraising.id} 
-							data={relatedFundraisings[index]} 
+						<FundraisingCard
+							key={relatedFundraisings[index]?.fundraising.id}
+							data={relatedFundraisings[index]}
 						/>
 					)}
 					items={relatedFundraisings}

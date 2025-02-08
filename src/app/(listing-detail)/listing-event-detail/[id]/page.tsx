@@ -18,6 +18,7 @@ import ButtonPrimary from '@/shared/ButtonPrimary'
 import ButtonSecondary from '@/shared/ButtonSecondary'
 import Input from '@/shared/Input'
 import Image from 'next/image'
+import orangeMoneyLogo from '@/images/Orange-Money-emblem.png'
 import { Amenities_demos, includes_demo, PHOTOS } from '../constant'
 import LikeSaveBtns from '@/components/LikeSaveBtns'
 import { usePathname, useRouter } from 'next/navigation'
@@ -166,7 +167,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 		return <div>no id...</div>
 	}
 
-	const handleBuyTicket = () => {
+	const handleBuyTicket = async () => {
 		const ticketCount = Number(ticketNumber)
 		const remainingTickets = eventData?.tickets?.remaining ?? 0
 		const price = eventData?.event?.price ?? 0
@@ -183,18 +184,14 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 			return
 		}
 
-		localStorage.setItem(
-			'checkoutData',
-			JSON.stringify({
-				type: 'ticket',
-				eventId: params.id,
-				quantity: ticketCount,
-				price: price,
-				total: price * ticketCount,
-			}),
-		)
-
-		router.push('/checkout')
+		// Here we'll integrate with Orange Money payment in the future
+		// For now, we'll just show a success message and redirect
+		try {
+			toast.success('Achat de billets réussi!')
+			router.push('/thank-you?type=ticket')
+		} catch (error) {
+			toast.error('Une erreur est survenue lors de l\'achat des billets')
+		}
 	}
 
 	// const { hours, minutes, seconds } = useCountdown(1, 30)
@@ -350,7 +347,6 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 	const renderSidebarPrice = () => {
 		return (
 			<div className="listingSectionSidebar__wrap shadow-xl">
-				{/* PRICE */}
 				<div className="flex justify-between">
 					<span className="text-3xl font-semibold">
 						{eventData?.event?.price} GF
@@ -374,7 +370,6 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 					</span>
 				</div>
 
-				{/* SUM */}
 				<div className="flex flex-col space-y-4">
 					<div className="flex justify-between text-neutral-600 dark:text-neutral-300">
 						<span>
@@ -394,9 +389,18 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 					</div>
 				</div>
 
-				{/* SUBMIT */}
-				<ButtonPrimary onClick={handleBuyTicket}>
-					Acheter des billets!
+				<ButtonPrimary onClick={handleBuyTicket} 
+				className="mt-6 flex w-full items-center justify-center gap-3"
+					>
+						<Image
+							src={orangeMoneyLogo}
+							alt="Orange Money"
+							width={24}
+							height={24}
+							className="object-contain"
+						/>
+					<span>Payer avec Orange Money</span>
+
 				</ButtonPrimary>
 			</div>
 		)

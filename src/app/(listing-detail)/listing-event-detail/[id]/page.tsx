@@ -184,13 +184,38 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 			return
 		}
 
-		// Here we'll integrate with Orange Money payment in the future
-		// For now, we'll just show a success message and redirect
 		try {
-			toast.success('Achat de billets réussi!')
-			router.push('/thank-you?type=ticket')
+			const token = localStorage.getItem('token')
+			if (!token) {
+				toast.error('Veuillez vous connecter pour acheter des billets')
+				return
+			}
+
+			const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${params.id}/tickets`,
+				{
+					quantity: ticketCount,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+
+			if (response.status >= 200 && response.status < 300) {
+				toast.success('Achat de billets réussi!')
+				router.push('/thank-you?type=ticket')
+			}
 		} catch (error) {
-			toast.error('Une erreur est survenue lors de l\'achat des billets')
+			if (axios.isAxiosError(error)) {
+				toast.error(error.response?.data?.message || 'Une erreur est survenue lors de l\'achat des billets')
+				console.error('Error details:', error.response?.data)
+			} else {
+				toast.error('Une erreur est survenue lors de l\'achat des billets')
+				console.error('Error:', error)
+			}
 		}
 	}
 

@@ -125,17 +125,43 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 
 	const handleDonate = async () => {
 		if (!donationAmount || Number(donationAmount) <= 0) {
-			alert('Please enter a valid donation amount')
+			toast.error('Veuillez entrer un montant valide')
 			return
 		}
 
-		// Here we'll integrate with Orange Money payment in the future
-		// For now, we'll just show a success message and redirect
 		try {
-			toast.success('Don effectué avec succès!')
-			router.push('/thank-you?type=donation')
+			const token = localStorage.getItem('token')
+			if (!token) {
+				toast.error('Veuillez vous connecter pour faire un don')
+				return
+			}
+
+			const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/fundraising/${params.id}/donate`,
+				{
+					amount: Number(donationAmount),
+					payment_method: "credit_card"
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+
+			if (response.status >= 200 && response.status < 300) {
+				toast.success('Don effectué avec succès!')
+				router.push('/thank-you?type=donation')
+			}
 		} catch (error) {
-			toast.error('Une erreur est survenue lors du don')
+			if (axios.isAxiosError(error)) {
+				toast.error(error.response?.data?.message || 'Une erreur est survenue lors du don')
+				console.error('Error details:', error.response?.data)
+			} else {
+				toast.error('Une erreur est survenue lors du don')
+				console.error('Error:', error)
+			}
 		}
 	}
 

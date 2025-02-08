@@ -177,12 +177,12 @@ export default function Footer2() {
 								<input
 									type="email"
 									placeholder="Votre email"
-									className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+									className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-500 focus:border-secondary-brand focus:outline-none focus:ring-1 focus:ring-primary-500"
 								/>
 							</div>
 							<button
 								type="submit"
-								className="w-full rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-primary-600 hover:shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+								className="w-full rounded-lg bg-secondary-brand px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-primary-600 hover:shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
 							>
 								S&apos;inscrire
 							</button>

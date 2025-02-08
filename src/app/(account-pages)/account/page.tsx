@@ -127,39 +127,40 @@ const AccountPage = () => {
   }
 
   const handleUpdatePassword = async () => {
-    if (newPassword !== confirmPassword) {
-      toast.error('Les mots de passe ne correspondent pas')
-      return
+    if (currentPassword === '' || newPassword === '' || confirmPassword === '') {
+      toast.error('Veuillez remplir tous les champs');
+      return;
     }
-
-    setIsLoading(true)
+    
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/change-password`,
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/${user?.id}/password`,
         {
-          current_password: currentPassword,
-          new_password: newPassword,
-          new_password_confirmation: confirmPassword
+          currentPassword,
+          newPassword,
+          confirmPassword,
         },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        }
-      )
-
+        },
+      );
+      
       if (response.status === 200) {
-        toast.success('Mot de passe mis à jour avec succès')
-        setCurrentPassword('')
-        setNewPassword('')
-        setConfirmPassword('')
+        toast.success('Mot de passe mis à jour avec succès');
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
       }
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Erreur lors de la mise à jour du mot de passe')
-    } finally {
-      setIsLoading(false)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || 'Erreur lors de la mise à jour du mot de passe');
+      } else {
+        toast.error('Une erreur inattendue est survenue');
+      }
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-neutral-50/50 px-4 pt-8 pb-24 sm:px-6 lg:px-8">
@@ -183,8 +184,8 @@ const AccountPage = () => {
             <Tab className={({ selected }) =>
               `flex items-center space-x-2 rounded-lg px-4 py-2.5 text-sm font-medium leading-5 outline-none
               ${selected 
-                ? 'bg-primary-500 text-white shadow'
-                : 'text-gray-600 hover:bg-gray-100'
+                ? 'bg-secondary-brand text-white shadow'
+                : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800'
               }`
             }>
               <IconUser className="h-5 w-5" />
@@ -193,8 +194,8 @@ const AccountPage = () => {
             <Tab className={({ selected }) =>
               `flex items-center space-x-2 rounded-lg px-4 py-2.5 text-sm font-medium leading-5 outline-none
               ${selected 
-                ? 'bg-primary-500 text-white shadow'
-                : 'text-gray-600 hover:bg-gray-100'
+                ? 'bg-secondary-brand text-white shadow'
+                : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800'
               }`
             }>
               <IconLock className="h-5 w-5" />
@@ -271,10 +272,16 @@ const AccountPage = () => {
                 </div>
 
                 <div className="flex justify-end space-x-4">
-                  <ButtonSecondary disabled={isLoading}>
+                  <ButtonSecondary disabled={isLoading}
+                    className="border-neutral-200 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800"
+                  >
                     Annuler
                   </ButtonSecondary>
-                  <ButtonPrimary onClick={handleUpdateUser} disabled={isLoading}>
+                  <ButtonPrimary 
+                    onClick={handleUpdateUser} 
+                    disabled={isLoading}
+                    className="bg-secondary-brand hover:bg-secondary-dark"
+                  >
                     {isLoading ? 'Mise à jour...' : 'Mettre à jour le profil'}
                   </ButtonPrimary>
                 </div>
@@ -325,10 +332,16 @@ const AccountPage = () => {
                 </div>
 
                 <div className="flex justify-end space-x-4">
-                  <ButtonSecondary disabled={isLoading}>
+                  <ButtonSecondary disabled={isLoading}
+                    className="border-neutral-200 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800"
+                  >
                     Annuler
                   </ButtonSecondary>
-                  <ButtonPrimary onClick={handleUpdatePassword} disabled={isLoading}>
+                  <ButtonPrimary 
+                    onClick={handleUpdatePassword} 
+                    disabled={isLoading}
+                    className="bg-secondary-brand hover:bg-secondary-dark"
+                  >
                     {isLoading ? 'Mise à jour...' : 'Mettre à jour le mot de passe'}
                   </ButtonPrimary>
                 </div>

@@ -31,6 +31,17 @@ const PageSignUp: FC<PageSignUpProps> = ({}) => {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		
+		// Add client-side validation first
+		if (password !== password_confirmation) {
+			setMessage('Les mots de passe ne correspondent pas')
+			return
+		}
+
+		if (password.length < 8) {
+			setMessage('Le mot de passe doit contenir au moins 8 caractères')
+			return
+		}
+
 		const formData = new FormData()
 		formData.append('name', name)
 		formData.append('email', email)

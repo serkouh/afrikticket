@@ -416,16 +416,16 @@ function PageHome() {
 						</p>
 						<div className="flex justify-center gap-4">
 							<Link
-								href="/signup"
+								href="#"
 								className="rounded-full bg-white px-8 py-3 font-medium text-secondary-brand transition-all hover:bg-opacity-90"
 							>
-								Créer un compte
+								Faire un don
 							</Link>
 							<Link
-								href="/about"
+								href="#"
 								className="rounded-full border-2 border-white px-8 py-3 font-medium text-white transition-all hover:bg-white hover:text-secondary-brand"
 							>
-								En savoir plus
+								Partager
 							</Link>
 						</div>
 					</div>

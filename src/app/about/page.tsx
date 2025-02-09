@@ -152,7 +152,7 @@ const PageAbout = () => {
 
 					<div className="relative">
 						{/* Vertical Line */}
-						<div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 transform bg-secondary-brand/20" />
+						<div className="absolute left-4 sm:left-1/2 top-0 h-full w-px -translate-x-1/2 transform bg-secondary-brand/20" />
 
 						{[
 							{
@@ -186,13 +186,19 @@ const PageAbout = () => {
 								whileInView={{ opacity: 1, x: 0 }}
 								transition={{ delay: index * 0.2 }}
 								className={`relative mb-20 flex items-center ${
-									item.side === 'left' ? 'justify-end' : 'justify-start'
-								} ${item.side === 'left' ? 'pr-1/2' : 'pl-1/2'}`}
+									item.side === 'left' 
+										? 'justify-start sm:justify-end' 
+										: 'justify-start'
+								} ${
+									item.side === 'left' 
+										? 'sm:pr-1/2' 
+										: 'sm:pl-1/2'
+								} pl-16 sm:pl-0`}
 							>
 								{/* Timeline Node */}
-								<div className="absolute left-1/2 -translate-x-1/2 transform">
-									<div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg">
-										<span className="text-xl font-bold text-primary-600">
+								<div className="absolute left-4 sm:left-1/2 -translate-x-1/2 transform">
+									<div className="flex h-8 w-8 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-white shadow-lg">
+										<span className="text-sm sm:text-xl font-bold text-primary-600">
 											{item.year}
 										</span>
 									</div>
@@ -201,22 +207,24 @@ const PageAbout = () => {
 								{/* Content Card */}
 								<motion.div
 									whileHover={{ scale: 1.05 }}
-									className={`w-[400px] rounded-2xl bg-white p-6 shadow-lg ${
-										item.side === 'left' ? 'mr-12' : 'ml-12'
+									className={`w-full sm:w-[400px] rounded-2xl bg-white p-4 sm:p-6 shadow-lg ${
+										item.side === 'left' 
+											? 'sm:mr-12' 
+											: 'sm:ml-12'
 									}`}
 								>
 									<div className="mb-4 flex items-center gap-4">
-										<div className="rounded-xl bg-primary-50 p-3 text-primary-600">
+										<div className="rounded-xl bg-primary-50 p-2 sm:p-3 text-primary-600">
 											{item.icon}
 										</div>
 										<div>
-											<h3 className="text-xl font-semibold">{item.title}</h3>
-											<div className="text-3xl font-bold text-primary-600">
+											<h3 className="text-lg sm:text-xl font-semibold">{item.title}</h3>
+											<div className="text-2xl sm:text-3xl font-bold text-primary-600">
 												{item.stat}
 											</div>
 										</div>
 									</div>
-									<p className="text-neutral-600">{item.description}</p>
+									<p className="text-sm sm:text-base text-neutral-600">{item.description}</p>
 								</motion.div>
 							</motion.div>
 						))}

@@ -75,7 +75,6 @@ export default function AvatarDropdown({ className = '' }: Props) {
 			toast.error('Erreur lors de la déconnexion');
 		}
 	};
-
 	if (!isAuthenticated) {
 		return null;
 	}
@@ -89,8 +88,9 @@ export default function AvatarDropdown({ className = '' }: Props) {
 							className={`flex h-10 w-10 items-center justify-center self-center rounded-full text-slate-700 hover:bg-slate-100 focus:outline-none dark:text-slate-300 dark:hover:bg-slate-800 sm:h-12 sm:w-12`}
 						>
 							<Avatar 
-								sizeClass="w-8 h-8 sm:w-9 sm:h-9" 
-								imgUrl={userData.avatar}
+								imgUrl={userData.avatar || null}
+								userName={userData.name}
+								sizeClass="h-8 w-8"
 							/>
 						</PopoverButton>
 						<Transition

@@ -32,7 +32,7 @@ const CardAuthorBox: FC<CardAuthorBoxProps> = ({
 			<Avatar
 				sizeClass="w-20 h-20 text-2xl"
 				radius="rounded-full"
-				imgUrl={avatar}
+				imgUrl={typeof avatar === 'string' ? avatar : avatar.src}
 				userName={displayName}
 			/>
 			<div className="mt-3">

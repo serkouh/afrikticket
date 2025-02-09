@@ -194,7 +194,10 @@ const CarCardH: FC<CarCardHProps> = ({ className = '', data = DEMO_DATA }) => {
 				<div className="my-4 w-14 border-b border-neutral-200/80 dark:border-neutral-700"></div>
 				<div className="flex items-end justify-between">
 					<div className="flex items-center space-x-3 text-sm text-neutral-700 dark:text-neutral-300">
-						<Avatar imgUrl={author.avatar} userName={author.displayName} />
+						<Avatar 
+							imgUrl={typeof author.avatar === 'string' ? author.avatar : author.avatar.src} 
+							userName={author.displayName} 
+						/>
 						<span className="hidden sm:inline-block">
 							<span className="hidden sm:inline">Car owner </span>{' '}
 							{author.displayName}

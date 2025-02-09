@@ -65,7 +65,24 @@ const PageSignUp: FC<PageSignUpProps> = ({}) => {
 			}
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				setMessage(error.response?.data?.message || "Erreur d'inscription")
+				const errorMessage = error.response?.data?.message
+				let frenchMessage = "Une erreur s'est produite lors de l'inscription"
+
+				if (errorMessage?.includes('password confirmation')) {
+					frenchMessage = 'Les mots de passe ne correspondent pas'
+				} else if (errorMessage?.includes('password')) {
+					frenchMessage = 'Le mot de passe doit contenir au moins 8 caractères'
+				} else if (errorMessage?.includes('email has already been taken')) {
+					frenchMessage = 'Cette adresse email est déjà utilisée'
+				} else if (errorMessage?.includes('email')) {
+					frenchMessage = "L'adresse email n'est pas valide"
+				} else if (errorMessage?.includes('name')) {
+					frenchMessage = 'Le nom est requis'
+				} else if (errorMessage?.includes('phone')) {
+					frenchMessage = 'Le numéro de téléphone est requis'
+				}
+
+				setMessage(frenchMessage)
 			} else {
 				setMessage('Une erreur inattendue est survenue')
 			}

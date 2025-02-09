@@ -19,21 +19,21 @@ const notifications = [
 		description: 'Measure actions your users take',
 		time: '3 minutes ago',
 		href: '#a',
-		avatar: avatar4,
+		avatar: avatar4.src,
 	},
 	{
 		name: 'Leo Messi',
 		description: 'Create your own targeted content',
 		time: '1 minute ago',
 		href: '#a',
-		avatar: avatar5,
+		avatar: avatar5.src,
 	},
 	{
 		name: 'Leo Kante',
 		description: 'Keep track of your growth',
 		time: '3 minutes ago',
 		href: '#a',
-		avatar: avatar6,
+		avatar: avatar6.src,
 	},
 ]
 

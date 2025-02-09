@@ -173,7 +173,7 @@ const AccountPage = () => {
             </p>
           </div>
           <Avatar
-            imgUrl={user?.profile_image || ''}
+            imgUrl={user?.profile_image || null}
             sizeClass="w-20 h-20"
             userName={user?.name}
           />
@@ -220,7 +220,7 @@ const AccountPage = () => {
                 <div className="flex items-center space-x-6">
                   <div className="relative">
                     <Avatar
-                      imgUrl={user?.profile_image || ''}
+                      imgUrl={user?.profile_image || null}
                       sizeClass="w-32 h-32"
                       userName={user?.name}
                     />

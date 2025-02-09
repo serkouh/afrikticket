@@ -99,8 +99,12 @@ const otherPageChildMenus: NavItemType[] = [
 	{ id: ncNanoId(), href: '/contact', name: 'Contact us' },
 	{ id: ncNanoId(), href: '/login', name: 'Se connecter' },
 	{ id: ncNanoId(), href: '/signup', name: "S'inscrire" },
-	{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique d'achat de billets" },
-	{ id: ncNanoId(), href: '/account', name: "Mettre à jour le profil" },
+	{
+		id: ncNanoId(),
+		href: '/ticket-purchase-history',
+		name: "Historique d'achat de billets",
+	},
+	{ id: ncNanoId(), href: '/account', name: 'Mettre à jour le profil' },
 ]
 
 const templatesChildrenMenus: NavItemType[] = [
@@ -178,45 +182,43 @@ const templatesChildrenMenus: NavItemType[] = [
 ]
 
 export const NAVIGATION_DEMO: NavItemType[] = [
-
 	{ id: ncNanoId(), href: '/', name: 'Accueil' },
 	{ id: ncNanoId(), href: '/about', name: 'À propos' },
 	{ id: ncNanoId(), href: '/contact', name: 'Contactez-nous' },
 	{ id: ncNanoId(), href: '/login', name: 'Se connecter' },
 	{ id: ncNanoId(), href: '/signup', name: "S'inscrire" },
-	{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Historique d'achat de billets" },
-	{ id: ncNanoId(), href: '/account', name: "Mettre à jour le profil" },
-	{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
-];
-
-
-
-export const navigation: NavItemType[] = [
-
-	{ id: ncNanoId(), href: '/', name: 'Accueil' },
-	{ id: ncNanoId(), href: '/about', name: 'À propos' },
-	{ id: ncNanoId(), href: '/contact', name: 'Contactez-nous' },
+	{
+		id: ncNanoId(),
+		href: '/ticket-purchase-history',
+		name: "Historique d'achat de billets",
+	},
+	{ id: ncNanoId(), href: '/account', name: 'Mettre à jour le profil' },
 	{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
 ]
 
+export const navigation: NavItemType[] = [
+	{ id: ncNanoId(), href: '/', name: 'Accueil' },
+	{ id: ncNanoId(), href: '/about', name: 'À propos' },
+	{ id: ncNanoId(), href: '/contact', name: 'Contactez-nous' },
+]
+
 // Check for authenticated user
-const user = JSON.parse(localStorage.getItem('user') || 'null'); // Get user from localStorage
+const user = JSON.parse(localStorage.getItem('user') || 'null') // Get user from localStorage
 
 // console.log(user)
 
 if (user) {
 	navigation.push(
-		{ id: ncNanoId(), href: '/account', name: "Profil" }, 
-		{ id: ncNanoId(), href: '/ticket-purchase-history', name: "Mes billets" },
-		{ id: ncNanoId(), href: '/donation-history', name: "Mes dons" },
-	);
+		{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
+		{ id: ncNanoId(), href: '/ticket-purchase-history', name: 'Mes billets' },
+		{ id: ncNanoId(), href: '/donation-history', name: 'Mes dons' },
+		{ id: ncNanoId(), href: '/account', name: 'Profil' },
+	)
 } else {
 	navigation.push(
-		{ id: ncNanoId(), href: '/login', name: 'Se connecter' }, 
-		{ id: ncNanoId(), href: '/signup', name: "S'inscrire" } 
-	);
+		{ id: ncNanoId(), href: '/login', name: 'Se connecter' },
+		{ id: ncNanoId(), href: '/signup', name: "S'inscrire" },
+	)
 }
 
-export default navigation;
-
-
+export default navigation

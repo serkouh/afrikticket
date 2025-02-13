@@ -556,23 +556,31 @@ function PageHome() {
 			{/* Events Section - With filters */}
 			<section className="py-20">
 				<div className="container relative">
-					<div className="mb-12">
+					<div className="mb-12 flex items-center justify-between">
 						<h2 className="text-3xl font-bold">Événements à venir</h2>
-						<div className="mt-6 flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-							{Object.keys(eventCategoryMapping).map((category) => (
-								<button
-									key={category}
-									onClick={() => setActiveEventCategory(category)}
-									className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-										activeEventCategory === category
-											? 'bg-secondary-brand text-white'
-											: 'bg-white text-neutral-600 hover:bg-neutral-100'
-									}`}
-								>
-									{category}
-								</button>
-							))}
-						</div>
+						<Link
+							href="/events"
+							className="group flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-medium text-secondary-brand shadow-sm transition-all hover:bg-secondary-brand hover:text-white"
+						>
+							Voir tout
+							<IconArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+						</Link>
+					</div>
+
+					<div className="mt-6 flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+						{Object.keys(eventCategoryMapping).map((category) => (
+							<button
+								key={category}
+								onClick={() => setActiveEventCategory(category)}
+								className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
+									activeEventCategory === category
+										? 'bg-secondary-brand text-white'
+										: 'bg-white text-neutral-600 hover:bg-neutral-100'
+								}`}
+							>
+								{category}
+							</button>
+						))}
 					</div>
 
 					{/* Navigation arrows - Events section */}
@@ -704,23 +712,31 @@ function PageHome() {
 			{/* Fundraising Section - With filters */}
 			<section className="bg-neutral-50 py-20">
 				<div className="container relative">
-					<div className="mb-12">
+					<div className="mb-12 flex items-center justify-between">
 						<h2 className="text-3xl font-bold">Campagnes de collecte</h2>
-						<div className="mt-6 flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-							{Object.keys(fundraisingCategoryMapping).map((category) => (
-								<button
-									key={category}
-									onClick={() => setActiveFundraisingCategory(category)}
-									className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-										activeFundraisingCategory === category
-											? 'bg-secondary-brand text-white'
-											: 'bg-white text-neutral-600 hover:bg-neutral-100'
-									}`}
-								>
-									{category}
-								</button>
-							))}
-						</div>
+						<Link
+							href="/fundraisings"
+							className="group flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-medium text-secondary-brand shadow-sm transition-all hover:bg-secondary-brand hover:text-white"
+						>
+							Voir tout
+							<IconArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+						</Link>
+					</div>
+
+					<div className="mt-6 flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+						{Object.keys(fundraisingCategoryMapping).map((category) => (
+							<button
+								key={category}
+								onClick={() => setActiveFundraisingCategory(category)}
+								className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
+									activeFundraisingCategory === category
+										? 'bg-secondary-brand text-white'
+										: 'bg-white text-neutral-600 hover:bg-neutral-100'
+								}`}
+							>
+								{category}
+							</button>
+						))}
 					</div>
 
 					{/* Navigation arrows - Updated positioning */}

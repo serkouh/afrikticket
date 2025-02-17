@@ -207,14 +207,20 @@ const user = JSON.parse(localStorage.getItem('user') || 'null') // Get user from
 
 // console.log(user)
 
-if (user) {
-	navigation.push(
-		{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
-		{ id: ncNanoId(), href: '/ticket-purchase-history', name: 'Mes billets' },
-		{ id: ncNanoId(), href: '/donation-history', name: 'Mes dons' },
-		{ id: ncNanoId(), href: '/account', name: 'Profil' },
-	)
-} else {
+// if (user) {
+// 	navigation.push(
+// 		{ id: ncNanoId(), href: '/calendar', name: 'Calendrier' },
+// 		{ id: ncNanoId(), href: '/ticket-purchase-history', name: 'Mes billets' },
+// 		{ id: ncNanoId(), href: '/donation-history', name: 'Mes dons' },
+// 		{ id: ncNanoId(), href: '/account', name: 'Profil' },
+// 	)
+// } else {
+// 	navigation.push(
+// 		{ id: ncNanoId(), href: '/login', name: 'Se connecter' },
+// 		{ id: ncNanoId(), href: '/signup', name: "S'inscrire" },
+// 	)
+// }
+if (!user) {
 	navigation.push(
 		{ id: ncNanoId(), href: '/login', name: 'Se connecter' },
 		{ id: ncNanoId(), href: '/signup', name: "S'inscrire" },

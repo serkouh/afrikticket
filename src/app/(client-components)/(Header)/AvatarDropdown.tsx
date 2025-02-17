@@ -11,7 +11,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { IconTicket, IconHeartHandshake, IconLogout, IconUser, IconChartBar } from '@tabler/icons-react'
+import { IconTicket, IconHeartHandshake, IconLogout, IconUser, IconChartBar, IconCalendar } from '@tabler/icons-react'
 
 interface Props {
 	className?: string
@@ -144,7 +144,7 @@ export default function AvatarDropdown({ className = '' }: Props) {
 												<IconTicket className="h-6 w-6" />
 											</div>
 											<div className="ml-4">
-												<p className="text-sm font-medium">{'Historique de billets'}</p>
+												<p className="text-sm font-medium">{'Mes billets'}</p>
 											</div>
 										</Link>
 
@@ -158,7 +158,21 @@ export default function AvatarDropdown({ className = '' }: Props) {
 												<IconHeartHandshake className="h-6 w-6" />
 											</div>
 											<div className="ml-4">
-												<p className="text-sm font-medium">{'Historique des donations'}</p>
+												<p className="text-sm font-medium">{'Mes dons'}</p>
+											</div>
+										</Link>
+
+										{/* ------------------ 3 --------------------- */}
+										<Link
+											href={'/calendar'}
+											className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700"
+											onClick={() => close()}
+										>
+											<div className="flex flex-shrink-0 items-center justify-center text-neutral-500 dark:text-neutral-300">
+												<IconCalendar className="h-6 w-6" />
+											</div>
+											<div className="ml-4">
+												<p className="text-sm font-medium">{'Calendrier'}</p>
 											</div>
 										</Link>
 

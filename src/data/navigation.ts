@@ -199,7 +199,9 @@ export const NAVIGATION_DEMO: NavItemType[] = [
 export const navigation: NavItemType[] = [
 	{ id: ncNanoId(), href: '/', name: 'Accueil' },
 	{ id: ncNanoId(), href: '/about', name: 'À propos' },
-	{ id: ncNanoId(), href: '/contact', name: 'Contactez-nous' },
+	{ id: ncNanoId(), href: '/contact', name: 'Contact' },
+	{ id: ncNanoId(), href: '/events', name: 'Événements' },
+	{ id: ncNanoId(), href: '/fundraisings', name: 'Collectes' },
 ]
 
 // Check for authenticated user

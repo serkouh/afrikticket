@@ -416,7 +416,7 @@ function PageHome() {
 						</p>
 						<div className="flex justify-center gap-4">
 							<Link
-								href="#"
+								href="/fundraisings"
 								className="rounded-full bg-white px-8 py-3 font-medium text-secondary-brand transition-all hover:bg-opacity-90"
 							>
 								Faire un don

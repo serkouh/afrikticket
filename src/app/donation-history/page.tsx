@@ -167,8 +167,8 @@ const DonationHistory: FC = () => {
 							</div>
 
 							<div className="flex justify-between text-sm">
-								<span>{fundraising.current} GF collectés</span>
-								<span>Objectif: {fundraising.goal} GF</span>
+								<span>{fundraising.current} FG collectés</span>
+								<span>Objectif: {fundraising.goal} FG</span>
 							</div>
 						</div>
 
@@ -193,7 +193,7 @@ const DonationHistory: FC = () => {
 									Total contribué
 								</p>
 								<p className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
-									{fundraising.donations.total_amount} GF
+									{fundraising.donations.total_amount} FG
 								</p>
 							</div>
 						</div>
@@ -215,7 +215,7 @@ const DonationHistory: FC = () => {
 						</p>
 					</div>
 					<div className="rounded-2xl bg-blue-50 p-6 dark:bg-blue-900/30">
-						<p className="text-2xl font-bold">{summary.total_contributed} GF</p>
+						<p className="text-2xl font-bold">{summary.total_contributed} FG</p>
 						<p className="text-neutral-600 dark:text-neutral-400">
 							Total contribué
 						</p>

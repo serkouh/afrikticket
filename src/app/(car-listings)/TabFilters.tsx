@@ -23,12 +23,12 @@ import { FunnelIcon } from '@heroicons/react/24/outline'
 
 // DEMO DATA
 const typeOfCar = [
-	{ name: 'Small', description: 'GF 68' },
-	{ name: 'Medium', description: 'GF 128' },
-	{ name: 'Large', description: 'GF 268' },
-	{ name: 'SUV', description: 'GF 268' },
-	{ name: 'Van', description: 'GF 268' },
-	{ name: 'Luxury', description: 'GF 268' },
+	{ name: 'Small', description: 'FG 68' },
+	{ name: 'Medium', description: 'FG 128' },
+	{ name: 'Large', description: 'FG 268' },
+	{ name: 'SUV', description: 'FG 268' },
+	{ name: 'Van', description: 'FG 268' },
+	{ name: 'Luxury', description: 'FG 268' },
 ]
 
 const carSpecifications = [

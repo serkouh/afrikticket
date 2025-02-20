@@ -195,7 +195,7 @@ export default function EventsPage() {
 
                       <div className="flex items-center justify-between">
                         <span className="text-lg font-medium text-secondary-brand">
-                          {event.price} GP
+                          {event.price} FG
                         </span>
                         <span className="rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
                           {event.remaining_tickets} places

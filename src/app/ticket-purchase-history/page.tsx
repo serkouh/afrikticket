@@ -160,14 +160,14 @@ const TicketPurchaseHistory: FC = () => {
                   </span>
                   <span className="text-sm text-neutral-500">×</span>
                   <span className="text-lg font-medium text-neutral-900 dark:text-neutral-100">
-                    {event.price} GF
+                    {event.price} FG
                   </span>
                 </div>
               </div>
               <div className="text-right">
                 <p className="text-sm text-neutral-500 dark:text-neutral-400">Total</p>
                 <p className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
-                  {event.tickets.total_cost} GF
+                  {event.tickets.total_cost} FG
                 </p>
               </div>
             </div>
@@ -187,7 +187,7 @@ const TicketPurchaseHistory: FC = () => {
             <p className="text-neutral-600 dark:text-neutral-400">Total des billets</p>
           </div>
           <div className="bg-blue-50 dark:bg-blue-900/30 p-6 rounded-2xl">
-            <p className="text-2xl font-bold">{summary.total_spent} GF</p>
+            <p className="text-2xl font-bold">{summary.total_spent} FG</p>
             <p className="text-neutral-600 dark:text-neutral-400">Total dépensé</p>
           </div>
           <div className="bg-purple-50 dark:bg-purple-900/30 p-6 rounded-2xl">

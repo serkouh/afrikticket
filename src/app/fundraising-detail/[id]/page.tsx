@@ -197,7 +197,7 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 						<div className="text-center">
 							<BanknotesIcon className="mx-auto mb-2 h-8 w-8 text-primary-600" />
 							<div className="text-2xl font-bold">
-								{fundraisingData?.stats.total_raised} GF
+								{fundraisingData?.stats.total_raised} FG
 							</div>
 							<div className="text-sm text-neutral-500">Collectés</div>
 						</div>
@@ -228,8 +228,8 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 							/>
 						</div>
 						<div className="mt-2 flex justify-between text-sm">
-							<span>Collecté: {fundraisingData?.stats.total_raised} GF</span>
-							<span>Objectif: {fundraisingData?.fundraising.goal} GF</span>
+							<span>Collecté: {fundraisingData?.stats.total_raised} FG</span>
+							<span>Objectif: {fundraisingData?.fundraising.goal} FG</span>
 						</div>
 					</div>
 				</div>
@@ -267,7 +267,7 @@ const FundraisingDetailPage: FC<FundraisingDetailPageProps> = () => {
 										: 'border-neutral-200 hover:border-primary-600 dark:border-neutral-700'
 								}`}
 							>
-								{amount} GF
+								{amount} FG
 							</button>
 						))}
 					</div>

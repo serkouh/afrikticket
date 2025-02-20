@@ -46,8 +46,8 @@ const FundraisingCard: FC<FundraisingCardProps> = ({
 					</div>
 
 					<div className="flex justify-between text-sm">
-						<span>{stats.total_raised} GF collectés</span>
-						<span>Objectif: {fundraising.goal} GF</span>
+						<span>{stats.total_raised} FG collectés</span>
+						<span>Objectif: {fundraising.goal} FG</span>
 					</div>
 
 					<div className="text-sm text-neutral-500">

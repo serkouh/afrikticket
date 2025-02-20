@@ -341,7 +341,7 @@ const BigCalendar = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <IconCoin size={20} className="text-neutral-500" stroke={1.5} />
-                    <span>{selectedEvent.extendedProps?.totalCost || 0} GF</span>
+                    <span>{selectedEvent.extendedProps?.totalCost || 0} FG</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <IconFileDescription size={20} className="text-neutral-500 mt-1" stroke={1.5} />

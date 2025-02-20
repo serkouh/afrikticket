@@ -210,10 +210,10 @@ export default function FundraisingsPage() {
                       <div className="mb-4">
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium text-secondary-brand">
-                            {item.stats.total_raised} GP collectés
+                            {item.stats.total_raised} FG collectés
                           </span>
                           <span className="text-xs text-neutral-500">
-                            Objectif: {item.fundraising.goal} GP
+                            Objectif: {item.fundraising.goal} FG
                           </span>
                         </div>
                         <div className="relative mt-2 h-2 overflow-hidden rounded-full bg-neutral-100">

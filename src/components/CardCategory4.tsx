@@ -42,7 +42,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
 						/>
 					</div>
 					<span className="text-sm text-neutral-600 dark:text-neutral-400">
-						{`${current} / ${count} GF (${stats?.progress_percentage || 0}%)`}
+						{`${current} / ${count} FG (${stats?.progress_percentage || 0}%)`}
 					</span>
 					{/* <span className="block text-xs text-neutral-500">
 						{`${stats?.total_donors || 0} donateurs`}

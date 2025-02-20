@@ -661,7 +661,7 @@ function PageHome() {
 
 														<div className="flex items-center justify-between">
 															<span className="text-lg font-medium text-secondary-brand">
-																{event.price} GP
+																{event.price} FG
 															</span>
 															<span className="rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
 																{event.remaining_tickets} places
@@ -827,10 +827,10 @@ function PageHome() {
 													<div className="mb-4">
 														<div className="flex items-center justify-between text-sm">
 															<span className="font-medium text-secondary-brand">
-																{item.stats.total_raised} GP
+																{item.stats.total_raised} FG
 															</span>
 															<span className="text-xs text-neutral-500">
-																Objectif: {item.fundraising.goal} GP
+																Objectif: {item.fundraising.goal} FG
 															</span>
 														</div>
 														<div className="relative mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-100">

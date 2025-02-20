@@ -374,7 +374,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 			<div className="listingSectionSidebar__wrap shadow-xl">
 				<div className="flex justify-between">
 					<span className="text-3xl font-semibold">
-						{eventData?.event?.price} GF
+						{eventData?.event?.price} FG
 						<span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
 							/billet
 						</span>
@@ -401,7 +401,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 							{eventData?.event?.price} x {Number(ticketNumber) || 0} billets
 						</span>
 						<span>
-							{(eventData?.event?.price || 0) * (Number(ticketNumber) || 0)} GF
+							{(eventData?.event?.price || 0) * (Number(ticketNumber) || 0)} FG
 						</span>
 					</div>
 
@@ -409,7 +409,7 @@ const ListingCarDetailPage: FC<ListingCarDetailPageProps> = () => {
 					<div className="flex justify-between font-semibold">
 						<span>Total</span>
 						<span>
-							{(eventData?.event?.price || 0) * (Number(ticketNumber) || 0)} GF
+							{(eventData?.event?.price || 0) * (Number(ticketNumber) || 0)} FG
 						</span>
 					</div>
 				</div>

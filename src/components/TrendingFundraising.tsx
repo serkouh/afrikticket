@@ -86,7 +86,7 @@ const TrendingFundraising = () => {
             <div className="rounded-xl bg-gray-100 p-6 text-center">
               <IconCash className="mb-2 h-8 w-8 text-emerald-500" />
               <div className="text-3xl font-bold text-gray-900">{trendingData.stats.total_raised}</div>
-              <div className="text-sm text-gray-500">GF Collectés</div>
+              <div className="text-sm text-gray-500">FG Collectés</div>
             </div>
             <div className="rounded-xl bg-gray-100 p-6 text-center">
               <IconUsers className="mb-2 h-8 w-8 text-emerald-500" />
@@ -113,8 +113,8 @@ const TrendingFundraising = () => {
               ></div>
             </div>
             <div className="mt-2 flex justify-between text-sm text-gray-500">
-              <span>Collecté: {trendingData.stats.total_raised} GF</span>
-              <span>Objectif: {trendingData.goal} GF</span>
+              <span>Collecté: {trendingData.stats.total_raised} FG</span>
+              <span>Objectif: {trendingData.goal} FG</span>
             </div>
           </div>
 

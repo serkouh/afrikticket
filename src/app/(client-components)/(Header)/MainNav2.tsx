@@ -94,7 +94,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = '' }) => {
 					{navigation.map(renderNavItem)}
 					{/* <TemplatesDropdown/> */}
 					<Link
-						href="https://admin.afrikticket.com/auth/login"
+						href="https://organisation.afrikticket.com/auth/login"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="group relative flex items-center gap-2 rounded-full border-2 border-secondary-brand bg-white px-6 py-2.5 text-sm font-medium text-secondary-brand transition-all hover:bg-secondary-brand hover:text-white ml-3"
